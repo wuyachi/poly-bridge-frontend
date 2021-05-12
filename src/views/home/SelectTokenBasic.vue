@@ -1,24 +1,22 @@
 <template>
-  <CDrawer v-bind="$attrs" v-on="$listeners">
+  <CDrawer v-bind="$attrs"
+           v-on="$listeners">
     <div class="content">
       <div class="header">
         <div class="title">{{ $t('home.selectTokenBasic.title') }}</div>
         <div class="input">
-          <CInput
-            v-model="keyword"
-            class="input-inner"
-            :placeholder="$t('home.selectTokenBasic.inputPlaceholder')"
-          />
+          <CInput v-model="keyword"
+                  class="input-inner"
+                  :placeholder="$t('home.selectTokenBasic.inputPlaceholder')" />
         </div>
         <div class="popular-token-basics">
-          <CButton
-            v-for="tokenBasic in topTokenBasics"
-            :key="tokenBasic.name"
-            class="popular-token-basic"
-            :class="{ selected: tokenBasicName === tokenBasic.name }"
-            @click="select(tokenBasic)"
-          >
-            <img class="popular-token-basic-icon" :src="tokenBasic.icon" />
+          <CButton v-for="tokenBasic in topTokenBasics"
+                   :key="tokenBasic.name"
+                   class="popular-token-basic"
+                   :class="{ selected: tokenBasicName === tokenBasic.name }"
+                   @click="select(tokenBasic)">
+            <img class="popular-token-basic-icon"
+                 :src="tokenBasic.icon" />
             <span class="popular-token-basic-name">{{ tokenBasic.name }}</span>
           </CButton>
         </div>
@@ -27,17 +25,17 @@
       <div class="hint">{{ $t('home.selectTokenBasic.hint') }}</div>
       <CDivider />
       <div class="scroll">
-        <div
-          v-for="tokenBasic in filteredTokenBasics"
-          :key="tokenBasic.name"
-          class="token-basic"
-          @click="select(tokenBasic)"
-        >
+        <div v-for="tokenBasic in filteredTokenBasics"
+             :key="tokenBasic.name"
+             class="token-basic"
+             @click="select(tokenBasic)">
           <span class="token-basic-left">
-            <img class="token-basic-icon" :src="tokenBasic.icon" />
+            <img class="token-basic-icon"
+                 :src="tokenBasic.icon" />
             <span>{{ tokenBasic.name }}</span>
           </span>
-          <img v-if="tokenBasicName === tokenBasic.name" src="@/assets/svg/check.svg" />
+          <img v-if="tokenBasicName === tokenBasic.name"
+               src="@/assets/svg/check.svg" />
         </div>
       </div>
     </div>
@@ -55,25 +53,25 @@ export default {
     tokenBasics: Array,
     popularTokenBasics: Array,
   },
-  data() {
+  data () {
     return {
       keyword: '',
     };
   },
   computed: {
-    filteredTokenBasics() {
+    filteredTokenBasics () {
       return this.tokenBasics.filter(tokenBasic => {
         return tokenBasic.name.toLowerCase().includes(this.keyword.toLowerCase());
       });
     },
-    topTokenBasics() {
+    topTokenBasics () {
       return TOP_TOKEN_BASIC_NAMES.map(name => this.$store.getters.getTokenBasic(name)).filter(
         item => item,
       );
     },
   },
   methods: {
-    select(tokenBasic) {
+    select (tokenBasic) {
       this.$emit('update:visible', false);
       this.$emit('update:tokenBasicName', tokenBasic.name);
     },
@@ -162,6 +160,7 @@ export default {
 }
 
 .token-basic {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
