@@ -14,6 +14,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
   [TARGET_MAINNET ? 56 : 97]: ChainId.Bsc,
   [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
+  [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
 };
 
 let web3;

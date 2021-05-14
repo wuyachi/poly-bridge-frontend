@@ -128,6 +128,7 @@ export default {
       [ChainId.Bsc]: 'BSC',
       [ChainId.Heco]: 'Heco',
       [ChainId.Ont]: 'Ontology',
+      [ChainId.Ok]: 'OKExChain',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
