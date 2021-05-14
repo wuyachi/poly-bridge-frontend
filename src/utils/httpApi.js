@@ -190,10 +190,10 @@ export default {
         Addresses: addressHexs,
         PageNo: page - 1,
         PageSize: pageSize,
+        State: -1
       },
     });
     const transactions = deserialize(list(schemas.transaction), result.data.Transactions || []);
-    debugger
     return {
       items: transactions.map(mapTransactionToDo),
       pageCount: result.data.TotalPage,

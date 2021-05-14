@@ -65,7 +65,20 @@
                 <div class="image">
                   <div v-if="item.Image"
                        class="img-wrapper">
-                    <img :src="item.Image" />
+                    <img :id="'img'+item.TokenId"
+                         :src="item.Image"
+                         :onerror="defaultImg" />
+                    <video :id="'video'+item.TokenId"
+                           autoplay="autoplay"
+                           loop="loop"
+                           muted="muted"
+                           :src="item.Image">
+                      您的浏览器不支持 video 标签。
+                    </video>
+                  </div>
+                  <div v-else
+                       class="img-wrapper-unknow">
+                    <img :src="unknowNFT" />
                   </div>
                 </div>
                 <div class="nft-name">{{item.Name}}</div>
@@ -73,7 +86,7 @@
               </div>
             </div>
             <div class="pagination"
-                 v-if="fromWallet && itemsTotal > 6">
+                 v-if="fromWallet && itemsTotal > 10">
               <el-pagination layout="prev, pager, next"
                              @current-change="handleCurrentChange"
                              :current-page="currentPage"
@@ -178,11 +191,12 @@ export default {
       nftData: null,
       confirmUuid: uuidv4(),
       itemHash: null,
-      unknowNFT: UNKNOWN_NFT,
+      unknowNFT: require('../../assets/svg/back.svg'),
       currentPage: 1,
       assetsName: '',
       searchTokenID: '',
-      itemLoading: false
+      itemLoading: false,
+      defaultImg: 'this.src="'.concat(require('../../assets/svg/back.svg'), '"')
     };
   },
   computed: {
@@ -190,7 +204,6 @@ export default {
       return this.$store.getters.getTokenBasic(this.tokenBasicName);
     },
     assets () {
-      console.log(this.$store.getters.getAssetsBasics)
       const assetsList = this.$store.getters.getAssetsBasics.Assets
       let list = []
       if (this.assetsName !== '') {
@@ -208,12 +221,12 @@ export default {
       return this.nftChains[0]
     },
     itemsTotal () {
-      const itemsShowTotal = this.$store.getters.getItemsShow.Assets ? this.$store.getters.getItemsShow.Assets[0].Items.length : 0
       const itemsTotal = this.$store.getters.getItems.TotalCount ? this.$store.getters.getItems.TotalCount : 0
-      return this.fromWallet ? itemsTotal : itemsShowTotal
+      return itemsTotal
     },
     items () {
-      const itemsShow = this.$store.getters.getItemsShow.Assets ? this.$store.getters.getItemsShow.Assets[0].Items : []
+      const AssetsShow = this.$store.getters.getItemsShow.Assets ? this.$store.getters.getItemsShow.Assets : []
+      const itemsShow = AssetsShow[0] ? AssetsShow[0].Items : []
       const items = this.$store.getters.getItems ? this.$store.getters.getItems.Items : []
       return this.fromWallet ? items : itemsShow
     },
@@ -269,7 +282,6 @@ export default {
       return this.$store.getters.getAssetMap.DstAssets
     },
     toChains () {
-      console.log(this.assetMap)
       return (
         this.assetMap &&
         this.assetMap
@@ -352,13 +364,14 @@ export default {
     assets () {
       if (this.assets[0]) {
         this.itemHash = this.assets[0].Hash
-        this.getItems(this.itemHash, '', this.currentPage)
-        this.getAssetMap()
+        if (this.fromWallet) {
+          this.getItems(this.itemHash, '', this.currentPage)
+          this.getAssetMap()
+        }
       }
     },
     fromWallet () {
-      this.getItems(this.itemHash, '', 1)
-      this.getAssetMap()
+      this.init()
     },
     items () {
       console.log(this.items)
@@ -379,6 +392,32 @@ export default {
   beforeDestroy () {
   },
   methods: {
+    showVideo ($id) {
+      console.log($id.concat('error'))
+      let id1 = 'img'
+      id1 = id1.concat($id)
+      let id2 = 'video'
+      id2 = id2.concat($id)
+      if (document.getElementById(id1)) {
+        document.getElementById(id1).style.display = "none"
+      }
+      if (document.getElementById(id2)) {
+        document.getElementById(id2).style.display = "block"
+      }
+    },
+    showImg ($id) {
+      console.log($id.concat('done'))
+      let id1 = 'img'
+      id1 = id1.concat($id)
+      let id2 = 'video'
+      id2 = id2.concat($id)
+      if (document.getElementById(id1)) {
+        document.getElementById(id1).style.display = "block"
+      }
+      if (document.getElementById(id2)) {
+        document.getElementById(id2).style.display = "none"
+      }
+    },
     handleCurrentChange (val) {
       this.currentPage = val
       this.getItems(this.itemHash, '', this.currentPage)
@@ -412,6 +451,7 @@ export default {
       this.detailVisible = true
     },
     async init () {
+      this.currentPage = 1
       this.getItemsShow()
       this.getAssets()
     },
@@ -419,7 +459,7 @@ export default {
       this.itemLoading = true
       const params = {
         id: this.fromChain.id,
-        size: 12
+        size: 10
       }
       this.$store.dispatch('getItemsShow', params);
     },
@@ -434,17 +474,18 @@ export default {
       this.$store.dispatch('getAssetMap', params);
     },
     getItems ($Asset, $TokenId, page) {
-      debugger
       if (this.fromWallet) {
         this.itemLoading = true
+      } else {
+        return
       }
       const params = {
         ChainId: this.fromChain.id,
         Asset: $Asset,
-        Address: this.fromWallet.addressHex,
+        Address: this.fromWallet ? this.fromWallet.addressHex : '',
         TokenId: $TokenId,
         PageNo: page - 1,
-        PageSize: 9,
+        PageSize: 10,
       }
       this.$store.dispatch('getItems', params);
     },
@@ -455,7 +496,6 @@ export default {
       this.connectWalletVisible = true
     },
     openConfirm () {
-      console.log(this.confirmingData)
       this.confirmingData = {
         fromAddress: this.fromWallet.address,
         toAddress: this.toWallet.address,
@@ -869,36 +909,74 @@ export default {
       box-sizing: border-box;
       .image {
         width: 185px;
-        height: 185px;
-        background-image: url('../../assets/gif/nft.gif');
+        min-height: 185px;
+        background-image: url('../../assets/svg/back.svg');
+        background: rgba(0, 0, 0, 0.3);
         background-repeat: no-repeat;
         background-position: center;
-        background-size: 100%;
         .img-wrapper {
           width: 100%;
           height: 100%;
           background-color: #000000;
           text-align: center;
+          position: relative;
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
+            z-index: 10;
+          }
+          video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
+          }
+        }
+        .img-wrapper-unknow {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.3);
+          text-align: center;
           img {
             height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
           }
         }
       }
       .nft-name {
-        padding-top: 20px;
+        margin-top: 15px;
         font-size: 14px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.6);
         line-height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 183px;
+        height: 33px;
       }
       .nft-tokenid {
-        padding-top: 5px;
+        margin-top: 5px;
         font-size: 14px;
         font-family: PingFangSC-Regular, PingFang SC;
         font-weight: 400;
         color: rgba(255, 255, 255, 0.6);
         line-height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 183px;
+        height: 33px;
       }
     }
   }
