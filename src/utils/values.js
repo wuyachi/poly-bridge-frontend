@@ -117,9 +117,12 @@ export const CHAINS = [
     icon: require('@/assets/svg/heco.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://hecoinfo.com/tx/0x{txHash}'
+<<<<<<< HEAD
+=======
       : 'https://testnet.hecoinfo.com/tx/0x{txHash}',
     nftexplorerUrl: TARGET_MAINNET
       ? 'https://hecoinfo.com/tx/0x{txHash}'
+>>>>>>> fbd1067252b8cc0e1dcceeef4169b63074526ce2
       : 'https://testnet.hecoinfo.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x4fE451186c0D69205ACc1fA00FD75fc6d71e47eE'
