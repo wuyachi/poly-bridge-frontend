@@ -20,7 +20,7 @@ yarn run serve
 yarn run build
 ```
 
-### Lints and fixes files
+### Lints and fixes file
 
 ```
 yarn run lint
