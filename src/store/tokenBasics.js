@@ -14,9 +14,10 @@ export default {
       if (!tokenBasic) {
         return null;
       }
+      const icon = TOKEN_BASIC_ICONS[name] ? TOKEN_BASIC_ICONS[name] : UNKNOWN_ICON;
       return {
         ...tokenBasic,
-        meta: tokenBasic.meta ? tokenBasic.meta : UNKNOWN_ICON,
+        meta: tokenBasic.meta ? tokenBasic.meta : icon,
         //  icon: TOKEN_BASIC_ICONS[name] ? TOKEN_BASIC_ICONS[name] : UNKNOWN_ICON,
       };
     },

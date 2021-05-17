@@ -137,7 +137,7 @@ export const CHAINS = [
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x5598226aD2E8991deEFD03203739C87BdF6e6D03'
+      ? '0x11e2A718d46EBe97645b87F2363AFE1BF28c2672'
       : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
   },
   {
