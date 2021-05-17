@@ -137,7 +137,7 @@ export const CHAINS = [
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x5598226aD2E8991deEFD03203739C87BdF6e6D03'
+      ? '0x11e2A718d46EBe97645b87F2363AFE1BF28c2672'
       : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
   },
   {
@@ -200,12 +200,19 @@ export const TOKEN_BASIC_ICONS = {
   CC: require('@/assets/png/ccswap.png'),
   PLF: require('@/assets/png/plf.png'),
   TSX: require('@/assets/png/tsx.png'),
+  O3: require('@/assets/png/o3.png'),
+  KISHU: require('@/assets/png/kishu.png'),
+  CELL: require('@/assets/png/cell.png'),
+  ECELL: require('@/assets/svg/ecell.svg'),
   ISM: require('@/assets/jpg/ism.jpg'),
   BBANK: require('@/assets/jpg/bbank.jpg'),
   DOWS: require('@/assets/svg/shadows.svg'),
   PLUT: require('@/assets/svg/plut.svg'),
   mBTM: require('@/assets/svg/mbtm.svg'),
   LEV: require('@/assets/svg/lev.svg'),
+  XTM: require('@/assets/svg/xtm.svg'),
+  XTF: require('@/assets/svg/xtf.svg'),
+  TAP: require('@/assets/svg/tap.svg'),
   '8PAY': require('@/assets/jpg/8pay.jpg'),
 };
 

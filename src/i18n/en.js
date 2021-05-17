@@ -104,7 +104,7 @@ export default {
       waiting:
         'The transaction is waiting to be processed on the {chainName}. Please be patient...',
       pending: 'The transaction is proceeding on the {chainName}. Please be patient...',
-      succeeded: 'The transaction is succeeded on the {chainName}.',
+      succeeded: 'The transaction has succeeded on the {chainName}.',
       failed: 'The transaction is failed on the {chainName}.',
       confirmation: '{blocks}/{needBlocks} Confirm',
       hash: 'Hash: {hash}',
