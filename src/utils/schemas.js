@@ -17,6 +17,7 @@ export const token = model({
 export const tokenBasic = model({
   name: alias('Name'),
   decimals: alias('Precision'),
+  meta: alias('Meta'),
   tokens: alias(
     'Tokens',
     list(
