@@ -162,6 +162,7 @@ export default {
 }
 
 .token-basic {
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: space-between;
