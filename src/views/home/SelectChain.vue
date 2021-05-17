@@ -1,21 +1,15 @@
 <template>
-  <CDrawer v-bind="$attrs"
-           v-on="$listeners">
+  <CDrawer v-bind="$attrs" v-on="$listeners">
     <div class="content">
       <div class="title">{{ $t('home.selectChain.title') }}</div>
       <CDivider />
       <div class="scroll">
-        <div v-for="chain in chains"
-             :key="chain.id"
-             class="chain"
-             @click="select(chain)">
+        <div v-for="chain in chains" :key="chain.id" class="chain" @click="select(chain)">
           <span class="chain-left">
-            <img class="chain-icon"
-                 :src="chain.icon" />
+            <img class="chain-icon" :src="chain.icon" />
             <span>{{ $formatEnum(chain.id, { type: 'chainName' }) }}</span>
           </span>
-          <img v-if="chainId === chain.id"
-               src="@/assets/svg/check.svg" />
+          <img v-if="chainId === chain.id" src="@/assets/svg/check.svg" />
         </div>
       </div>
     </div>
@@ -31,7 +25,7 @@ export default {
     chains: Array,
   },
   methods: {
-    select (chain) {
+    select(chain) {
       this.$emit('update:visible', false);
       this.$emit('update:chainId', chain.id);
     },

@@ -12,7 +12,7 @@ export const HTTP_NFT_BASE_URL = TARGET_MAINNET
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco],
+    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
@@ -129,6 +129,16 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+  },
+  {
+    id: ChainId.Ok,
+    icon: require('@/assets/svg/ok.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
+      : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x11e2A718d46EBe97645b87F2363AFE1BF28c2672'
+      : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
   },
   {
     id: ChainId.Ont,
