@@ -18,7 +18,7 @@
             :class="{ selected: tokenBasicName === tokenBasic.name }"
             @click="select(tokenBasic)"
           >
-            <img class="popular-token-basic-icon" :src="tokenBasic.icon" />
+            <img class="popular-token-basic-icon" :src="tokenBasic.meta" />
             <span class="popular-token-basic-name">{{ tokenBasic.name }}</span>
           </CButton>
         </div>
@@ -34,7 +34,7 @@
           @click="select(tokenBasic)"
         >
           <span class="token-basic-left">
-            <img class="token-basic-icon" :src="tokenBasic.icon" />
+            <img class="token-basic-icon" :src="tokenBasic.meta" />
             <span>{{ tokenBasic.name }}</span>
           </span>
           <img v-if="tokenBasicName === tokenBasic.name" src="@/assets/svg/check.svg" />

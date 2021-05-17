@@ -7,7 +7,7 @@
           <div class="label">{{ $t('home.form.asset') }}</div>
           <CButton class="select-token-basic" @click="selectTokenBasicVisible = true">
             <template v-if="tokenBasic">
-              <img class="select-token-basic-icon" :src="tokenBasic.icon" />
+              <img class="select-token-basic-icon" :src="tokenBasic.meta" />
               <span class="select-token-basic-name">{{ tokenBasicName }}</span>
             </template>
             <CFlexSpan />
@@ -132,7 +132,7 @@
             </CTooltip>
             <CFlexSpan />
             <span class="fee-value">{{ $formatNumber(fee) }}</span>
-            <img class="fee-icon" :src="tokenBasic.icon" />
+            <img class="fee-icon" :src="tokenBasic.meta" />
             <span class="fee-token">{{ fromToken.name }}</span>
           </div>
         </ValidationProvider>

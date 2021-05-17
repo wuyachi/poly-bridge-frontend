@@ -16,7 +16,8 @@ export default {
       }
       return {
         ...tokenBasic,
-        icon: TOKEN_BASIC_ICONS[name] ? TOKEN_BASIC_ICONS[name] : UNKNOWN_ICON,
+        meta: tokenBasic.meta ? tokenBasic.meta : UNKNOWN_ICON,
+        //  icon: TOKEN_BASIC_ICONS[name] ? TOKEN_BASIC_ICONS[name] : UNKNOWN_ICON,
       };
     },
     getTokenBasicByChainIdAndTokenHash: (state, getters) => ({ chainId, tokenHash }) => {
