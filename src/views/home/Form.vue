@@ -114,7 +114,7 @@
             positive: true,
             maxDecimals: tokenBasic && tokenBasic.decimals,
             maxValue: balance,
-            minValue: { min: fee, excluded: true },
+            minValue: { min: minAmount, excluded: true },
           }"
                             v-slot="{ errors }">
           <div class="label">{{ $t('home.form.amount') }}</div>
@@ -255,6 +255,19 @@ export default {
     };
   },
   computed: {
+    minAmount () {
+      let res
+      if (this.fromChain) {
+        if (this.fromChain.nftFeeContractHash) {
+          res = 0
+        } else {
+          res = this.fee
+        }
+      } else {
+        res = this.fee
+      }
+      return res
+    },
     tokenBasics () {
       return this.$store.getters.tokenBasics;
     },
