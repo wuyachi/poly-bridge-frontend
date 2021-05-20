@@ -77,7 +77,8 @@ export const CHAINS = [
       : 'https://ropsten.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x2aA63cd0b28FB4C31fA8e4E95Ec11815Be07b9Ac'
-      : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
+      //   : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
+      : '0xDc37471Af6a8aB7f45F444c5a3Ef4758281bE32C',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe5204d62361A353C665668C858Ea213070CA159c'
       : '0x940300dc3Fc26e3A330a300be766184C0b5Fe019',
@@ -105,7 +106,8 @@ export const CHAINS = [
       : 'https://testnet.bscscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xE3D0FB6E3cB5DA61EB18b06D035052441009d1E6'
-      : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
+      //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
+      : '0x9f9F15CC407F7b26f55D71D43f993580a9107007',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
@@ -123,7 +125,8 @@ export const CHAINS = [
       : 'https://testnet.hecoinfo.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x4fE451186c0D69205ACc1fA00FD75fc6d71e47eE'
-      : '0x3c92F1E31aACA43Eb4fF8aE498C7E85618680F45',
+      //  : '0x3c92F1E31aACA43Eb4fF8aE498C7E85618680F45',
+      : '0xCC8407Ee04AaC2AdC0E6A55E7E97176C701146cd',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
@@ -138,7 +141,10 @@ export const CHAINS = [
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x11e2A718d46EBe97645b87F2363AFE1BF28c2672'
-      : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
+      //  : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
+      : '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'OKT',
   },
   {
     id: ChainId.Ont,

@@ -19,19 +19,19 @@ const NETWORK_CHAIN_ID_MAPS = {
 
 let web3;
 
-function confirmLater(promise) {
+function confirmLater (promise) {
   return new Promise((resolve, reject) => {
     promise.on('transactionHash', resolve);
     promise.on('error', reject);
 
-    function onConfirm(confNumber, receipt) {
+    function onConfirm (confNumber, receipt) {
       promise.off('confirmation', onConfirm);
     }
     promise.on('confirmation', onConfirm);
   });
 }
 
-function convertWalletError(error) {
+function convertWalletError (error) {
   if (error instanceof WalletError) {
     return error;
   }
@@ -42,7 +42,7 @@ function convertWalletError(error) {
   return new WalletError(error.message, { code, cause: error });
 }
 
-async function queryState() {
+async function queryState () {
   const accounts = await window.ethereum.request({ method: 'eth_accounts' });
   const address = accounts[0] || null;
   const addressHex = await tryToConvertAddressToHex(WalletName.MetaMask, address);
@@ -57,7 +57,7 @@ async function queryState() {
   });
 }
 
-async function init() {
+async function init () {
   try {
     if (!window.ethereum) {
       return;
@@ -92,7 +92,7 @@ async function init() {
   }
 }
 
-async function connect() {
+async function connect () {
   try {
     await window.ethereum.request({ method: 'eth_requestAccounts' });
     await queryState();
@@ -102,7 +102,7 @@ async function connect() {
   }
 }
 
-async function getBalance({ chainId, address, tokenHash }) {
+async function getBalance ({ chainId, address, tokenHash }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -117,7 +117,7 @@ async function getBalance({ chainId, address, tokenHash }) {
   }
 }
 
-async function getAllowance({ chainId, address, tokenHash, spender }) {
+async function getAllowance ({ chainId, address, tokenHash, spender }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -131,7 +131,7 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
   }
 }
 
-async function getTotalSupply({ chainId, tokenHash }) {
+async function getTotalSupply ({ chainId, tokenHash }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -145,7 +145,7 @@ async function getTotalSupply({ chainId, tokenHash }) {
   }
 }
 
-async function getTransactionStatus({ transactionHash }) {
+async function getTransactionStatus ({ transactionHash }) {
   try {
     const transactionReceipt = await web3.eth.getTransactionReceipt(`0x${transactionHash}`);
     if (transactionReceipt) {
@@ -159,7 +159,7 @@ async function getTransactionStatus({ transactionHash }) {
   }
 }
 
-async function approve({ chainId, address, tokenHash, spender, amount }) {
+async function approve ({ chainId, address, tokenHash, spender, amount }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
@@ -172,7 +172,7 @@ async function approve({ chainId, address, tokenHash, spender, amount }) {
   }
 }
 
-async function nftApprove({ address, tokenHash, spender, id }) {
+async function nftApprove ({ address, tokenHash, spender, id }) {
   try {
     const tokenID = decimalToInteger(id, 0);
     const tokenContract = new web3.eth.Contract(
@@ -187,7 +187,7 @@ async function nftApprove({ address, tokenHash, spender, id }) {
   }
 }
 
-async function getNFTApproved({ fromChainId, tokenHash, id }) {
+async function getNFTApproved ({ fromChainId, tokenHash, id }) {
   try {
     const chain = store.getters.getChain(fromChainId);
     const tokenID = decimalToInteger(id, 0);
@@ -202,7 +202,7 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
   }
 }
 
-async function lock({
+async function lock ({
   fromChainId,
   fromAddress,
   fromTokenHash,
@@ -222,18 +222,22 @@ async function lock({
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
+    console.log(chain)
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
-    const feeInt = decimalToInteger(fee, tokenBasic.decimals);
+    const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
+    console.log(toAddressHex)
+    console.log(amountInt)
+    console.log(feeInt)
+    console.log(fromTokenHash)
 
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
-          value:
-            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : undefined,
+          value: fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
         }),
     );
     return toStandardHex(result);
@@ -242,7 +246,7 @@ async function lock({
   }
 }
 
-async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toAddress, id, fee }) {
+async function nftLock ({ fromChainId, fromAddress, fromTokenHash, toChainId, toAddress, id, fee }) {
   try {
     const chain = store.getters.getChain(fromChainId);
 
