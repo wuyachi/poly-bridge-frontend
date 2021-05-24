@@ -13,6 +13,19 @@ export const token = model({
     }),
   ),
 });
+export const txFeeToken = model({
+  hash: alias('Hash'),
+  chainId: alias('ChainId'),
+  name: alias('Name'),
+  tokenBasicName: alias('TokenBasicName'),
+  tokenBasic: alias(
+    'TokenBasic',
+    model({
+      name: alias('Name'),
+      decimals: alias('Precision'),
+    }),
+  ),
+});
 
 export const tokenBasic = model({
   name: alias('Name'),
@@ -58,6 +71,7 @@ export const transaction = model({
   amount: alias('TransferAmount'),
   fee: alias('FeeAmount'),
   nftFee: alias('FeeToken', FeeToken),
+  txfeeToken: alias('FeeToken', txFeeToken),
   time: alias('Time'),
   status: alias('State'),
   tokenId: alias('TokenId'),
