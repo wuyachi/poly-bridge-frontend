@@ -140,7 +140,7 @@ export const CHAINS = [
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x11e2A718d46EBe97645b87F2363AFE1BF28c2672'
+      ? '0xbd4a08577476A521C41a21EF3f00b045b74175d5'
       //  : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
       : '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
