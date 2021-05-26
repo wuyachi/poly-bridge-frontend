@@ -68,7 +68,7 @@
               <div class="label">{{ $t('home.confirm.receiving') }}</div>
               <div class="fee">
                 <span class="fee-value">{{ $formatNumber(receivingAmount) }}</span>
-                <span class="token-basic-name">{{ toToken.tokenBasicName }}</span>
+                <span class="token-basic-name">{{ toToken.name }}</span>
               </div>
             </div>
           </div>
