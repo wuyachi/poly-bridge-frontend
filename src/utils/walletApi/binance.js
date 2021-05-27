@@ -221,7 +221,7 @@ async function lock ({
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
-    const feeInt = decimalToInteger(fee, tokenBasic.decimals);
+    const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
 
     const result = await confirmLater(
       lockContract.methods
