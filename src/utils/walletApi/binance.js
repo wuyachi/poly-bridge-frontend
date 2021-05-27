@@ -229,7 +229,7 @@ async function lock ({
         .send({
           from: fromAddress,
           value:
-            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : undefined,
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
         }),
     );
     return toStandardHex(result);
