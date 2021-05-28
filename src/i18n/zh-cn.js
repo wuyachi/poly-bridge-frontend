@@ -48,6 +48,8 @@ export default {
       connectWallet: 'Connect Wallet',
       historyPrefix: 'You can view your',
       historyLink: 'history',
+      maxamount: "Max Amount",
+      maxamountTooltip: "The largest number of cross-chain assets on the currently selected target chain (estimated value)"
     },
     selectTokenBasic: {
       title: 'Select Asset',

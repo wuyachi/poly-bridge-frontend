@@ -71,7 +71,7 @@ export default {
         DstChainId: toChainId,
       },
     });
-    return result.TokenAmount;
+    return result;
   },
   async getTransactions ({ addressHexs, page, pageSize }) {
     const result = await request({
