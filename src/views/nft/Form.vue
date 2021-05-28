@@ -53,10 +53,10 @@
           </div>
           <div class="item-content"
                v-loading="itemLoading">
-            <!-- <div v-if="fromWallet"
+            <div v-if="fromWallet"
                  class="total">
               {{itemsTotal}} {{$t('nft.form.result')}}
-            </div> -->
+            </div>
             <div class="items-content">
               <div v-for="item in items"
                    class="nft-item"

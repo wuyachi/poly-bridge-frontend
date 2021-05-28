@@ -51,6 +51,8 @@ export default {
       approveInfinitytip:
         'After checking, approve the infinite token usage, this behavior may be risky, please judge according to the actual situation',
       approveInfinity: 'Approve Infinity',
+      maxamount: "Max Amount",
+      maxamountTooltip: "The largest number of cross-chain assets on the currently selected target chain (estimated value)"
     },
     selectTokenBasic: {
       title: 'Select Asset',
