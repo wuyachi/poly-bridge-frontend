@@ -53,10 +53,10 @@
           </div>
           <div class="item-content"
                v-loading="itemLoading">
-            <div v-if="fromWallet"
+            <!-- <div v-if="fromWallet"
                  class="total">
               {{itemsTotal}} {{$t('nft.form.result')}}
-            </div>
+            </div> -->
             <div class="items-content">
               <div v-for="item in items"
                    class="nft-item"
@@ -90,8 +90,17 @@
               <el-pagination layout="prev, pager, next"
                              @current-change="handleCurrentChange"
                              :current-page="currentPage"
-                             :page-size="6"
+                             :page-size="10"
                              :total="itemsTotal">
+              </el-pagination>
+            </div>
+            <div class="pagination"
+                 v-if="!fromWallet && itemsShow.length > 0">
+              <el-pagination layout="prev, pager, next"
+                             @current-change="handleCurrentShowChange"
+                             :current-page="currentPage"
+                             :page-size="10"
+                             :total="itemsShowTotal">
               </el-pagination>
             </div>
           </div>
@@ -193,10 +202,12 @@ export default {
       itemHash: null,
       unknowNFT: require('../../assets/svg/back.svg'),
       currentPage: 1,
+      currentShowPage: 1,
+      itemsShowTotal: 20,
       assetsName: '',
       searchTokenID: '',
       itemLoading: false,
-      defaultImg: 'this.src="'.concat(require('../../assets/svg/back.svg'), '"')
+      defaultImg: 'this.src="'.concat(require('../../assets/svg/back.svg'), '"'),
     };
   },
   computed: {
@@ -378,6 +389,16 @@ export default {
     },
     itemsShow () {
       this.itemLoading = false
+      if (this.itemsShowTotal < 191) {
+        if (this.itemsShow[0]) {
+          if (this.itemsShow[0].HasMore) {
+            this.itemsShowTotal = this.currentShowPage * 10 + 1
+          }
+          if (!this.itemsShow[0].HasMore && this.itemsShow[0].Items.length > 0) {
+            this.itemsShowTotal = this.currentShowPage * 10 + this.itemsShow[0].Items.length - 10
+          }
+        }
+      }
     },
     itemsTrue () {
       this.itemLoading = false
@@ -422,6 +443,10 @@ export default {
       this.currentPage = val
       this.getItems(this.itemHash, '', this.currentPage)
     },
+    handleCurrentShowChange (val) {
+      this.currentShowPage = val
+      this.getItemsShow()
+    },
     itemSelect (item) {
       this.itemHash = item.Hash
       this.getItems(this.itemHash, '', this.currentPage)
@@ -458,8 +483,9 @@ export default {
     getItemsShow () {
       this.itemLoading = true
       const params = {
-        id: this.fromChain.id,
-        size: 10
+        ChainId: this.fromChain.id,
+        PageSize: 10,
+        PageNo: this.currentShowPage - 1
       }
       this.$store.dispatch('getItemsShow', params);
     },
