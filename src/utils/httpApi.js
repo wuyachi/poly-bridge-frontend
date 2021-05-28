@@ -161,8 +161,9 @@ export default {
         method: 'post',
         url: '/assetshow',
         data: {
-          ChainId: params.id,
-          Size: params.size,
+          ChainId: params.ChainId,
+          PageSize: params.PageSize,
+          PageNo: params.PageNo
         },
       }
     )

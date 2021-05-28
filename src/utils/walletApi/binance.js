@@ -221,7 +221,7 @@ async function lock ({
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
-    const feeInt = decimalToInteger(fee, tokenBasic.decimals);
+    const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
 
     const result = await confirmLater(
       lockContract.methods
@@ -229,7 +229,7 @@ async function lock ({
         .send({
           from: fromAddress,
           value:
-            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : undefined,
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
         }),
     );
     return toStandardHex(result);
