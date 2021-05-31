@@ -287,7 +287,7 @@ export default {
     maxAmount () {
       let res
       if (this.fee) {
-        if (this.fee.Balance >= this.balance) {
+        if (Number(this.fee.Balance) > Number(this.balance)) {
           res = this.balance;
         } else {
           res = this.fee.Balance;
