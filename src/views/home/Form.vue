@@ -118,6 +118,16 @@
           }"
                             v-slot="{ errors }">
           <div class="label">{{ $t('home.form.amount') }}</div>
+          <div class="input">
+            <CInput class="input-inner"
+                    v-model="amount" />
+            <CButton v-if="balance"
+                     class="use-max"
+                     @click="transferAll">
+              {{ $t('home.form.max') }}
+            </CButton>
+          </div>
+          <div class="input-error">{{ errors[0] }}</div>
           <div v-if="fee"
                class="fee">
             <span class="label">{{ $t('home.form.maxamount') }}</span>
@@ -134,16 +144,6 @@
                  :src="tokenBasic.meta" />
             <span class="fee-token">{{ fromToken.name }}</span>
           </div>
-          <div class="input">
-            <CInput class="input-inner"
-                    v-model="amount" />
-            <CButton v-if="balance"
-                     class="use-max"
-                     @click="transferAll">
-              {{ $t('home.form.max') }}
-            </CButton>
-          </div>
-          <div class="input-error">{{ errors[0] }}</div>
           <div v-if="balance"
                class="balance">
             <span class="label">{{ $t('home.form.balance') }}</span>
@@ -489,7 +489,7 @@ export default {
       this.$message.success(this.$t('messages.copied', { text }));
     },
     transferAll () {
-      if (this.fee.Balance >= this.balance) {
+      if (Number(this.fee.Balance) > Number(this.balance)) {
         this.amount = this.balance;
       } else {
         this.amount = this.fee.Balance;
