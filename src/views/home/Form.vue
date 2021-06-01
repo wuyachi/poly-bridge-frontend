@@ -113,7 +113,7 @@
             number: true,
             positive: true,
             maxDecimals: tokenBasic && tokenBasic.decimals,
-            maxValue: balance,
+            maxValue: maxAmount,
             minValue: { min: minAmount, excluded: true },
           }"
                             v-slot="{ errors }">
@@ -128,6 +128,22 @@
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
+          <div v-if="fee"
+               class="fee">
+            <span class="label">{{ $t('home.form.maxamount') }}</span>
+            <CTooltip>
+              <img class="tooltip-icon"
+                   src="@/assets/svg/question.svg" />
+              <template #content>
+                {{ $t('home.form.maxamountTooltip') }}
+              </template>
+            </CTooltip>
+            <CFlexSpan />
+            <span class="fee-value">{{ $formatNumber(fee.Balance) }}</span>
+            <img class="fee-icon"
+                 :src="tokenBasic.meta" />
+            <span class="fee-token">{{ fromToken.name }}</span>
+          </div>
           <div v-if="balance"
                class="balance">
             <span class="label">{{ $t('home.form.balance') }}</span>
@@ -145,7 +161,7 @@
               </template>
             </CTooltip>
             <CFlexSpan />
-            <span class="fee-value">{{ $formatNumber(fee) }}</span>
+            <span class="fee-value">{{ $formatNumber(fee.TokenAmount) }}</span>
             <img class="fee-icon"
                  :src="fromChain.nftFeeName ? fromChain.icon : tokenBasic.meta" />
             <span class="fee-token">{{ fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name }}</span>
@@ -261,10 +277,21 @@ export default {
         if (this.fromChain.nftFeeContractHash) {
           res = 0
         } else {
-          res = this.fee
+          res = this.fee ? this.fee.TokenAmount : 0
         }
       } else {
-        res = this.fee
+        res = this.fee ? this.fee.TokenAmount : 0
+      }
+      return res
+    },
+    maxAmount () {
+      let res
+      if (this.fee) {
+        if (Number(this.fee.Balance) > Number(this.balance)) {
+          res = this.balance;
+        } else {
+          res = this.fee.Balance;
+        }
       }
       return res
     },
@@ -372,6 +399,7 @@ export default {
           fromChainId: this.fromChainId,
           fromTokenHash: this.fromChain.nftFeeContractHash ? this.fromChain.nftFeeContractHash : this.fromToken.hash,
           toChainId: this.toChainId,
+          toTokenHash: this.fromToken.hash
         };
       }
       return null;
@@ -461,7 +489,11 @@ export default {
       this.$message.success(this.$t('messages.copied', { text }));
     },
     transferAll () {
-      this.amount = this.balance;
+      if (Number(this.fee.Balance) > Number(this.balance)) {
+        this.amount = this.balance;
+      } else {
+        this.amount = this.fee.Balance;
+      }
       this.$nextTick(() => this.$refs.amountValidation.validate());
     },
     async approve () {
@@ -507,7 +539,7 @@ export default {
         fromTokenHash: this.fromToken.hash,
         toTokenHash: this.toToken.hash,
         amount: this.amount,
-        fee: this.fee,
+        fee: this.fee.TokenAmount,
       };
       this.confirmVisible = true;
     },
