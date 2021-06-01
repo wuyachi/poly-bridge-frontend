@@ -90,7 +90,7 @@
               <el-pagination layout="prev, pager, next"
                              @current-change="handleCurrentChange"
                              :current-page="currentPage"
-                             :page-size="10"
+                             :page-size="12"
                              :total="itemsTotal">
               </el-pagination>
             </div>
@@ -99,7 +99,7 @@
               <el-pagination layout="prev, pager, next"
                              @current-change="handleCurrentShowChange"
                              :current-page="currentPage"
-                             :page-size="10"
+                             :page-size="12"
                              :total="itemsShowTotal">
               </el-pagination>
             </div>
@@ -392,10 +392,10 @@ export default {
       if (this.itemsShowTotal < 191) {
         if (this.itemsShow[0]) {
           if (this.itemsShow[0].HasMore) {
-            this.itemsShowTotal = this.currentShowPage * 10 + 1
+            this.itemsShowTotal = this.currentShowPage * 12 + 1
           }
           if (!this.itemsShow[0].HasMore && this.itemsShow[0].Items.length > 0) {
-            this.itemsShowTotal = this.currentShowPage * 10 + this.itemsShow[0].Items.length - 10
+            this.itemsShowTotal = this.currentShowPage * 12 + this.itemsShow[0].Items.length - 12
           }
         }
       }
@@ -484,7 +484,7 @@ export default {
       this.itemLoading = true
       const params = {
         ChainId: this.fromChain.id,
-        PageSize: 10,
+        PageSize: 12,
         PageNo: this.currentShowPage - 1
       }
       this.$store.dispatch('getItemsShow', params);
@@ -511,7 +511,7 @@ export default {
         Address: this.fromWallet ? this.fromWallet.addressHex : '',
         TokenId: $TokenId,
         PageNo: page - 1,
-        PageSize: 10,
+        PageSize: 12,
       }
       this.$store.dispatch('getItems', params);
     },
