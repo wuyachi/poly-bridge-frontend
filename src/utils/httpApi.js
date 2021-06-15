@@ -60,17 +60,18 @@ export default {
     const tokenMaps = deserialize(list(schemas.tokenMap), result.TokenMaps);
     return tokenMaps;
   },
-  async getFee ({ fromChainId, fromTokenHash, toChainId }) {
+  async getFee ({ fromChainId, fromTokenHash, toTokenHash, toChainId }) {
     const result = await request({
       method: 'post',
       url: '/getfee',
       data: {
         SrcChainId: fromChainId,
+        SwapTokenHash: toTokenHash,
         Hash: fromTokenHash,
         DstChainId: toChainId,
       },
     });
-    return result.TokenAmount;
+    return result;
   },
   async getTransactions ({ addressHexs, page, pageSize }) {
     const result = await request({
@@ -161,8 +162,9 @@ export default {
         method: 'post',
         url: '/assetshow',
         data: {
-          ChainId: params.id,
-          Size: params.size,
+          ChainId: params.ChainId,
+          PageSize: params.PageSize,
+          PageNo: params.PageNo
         },
       }
     )

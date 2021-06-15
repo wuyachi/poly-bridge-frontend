@@ -183,7 +183,7 @@ export default {
         }
       } else {
         res = this.confirmingData &&
-          new BigNumber(this.confirmingData.amount).minus(this.confirmingData.fee).toString()
+          new BigNumber(this.confirmingData.amount).toString()
       }
       return res
     },

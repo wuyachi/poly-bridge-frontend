@@ -58,15 +58,17 @@
               </CLink>
             </ElTableColumn>
             <ElTableColumn #default="{row}"
+                           min-width="120"
                            :label="$t('transactions.index.amount')">
-              {{ $formatNumber(row.amount) }}
+              {{ $formatNumber(row.amount) }} {{row.tokenBasicName}}
             </ElTableColumn>
             <ElTableColumn #default="{row}"
+                           min-width="120"
                            :label="$t('transactions.index.fee')">
-              {{ $formatNumber(row.fee) }}
+              {{ $formatNumber(row.fee) }} {{row.txfeeToken.name}}
             </ElTableColumn>
-            <ElTableColumn :label="$t('transactions.index.asset')"
-                           prop="tokenBasicName" />
+            <!-- <ElTableColumn :label="$t('transactions.index.asset')"
+                           prop="tokenBasicName" /> -->
             <ElTableColumn #default="{row}"
                            :label="$t('transactions.index.time')"
                            min-width="110">
@@ -140,6 +142,7 @@ export default {
       };
     },
     transactions () {
+      console.log(this.$store.getters.getTransactions(this.getTransactionsParams))
       return this.$store.getters.getTransactions(this.getTransactionsParams) || {};
     },
   },
