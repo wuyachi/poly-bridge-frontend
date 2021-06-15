@@ -1,13 +1,18 @@
 <template>
-  <ValidationObserver ref="validation" tag="div" v-slot="{ invalid }" class="form">
+  <ValidationObserver ref="validation"
+                      tag="div"
+                      v-slot="{ invalid }"
+                      class="form">
     <div class="card">
       <div class="title">{{ $t('home.form.title') }}</div>
       <div class="fields">
         <div class="field">
           <div class="label">{{ $t('home.form.asset') }}</div>
-          <CButton class="select-token-basic" @click="selectTokenBasicVisible = true">
+          <CButton class="select-token-basic"
+                   @click="selectTokenBasicVisible = true">
             <template v-if="tokenBasic">
-              <img class="select-token-basic-icon" :src="tokenBasic.meta" />
+              <img class="select-token-basic-icon"
+                   :src="tokenBasic.meta" />
               <span class="select-token-basic-name">{{ tokenBasicName }}</span>
             </template>
             <CFlexSpan />
@@ -18,14 +23,13 @@
         <div class="fields-row">
           <div class="field">
             <div class="label">{{ $t('home.form.from') }}</div>
-            <CButton
-              class="select-chain"
-              :disabled="!tokenBasic"
-              @click="selectFromChainVisible = true"
-            >
+            <CButton class="select-chain"
+                     :disabled="!tokenBasic"
+                     @click="selectFromChainVisible = true">
               <div class="select-chain-content">
                 <template v-if="fromChain">
-                  <img class="select-chain-icon" :src="fromChain.icon" />
+                  <img class="select-chain-icon"
+                       :src="fromChain.icon" />
                   <span class="select-chain-name">
                     {{
                       $t('home.form.chainName', {
@@ -35,15 +39,18 @@
                   </span>
                 </template>
                 <template v-else>
-                  <img class="select-chain-icon" src="@/assets/svg/from.svg" />
+                  <img class="select-chain-icon"
+                       src="@/assets/svg/from.svg" />
                   <span class="select-chain-name">
                     {{ $t('home.form.chainName', { chainName: $t('home.form.from') }) }}
                   </span>
                 </template>
-                <img class="chevron-down" src="@/assets/svg/chevron-right.svg" />
+                <img class="chevron-down"
+                     src="@/assets/svg/chevron-right.svg" />
               </div>
             </CButton>
-            <div v-if="fromWallet" class="address">
+            <div v-if="fromWallet"
+                 class="address">
               <span class="address-value">
                 {{ $formatLongText(fromWallet.address, { headTailLength: 6 }) }}
               </span>
@@ -53,20 +60,20 @@
             </div>
           </div>
 
-          <CButton :disabled="!toChainId" @click="exchangeFromTo">
+          <CButton :disabled="!toChainId"
+                   @click="exchangeFromTo">
             <img src="@/assets/svg/exchange.svg" />
           </CButton>
 
           <div class="field">
             <div class="label">{{ $t('home.form.to') }}</div>
-            <CButton
-              class="select-chain"
-              :disabled="!toChains"
-              @click="selectToChainVisible = true"
-            >
+            <CButton class="select-chain"
+                     :disabled="!toChains"
+                     @click="selectToChainVisible = true">
               <div class="select-chain-content">
                 <template v-if="toChain">
-                  <img class="select-chain-icon" :src="toChain.icon" />
+                  <img class="select-chain-icon"
+                       :src="toChain.icon" />
                   <span class="select-chain-name">
                     {{
                       $t('home.form.chainName', {
@@ -76,15 +83,18 @@
                   </span>
                 </template>
                 <template v-else>
-                  <img class="select-chain-icon" src="@/assets/svg/to.svg" />
+                  <img class="select-chain-icon"
+                       src="@/assets/svg/to.svg" />
                   <span class="select-chain-name">
                     {{ $t('home.form.chainName', { chainName: $t('home.form.to') }) }}
                   </span>
                 </template>
-                <img class="chevron-down" src="@/assets/svg/chevron-right.svg" />
+                <img class="chevron-down"
+                     src="@/assets/svg/chevron-right.svg" />
               </div>
             </CButton>
-            <div v-if="toWallet" class="address">
+            <div v-if="toWallet"
+                 class="address">
               <span class="address-value">
                 {{ $formatLongText(toWallet.address, { headTailLength: 6 }) }}
               </span>
@@ -95,114 +105,126 @@
           </div>
         </div>
 
-        <ValidationProvider
-          ref="amountValidation"
-          tag="div"
-          class="field"
-          :rules="{
+        <ValidationProvider ref="amountValidation"
+                            tag="div"
+                            class="field"
+                            :rules="{
             required: true,
             number: true,
             positive: true,
             maxDecimals: tokenBasic && tokenBasic.decimals,
-            maxValue: balance,
-            minValue: { min: fee, excluded: true },
+            maxValue: maxAmount,
+            minValue: { min: minAmount, excluded: true },
           }"
-          v-slot="{ errors }"
-        >
+                            v-slot="{ errors }">
           <div class="label">{{ $t('home.form.amount') }}</div>
           <div class="input">
-            <CInput class="input-inner" v-model="amount" />
-            <CButton v-if="balance" class="use-max" @click="transferAll">
+            <CInput class="input-inner"
+                    v-model="amount" />
+            <CButton v-if="balance"
+                     class="use-max"
+                     @click="transferAll">
               {{ $t('home.form.max') }}
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
-          <div v-if="balance" class="balance">
+          <div v-if="fee"
+               class="fee">
+            <span class="label">{{ $t('home.form.maxamount') }}</span>
+            <CTooltip>
+              <img class="tooltip-icon"
+                   src="@/assets/svg/question.svg" />
+              <template #content>
+                {{ $t('home.form.maxamountTooltip') }}
+              </template>
+            </CTooltip>
+            <CFlexSpan />
+            <span class="fee-value">{{ $formatNumber(fee.Balance) }}</span>
+            <img class="fee-icon"
+                 :src="tokenBasic.meta" />
+            <span class="fee-token">{{ fromToken.name }}</span>
+          </div>
+          <div v-if="balance"
+               class="balance">
             <span class="label">{{ $t('home.form.balance') }}</span>
             <CFlexSpan />
             <span class="value"> {{ $formatNumber(balance) }} {{ fromToken.name }} </span>
           </div>
-          <div v-if="fee" class="fee">
+          <div v-if="fee"
+               class="fee">
             <span class="label">{{ $t('home.form.fee') }}</span>
             <CTooltip>
-              <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+              <img class="tooltip-icon"
+                   src="@/assets/svg/question.svg" />
               <template #content>
                 {{ $t('home.form.feeTooltip') }}
               </template>
             </CTooltip>
             <CFlexSpan />
-            <span class="fee-value">{{ $formatNumber(fee) }}</span>
-            <img class="fee-icon" :src="tokenBasic.meta" />
-            <span class="fee-token">{{ fromToken.name }}</span>
+            <span class="fee-value">{{ $formatNumber(fee.TokenAmount) }}</span>
+            <img class="fee-icon"
+                 :src="fromChain.nftFeeName ? fromChain.icon : tokenBasic.meta" />
+            <span class="fee-token">{{ fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name }}</span>
           </div>
         </ValidationProvider>
       </div>
 
-      <CSubmitButton
-        v-if="fromChain && toChain && !(fromWallet && toWallet)"
-        @click="connectWalletVisible = true"
-      >
+      <CSubmitButton v-if="fromChain && toChain && !(fromWallet && toWallet)"
+                     @click="connectWalletVisible = true">
         {{ $t('home.form.connectWallet') }}
       </CSubmitButton>
-      <div v-else-if="!invalid && fromToken && toToken && needApproval" class="approve-wrapper">
-        <el-checkbox v-model="approveInfinityChecked"
-          >{{ $t('home.form.approveInfinity') }}
+      <div v-else-if="!invalid && fromToken && toToken && needApproval"
+           class="approve-wrapper">
+        <el-checkbox v-model="approveInfinityChecked">{{ $t('home.form.approveInfinity') }}
           <CTooltip>
-            <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+            <img class="tooltip-icon"
+                 src="@/assets/svg/question.svg" />
             <template #content>
               {{ $t('home.form.approveInfinitytip') }}
             </template>
           </CTooltip>
         </el-checkbox>
-        <CSubmitButton :loading="approving" @click="approve">
+        <CSubmitButton :loading="approving"
+                       @click="approve">
           {{ approving ? $t('buttons.approving') : $t('buttons.approve') }}
         </CSubmitButton>
       </div>
-      <CSubmitButton v-else :disabled="invalid || !(fromToken && toToken)" @click="next">
+      <CSubmitButton v-else
+                     :disabled="invalid || !(fromToken && toToken)"
+                     @click="next">
         {{ $t('buttons.next') }}
       </CSubmitButton>
     </div>
 
     <div class="history">
       {{ $t('home.form.historyPrefix') }}
-      <CLink class="link" :to="{ name: 'transactions' }">{{ $t('home.form.historyLink') }}</CLink>
+      <CLink class="link"
+             :to="{ name: 'transactions' }">{{ $t('home.form.historyLink') }}</CLink>
     </div>
 
-    <SelectTokenBasic
-      :visible.sync="selectTokenBasicVisible"
-      :tokenBasicName="tokenBasicName"
-      @update:tokenBasicName="changeTokenBasicName"
-      :tokenBasics="tokenBasics"
-      :popularTokenBasics="tokenBasics"
-    />
-    <SelectChain
-      :visible.sync="selectFromChainVisible"
-      :chainId="fromChainId"
-      @update:chainId="changeFromChainId"
-      :chains="fromChains || []"
-    />
-    <SelectChain
-      :visible.sync="selectToChainVisible"
-      :chainId="toChainId"
-      @update:chainId="changeToChainId"
-      :chains="toChains || []"
-    />
-    <ConnectWallet
-      :visible.sync="connectWalletVisible"
-      :fromChainId="fromChainId"
-      :toChainId="toChainId"
-    />
-    <Confirm
-      :key="confirmUuid"
-      :visible.sync="confirmVisible"
-      :confirmingData.sync="confirmingData"
-      @closed="handleClosed"
-      @packed="handlePacked"
-    />
-    <TransactionDetails
-      :visible.sync="transactionDetailsVisible"
-      :confirmingData="confirmingData"
-    />
+    <SelectTokenBasic :visible.sync="selectTokenBasicVisible"
+                      :tokenBasicName="tokenBasicName"
+                      @update:tokenBasicName="changeTokenBasicName"
+                      :tokenBasics="tokenBasics"
+                      :popularTokenBasics="tokenBasics" />
+    <SelectChain :visible.sync="selectFromChainVisible"
+                 :chainId="fromChainId"
+                 @update:chainId="changeFromChainId"
+                 :chains="fromChains || []" />
+    <SelectChain :visible.sync="selectToChainVisible"
+                 :chainId="toChainId"
+                 @update:chainId="changeToChainId"
+                 :chains="toChains || []" />
+    <ConnectWallet :visible.sync="connectWalletVisible"
+                   :fromChainId="fromChainId"
+                   :toChainId="toChainId" />
+    <Confirm :key="confirmUuid"
+             :visible.sync="confirmVisible"
+             :confirmingData.sync="confirmingData"
+             @closed="handleClosed"
+             @packed="handlePacked" />
+    <TransactionDetails :visible.sync="transactionDetailsVisible"
+                        :confirmingData="confirmingData" />
   </ValidationObserver>
 </template>
 
@@ -228,7 +250,7 @@ export default {
     Confirm,
     TransactionDetails,
   },
-  data() {
+  data () {
     return {
       selectTokenBasicVisible: false,
       selectFromChainVisible: false,
@@ -249,16 +271,40 @@ export default {
     };
   },
   computed: {
-    tokenBasics() {
+    minAmount () {
+      let res
+      if (this.fromChain) {
+        if (this.fromChain.nftFeeContractHash) {
+          res = 0
+        } else {
+          res = this.fee ? this.fee.TokenAmount : 0
+        }
+      } else {
+        res = this.fee ? this.fee.TokenAmount : 0
+      }
+      return res
+    },
+    maxAmount () {
+      let res
+      if (this.fee) {
+        if (Number(this.fee.Balance) > Number(this.balance)) {
+          res = this.balance;
+        } else {
+          res = this.fee.Balance;
+        }
+      }
+      return res
+    },
+    tokenBasics () {
       return this.$store.getters.tokenBasics;
     },
-    tokenBasic() {
+    tokenBasic () {
       return this.$store.getters.getTokenBasic(this.tokenBasicName);
     },
-    chains() {
+    chains () {
       return this.$store.getters.chains.filter(chain => chain.id !== ChainId.Poly);
     },
-    fromChains() {
+    fromChains () {
       return (
         this.tokenBasic &&
         this.$store.getters
@@ -267,10 +313,10 @@ export default {
           .filter(chain => chain)
       );
     },
-    fromChain() {
+    fromChain () {
       return this.$store.getters.getChain(this.fromChainId);
     },
-    fromToken() {
+    fromToken () {
       return (
         this.tokenBasic &&
         this.$store.getters.getTokenByTokenBasicNameAndChainId({
@@ -279,10 +325,10 @@ export default {
         })
       );
     },
-    fromWallet() {
+    fromWallet () {
       return this.$store.getters.getChainConnectedWallet(this.fromChainId);
     },
-    getTokenMapsParams() {
+    getTokenMapsParams () {
       if (this.fromToken) {
         return {
           fromChainId: this.fromChainId,
@@ -291,10 +337,10 @@ export default {
       }
       return null;
     },
-    tokenMaps() {
+    tokenMaps () {
       return this.getTokenMapsParams && this.$store.getters.getTokenMaps(this.getTokenMapsParams);
     },
-    toChains() {
+    toChains () {
       return (
         this.tokenMaps &&
         this.tokenMaps
@@ -302,10 +348,10 @@ export default {
           .filter(chain => chain)
       );
     },
-    toChain() {
+    toChain () {
       return this.$store.getters.getChain(this.toChainId);
     },
-    toToken() {
+    toToken () {
       return (
         this.tokenBasic &&
         this.$store.getters.getTokenByTokenBasicNameAndChainId({
@@ -314,10 +360,10 @@ export default {
         })
       );
     },
-    toWallet() {
+    toWallet () {
       return this.$store.getters.getChainConnectedWallet(this.toChainId);
     },
-    getBalanceParams() {
+    getBalanceParams () {
       if (this.fromWallet && this.fromToken) {
         return {
           chainId: this.fromChainId,
@@ -327,10 +373,10 @@ export default {
       }
       return null;
     },
-    balance() {
+    balance () {
       return this.getBalanceParams && this.$store.getters.getBalance(this.getBalanceParams);
     },
-    getAllowanceParams() {
+    getAllowanceParams () {
       if (this.fromWallet && this.fromChain && this.fromToken) {
         return {
           chainId: this.fromChainId,
@@ -341,51 +387,52 @@ export default {
       }
       return null;
     },
-    allowance() {
+    allowance () {
       return this.getAllowanceParams && this.$store.getters.getAllowance(this.getAllowanceParams);
     },
-    needApproval() {
+    needApproval () {
       return !!this.amount && !!this.allowance && new BigNumber(this.amount).gt(this.allowance);
     },
-    getFeeParams() {
+    getFeeParams () {
       if (this.fromToken && this.toChainId) {
         return {
           fromChainId: this.fromChainId,
-          fromTokenHash: this.fromToken.hash,
+          fromTokenHash: this.fromChain.nftFeeContractHash ? this.fromChain.nftFeeContractHash : this.fromToken.hash,
           toChainId: this.toChainId,
+          toTokenHash: this.fromToken.hash
         };
       }
       return null;
     },
-    fee() {
+    fee () {
       return this.getFeeParams && this.$store.getters.getFee(this.getFeeParams);
     },
   },
   watch: {
-    async getBalanceParams(value) {
+    async getBalanceParams (value) {
       if (value) {
         await this.$store.dispatch('ensureChainWalletReady', value.chainId);
         this.$store.dispatch('getBalance', value);
       }
     },
-    getFeeParams(value) {
+    getFeeParams (value) {
       if (value) {
         this.$store.dispatch('getFee', value);
       }
     },
-    getTokenMapsParams(value) {
+    getTokenMapsParams (value) {
       if (value) {
         this.$store.dispatch('getTokenMaps', value);
       }
     },
-    async getAllowanceParams(value) {
+    async getAllowanceParams (value) {
       if (value) {
         await this.$store.dispatch('ensureChainWalletReady', value.chainId);
         this.$store.dispatch('getAllowance', value);
       }
     },
   },
-  created() {
+  created () {
     this.$store.dispatch('getTokenBasics');
     this.interval = setInterval(() => {
       if (
@@ -404,26 +451,26 @@ export default {
       }
     }, 5000);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     clearInterval(this.interval);
   },
   methods: {
-    changeTokenBasicName(tokenBasicName) {
+    changeTokenBasicName (tokenBasicName) {
       this.tokenBasicName = tokenBasicName;
       this.fromChainId = null;
       this.toChainId = null;
       this.clearAmount();
     },
-    changeFromChainId(chainId) {
+    changeFromChainId (chainId) {
       this.fromChainId = chainId;
       this.toChainId = null;
       this.clearAmount();
     },
-    changeToChainId(chainId) {
+    changeToChainId (chainId) {
       this.toChainId = chainId;
       this.clearAmount();
     },
-    async exchangeFromTo() {
+    async exchangeFromTo () {
       await this.$store.dispatch('getTokenMaps', {
         fromChainId: this.toChainId,
         fromTokenHash: this.toToken.hash,
@@ -437,15 +484,19 @@ export default {
       }
       this.clearAmount();
     },
-    copy(text) {
+    copy (text) {
       copy(text);
       this.$message.success(this.$t('messages.copied', { text }));
     },
-    transferAll() {
-      this.amount = this.balance;
+    transferAll () {
+      if (Number(this.fee.Balance) > Number(this.balance)) {
+        this.amount = this.balance;
+      } else {
+        this.amount = this.fee.Balance;
+      }
       this.$nextTick(() => this.$refs.amountValidation.validate());
     },
-    async approve() {
+    async approve () {
       await this.$store.dispatch('ensureChainWalletReady', this.fromChainId);
       // const InfinityAmount = 9999999999999
       try {
@@ -479,7 +530,7 @@ export default {
         this.approving = false;
       }
     },
-    next() {
+    next () {
       this.confirmingData = {
         fromAddress: this.fromWallet.address,
         toAddress: this.toWallet.address,
@@ -488,20 +539,20 @@ export default {
         fromTokenHash: this.fromToken.hash,
         toTokenHash: this.toToken.hash,
         amount: this.amount,
-        fee: this.fee,
+        fee: this.fee.TokenAmount,
       };
       this.confirmVisible = true;
     },
-    handleClosed() {
+    handleClosed () {
       this.$nextTick(() => {
         this.confirmUuid = uuidv4();
       });
     },
-    handlePacked() {
+    handlePacked () {
       this.transactionDetailsVisible = true;
       this.clearAmount();
     },
-    clearAmount() {
+    clearAmount () {
       this.amount = '';
       this.$nextTick(() => this.$refs.amountValidation.reset());
     },
