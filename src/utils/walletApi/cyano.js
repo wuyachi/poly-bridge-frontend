@@ -68,27 +68,35 @@ async function queryState () {
 }
 
 async function init () {
+  let cyanoProvider;
   async function onReady () {
     try {
-
       store.dispatch('updateWallet', { name: WalletName.Cyano, installed: true });
-
       if (sessionStorage.getItem(CYANO_CONNECTED_KEY) === 'true') {
         await queryState();
       }
-
     } finally {
       store.getters.getWallet(WalletName.Cyano).deferred.resolve();
     }
   }
 
-  if (window.NEOLine) {
-    await onReady();
-  } else {
-    window.addEventListener('NEOLine.NEO.EVENT.READY', onReady);
-    await delay(2000);
-    store.getters.getWallet(WalletName.NeoLine).deferred.resolve();
+  try{
+    await client.api.provider.getProvider();
+    onReady();
+  } catch(e){
+    try{
+      await delay(2000);
+      await client.api.provider.getProvider();
+      onReady();
+    } catch(e){}
   }
+  // if (window.NEOLine) {
+    // await onReady();
+  // } else {
+  //   window.addEventListener('NEOLine.NEO.EVENT.READY', onReady);
+  //   await delay(2000);
+  //   store.getters.getWallet(WalletName.NeoLine).deferred.resolve();
+  // }
 }
 
 async function connect () {
