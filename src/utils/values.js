@@ -3,11 +3,13 @@ import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/v1'
-  : 'https://bridge.poly.network/testnet/v1';
+  : // : 'https://bridge.poly.network/testnet/v1';
+    'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/nft/v1'
-  : 'https://bridge.poly.network/testnet/nft/v1';
+  : // : 'https://bridge.poly.network/testnet/nft/v1';
+    'https://bridge.poly.network/testnet/merge/v1/nft';
 
 export const WALLETS = [
   {
@@ -77,8 +79,8 @@ export const CHAINS = [
       : 'https://ropsten.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xd380450e9e373bDC389951C54616edb2EE653524'
-      //   : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
-      : '0xDc37471Af6a8aB7f45F444c5a3Ef4758281bE32C',
+      : //   : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
+        '0xDc37471Af6a8aB7f45F444c5a3Ef4758281bE32C',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe5204d62361A353C665668C858Ea213070CA159c'
       : '0x940300dc3Fc26e3A330a300be766184C0b5Fe019',
@@ -106,8 +108,8 @@ export const CHAINS = [
       : 'https://testnet.bscscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x4b0CFdb5e1Ca898a225F9E14AfF9e4eF178a10d2'
-      //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
-      : '0x9f9F15CC407F7b26f55D71D43f993580a9107007',
+      : //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
+        '0x9f9F15CC407F7b26f55D71D43f993580a9107007',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
@@ -125,8 +127,8 @@ export const CHAINS = [
       : 'https://testnet.hecoinfo.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x1B0C55be400e2a7D924032B257Fbc75Bbfd256E7'
-      //  : '0x3c92F1E31aACA43Eb4fF8aE498C7E85618680F45',
-      : '0xCC8407Ee04AaC2AdC0E6A55E7E97176C701146cd',
+      : //  : '0x3c92F1E31aACA43Eb4fF8aE498C7E85618680F45',
+        '0xCC8407Ee04AaC2AdC0E6A55E7E97176C701146cd',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
@@ -141,8 +143,8 @@ export const CHAINS = [
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xbd4a08577476A521C41a21EF3f00b045b74175d5'
-      //  : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
-      : '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
+      : //  : '0x5598226aD2E8991deEFD03203739C87BdF6e6D03',
+        '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'OKT',
   },
