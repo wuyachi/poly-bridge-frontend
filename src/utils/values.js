@@ -3,7 +3,7 @@ import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/v1'
-  : // : 'https://bridge.poly.network/testnet/v1';
+  : // : 'https://bridge.poly.network/testnet/v1'
     'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
