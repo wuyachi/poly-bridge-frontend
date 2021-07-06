@@ -399,7 +399,7 @@ export default {
             ? this.fromChain.nftFeeContractHash
             : this.fromToken.hash,
           toChainId: this.toChainId,
-          toTokenHash: this.fromToken.hash,
+          toTokenHash: this.fromToken.hash
         };
       }
       return null;

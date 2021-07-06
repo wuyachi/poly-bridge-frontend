@@ -23,7 +23,7 @@ export class BaseError extends Error {
 export class CancelledError extends BaseError {
   constructor(message, options = {}) {
     super(message, options);
-    this.message = options.message != null ? options.message : 'Cancelled';
+    this.message = message != null ? message : 'Cancelled';
     this.expose = options.expose != null ? options.expose : false;
   }
 }
