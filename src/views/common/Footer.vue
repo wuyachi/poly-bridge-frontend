@@ -81,3 +81,13 @@ export default {
   @include child-margin-h(5px);
 }
 </style>
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .footer {
+    padding: 10px;
+  }
+  .bottom {
+    margin-top: 10px !important;
+  }
+}
+</style>

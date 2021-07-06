@@ -188,3 +188,22 @@ export default {
   border-radius: 12px;
 }
 </style>
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .content {
+    width: 100vw;
+  }
+  .header {
+    padding: 80px 20px 40px;
+  }
+  .hint {
+    padding: 0 20px;
+  }
+  .token-basic {
+    padding: 0 20px;
+  }
+  .popular-token-basics {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+</style>

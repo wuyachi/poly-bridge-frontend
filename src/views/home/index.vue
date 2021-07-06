@@ -23,7 +23,6 @@ export default {
   },
 };
 </script>
-
 <style lang="scss" scoped>
 .home {
   min-width: 1440px;
@@ -74,6 +73,23 @@ export default {
   ::v-deep > em {
     font-style: normal;
     color: #3ec7eb;
+  }
+}
+</style>
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .content {
+    margin-top: 75px;
+    @include child-margin-h(0);
+  }
+  .home {
+    min-width: 100vw;
+  }
+  .top-decoration {
+    display: none;
+  }
+  .slogan {
+    display: none;
   }
 }
 </style>
