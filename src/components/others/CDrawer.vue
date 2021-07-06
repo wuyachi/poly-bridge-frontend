@@ -74,3 +74,16 @@ export default {
   }
 }
 </style>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  @include block(c-drawer) {
+    @include element(close) {
+      position: absolute;
+      transform: translate(0%, 0%);
+      right: 0px;
+      top: 50px;
+    }
+  }
+}
+</style>

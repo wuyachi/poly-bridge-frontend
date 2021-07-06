@@ -81,3 +81,10 @@ export default {
   width: 24px;
 }
 </style>
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .content {
+    width: 100vw;
+  }
+}
+</style>
