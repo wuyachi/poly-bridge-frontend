@@ -303,3 +303,14 @@ export default {
   @include next-margin-v(10px);
 }
 </style>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .content {
+    .title {
+      font-size: 20px;
+    }
+    width: 100vw;
+  }
+}
+</style>
