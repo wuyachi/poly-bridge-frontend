@@ -1,7 +1,7 @@
 /* eslint-disable */
 <template>
   <CCard>
-    <div class="header-mobile" style="display:none">
+    <div class="header-mobile" style="display: none">
       <div class="header-mobile-title">Connect wallet</div>
       <CButton class="header-mobile-close" @click="$emit('close')">
         <img src="@/assets/svg/close.svg" />
@@ -192,13 +192,6 @@ export default {
 }
 </style>
 
-<style lang="scss">
-@media screen and (max-width: 900px) {
-  .c-popover {
-    transform: translate3d(0px, -12px, 0px) !important;
-  }
-}
-</style>
 <style lang="scss" scoped>
 @media screen and (max-width: 900px) {
   .content {
@@ -212,7 +205,8 @@ export default {
     margin-bottom: 15px;
   }
   .connect {
-    padding: 20px 15px;
+    padding: 10px 15px;
+    height: 100%;
     border: 1px solid #616161;
   }
   .header-mobile {
@@ -224,6 +218,13 @@ export default {
     }
     &-close {
       width: 20px;
+    }
+    &-close::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      transform: translate(-20px, -20px);
     }
   }
 }

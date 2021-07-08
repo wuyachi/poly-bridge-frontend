@@ -12,7 +12,7 @@
           <ElTable :data="transactions.items" class="table">
             <ElTableColumn width="20" />
             <ElTableColumn
-              #default="{row}"
+              #default="{ row }"
               :label="$t('transactions.index.fromChain')"
               min-width="150"
             >
@@ -38,7 +38,7 @@
               </CLink>
             </ElTableColumn>
             <ElTableColumn
-              #default="{row}"
+              #default="{ row }"
               :label="$t('transactions.index.toChain')"
               min-width="150"
             >
@@ -61,24 +61,30 @@
                 }}
               </CLink>
             </ElTableColumn>
-            <ElTableColumn #default="{row}"
-                           min-width="120"
-                           :label="$t('transactions.index.amount')">
-              {{ $formatNumber(row.amount) }} {{row.tokenBasicName}}
+            <ElTableColumn
+              #default="{ row }"
+              min-width="120"
+              :label="$t('transactions.index.amount')"
+            >
+              {{ $formatNumber(row.amount) }} {{ row.tokenBasicName }}
             </ElTableColumn>
-            <ElTableColumn #default="{row}"
-                           min-width="120"
-                           :label="$t('transactions.index.fee')">
-              {{ $formatNumber(row.fee) }} {{row.txfeeToken.name}}
+            <ElTableColumn #default="{ row }" min-width="120" :label="$t('transactions.index.fee')">
+              {{ $formatNumber(row.fee) }} {{ row.txfeeToken.name }}
             </ElTableColumn>
             <!-- <ElTableColumn :label="$t('transactions.index.asset')"
                            prop="tokenBasicName" /> -->
-            <ElTableColumn #default="{row}"
-                           :label="$t('transactions.index.time')"
-                           min-width="110">
+            <ElTableColumn
+              #default="{ row }"
+              :label="$t('transactions.index.time')"
+              min-width="110"
+            >
               {{ $formatTime(row.time) }}
             </ElTableColumn>
-            <ElTableColumn #default="{row}" :label="$t('transactions.index.status')" align="right">
+            <ElTableColumn
+              #default="{ row }"
+              :label="$t('transactions.index.status')"
+              align="right"
+            >
               <CButton class="view-details" @click="viewDetails(row)">
                 {{ $formatEnum(row.status, { type: 'transactionStatus' }) }}
               </CButton>
@@ -255,15 +261,19 @@ export default {
   .bottom-decoration-wrapper {
     display: none;
   }
-
-  // .content-inner {
-  //   width: 100vh;
-  // }
-  // .table-wrapper {
-  //   width: 100vh;
-  // }
   .table {
     max-width: 90vw;
+  }
+  .content {
+    margin-top: 40px;
+    .title {
+      display: none;
+      // margin-top: 20px;
+      // text-align: center;
+    }
+    .content-inner {
+      margin-top: 0;
+    }
   }
 }
 </style>
