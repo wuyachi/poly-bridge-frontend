@@ -43,5 +43,8 @@ export default {
   color: unset;
   word-break: unset;
   text-align: unset;
+  @media screen and (max-width: 900px) {
+    transform: translate3d(0px, -12px, 0px) !important;
+  }
 }
 </style>

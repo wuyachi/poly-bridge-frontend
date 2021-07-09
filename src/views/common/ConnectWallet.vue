@@ -1,6 +1,13 @@
 /* eslint-disable */
 <template>
   <CCard>
+    <div class="header-mobile" style="display: none">
+      <div class="header-mobile-title">Connect wallet</div>
+      <CButton class="header-mobile-close" @click="$emit('close')">
+        <img src="@/assets/svg/close.svg" />
+      </CButton>
+    </div>
+
     <div class="content">
       <div class="chains" v-if="$route.name == 'home'">
         <CButton
@@ -182,5 +189,43 @@ export default {
   border-radius: 4px;
   border: 1px solid #ffffff;
   @include child-margin-h(8px);
+}
+</style>
+
+<style lang="scss" scoped>
+@media screen and (max-width: 900px) {
+  .content {
+    width: 100vw;
+    height: 100vh;
+  }
+  .chains {
+    flex: 0.6;
+  }
+  .chain-name {
+    margin-bottom: 15px;
+  }
+  .connect {
+    padding: 10px 15px;
+    height: 100%;
+    border: 1px solid #616161;
+  }
+  .header-mobile {
+    display: flex !important;
+    justify-content: space-between;
+    padding: 80px 20px 40px 20px;
+    &-title {
+      font-size: 16px;
+    }
+    &-close {
+      width: 20px;
+    }
+    &-close::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      transform: translate(-20px, -20px);
+    }
+  }
 }
 </style>
