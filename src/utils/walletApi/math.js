@@ -43,11 +43,12 @@ function convertWalletError(error) {
 }
 
 async function queryState() {
-  const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+  console.log(web3.currentProvider);
+  const accounts = await web3.currentProvider.request({ method: 'eth_accounts' });
   const address = accounts[0] || null;
   const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
   const checksumAddress = address && web3.utils.toChecksumAddress(address);
-  const network = await window.ethereum.request({ method: 'eth_chainId' });
+  const network = await web3.currentProvider.request({ method: 'eth_chainId' });
   store.dispatch('updateWallet', {
     name: WalletName.Math,
     address: checksumAddress,
@@ -56,20 +57,22 @@ async function queryState() {
     chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
   });
 }
-
+const sleep = time =>
+  new Promise(res => {
+    setTimeout(() => {
+      res(null);
+    }, time);
+  });
 async function init() {
+  await sleep(1000);
   try {
-    if (!window.ethereum) {
-      return;
-    }
-    web3 = new Web3(window.ethereum);
+    web3 = new Web3(window.web3.currentProvider);
     store.dispatch('updateWallet', { name: WalletName.Math, installed: true });
 
     if (sessionStorage.getItem(MATH_CONNECTED_KEY) === 'true') {
       await queryState();
     }
-
-    window.ethereum.on('accountsChanged', async accounts => {
+    web3.currentProvider.on('accountsChanged', async accounts => {
       const address = accounts[0] || null;
       const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
       const checksumAddress = address && web3.utils.toChecksumAddress(address);
@@ -81,7 +84,7 @@ async function init() {
       });
     });
 
-    window.ethereum.on('chainChanged', network => {
+    web3.currentProvider.on('chainChanged', network => {
       store.dispatch('updateWallet', {
         name: WalletName.Math,
         chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
@@ -94,7 +97,7 @@ async function init() {
 
 async function connect() {
   try {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    await web3.currentProvider.request({ method: 'eth_requestAccounts' });
     await queryState();
     sessionStorage.setItem(MATH_CONNECTED_KEY, 'true');
   } catch (error) {
