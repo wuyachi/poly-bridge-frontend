@@ -43,13 +43,13 @@ export default {
       max: 'MAX',
       balance: 'Balance',
       fee: 'Fee',
-      feeTooltip:
-        'Transaction fee on target chain',
+      feeTooltip: 'Transaction fee on target chain',
       connectWallet: 'Connect Wallet',
       historyPrefix: 'You can view your',
       historyLink: 'history',
-      maxamount: "Max Available Amount",
-      maxamountTooltip: "The largest available number of cross-chain assets on the currently selected target chain (estimated value)"
+      maxamount: 'Max Available Amount',
+      maxamountTooltip:
+        'The largest available number of cross-chain assets on the currently selected target chain (estimated value)',
     },
     selectTokenBasic: {
       title: 'Select Asset',
@@ -117,6 +117,7 @@ export default {
   enums: {
     walletName: {
       [WalletName.MetaMask]: 'MetaMask',
+      [WalletName.Math]: 'Math Wallet',
       [WalletName.NeoLine]: 'NeoLine',
       [WalletName.O3]: 'O3',
       [WalletName.Binance]: 'Binance',
