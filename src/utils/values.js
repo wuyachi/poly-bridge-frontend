@@ -20,6 +20,13 @@ export const WALLETS = [
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
   },
   {
+    name: WalletName.Math,
+    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
+    icon: require('@/assets/png/math.png'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/math-wallet/afbcbjpbpfadlkmhmclhkeeodmamcflc',
+  },
+  {
     name: WalletName.NeoLine,
     supportedChainIds: [ChainId.Neo],
     icon: require('@/assets/svg/neoline.svg'),
