@@ -64,7 +64,7 @@ const sleep = time =>
     }, time);
   });
 async function init() {
-  await sleep(1000);
+  await sleep(2000);
   try {
     web3 = new Web3(window.web3.currentProvider);
     store.dispatch('updateWallet', { name: WalletName.Math, installed: true });
@@ -73,6 +73,7 @@ async function init() {
       await queryState();
     }
     web3.currentProvider.on('accountsChanged', async accounts => {
+      debugger;
       if (sessionStorage.getItem(MATH_CONNECTED_KEY) !== 'true') {
         return;
       }
