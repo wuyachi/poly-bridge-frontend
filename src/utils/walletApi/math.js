@@ -73,6 +73,9 @@ async function init() {
       await queryState();
     }
     web3.currentProvider.on('accountsChanged', async accounts => {
+      if (sessionStorage.getItem(MATH_CONNECTED_KEY) !== 'true') {
+        return;
+      }
       const address = accounts[0] || null;
       const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
       const checksumAddress = address && web3.utils.toChecksumAddress(address);

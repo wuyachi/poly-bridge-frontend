@@ -51,7 +51,6 @@ export default {
       return this.$store.getters.wallets;
     },
     connectedWallets() {
-      console.log(this.wallets);
       return this.wallets.filter(wallet => wallet.connected);
     },
   },
