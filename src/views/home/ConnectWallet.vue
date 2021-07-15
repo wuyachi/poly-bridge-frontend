@@ -120,6 +120,7 @@ export default {
   },
   methods: {
     async connect(chain, wallet) {
+      console.log(wallet);
       if (wallet.installed) {
         if (!wallet.connected) {
           const walletApi = await getWalletApi(wallet.name);
@@ -133,6 +134,7 @@ export default {
           this.$emit('update:visible', false);
         }
       } else {
+        console.log(2);
         window.open(wallet.downloadUrl);
       }
     },

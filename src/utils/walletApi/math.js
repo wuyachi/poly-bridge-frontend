@@ -7,12 +7,16 @@ import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
 
-const BINANCE_CONNECTED_KEY = 'BINANCE_CONNECTED';
+const MATH_CONNECTED_KEY = 'MATH_CONNECTED';
 const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
 
 const NETWORK_CHAIN_ID_MAPS = {
+  [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
   [TARGET_MAINNET ? 56 : 97]: ChainId.Bsc,
+  [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
+  [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
 };
+
 let web3;
 
 function confirmLater(promise) {
@@ -32,69 +36,74 @@ function convertWalletError(error) {
     return error;
   }
   let code = WalletError.CODES.UNKNOWN_ERROR;
-  if (error.message.includes('Rejected by user')) {
+  if (error.code === 4001) {
     code = WalletError.CODES.USER_REJECTED;
-  } else if (error.message.includes('insufficient funds')) {
-    code = WalletError.CODES.INSUFFICIENT_FUNDS;
   }
   return new WalletError(error.message, { code, cause: error });
 }
 
 async function queryState() {
-  const accounts = await window.BinanceChain.request({ method: 'eth_accounts' });
+  console.log(web3.currentProvider);
+  const accounts = await web3.currentProvider.request({ method: 'eth_accounts' });
   const address = accounts[0] || null;
-  const addressHex = await tryToConvertAddressToHex(WalletName.Binance, address);
+  const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
   const checksumAddress = address && web3.utils.toChecksumAddress(address);
-  const network = await window.BinanceChain.request({ method: 'eth_chainId' });
+  const network = await web3.currentProvider.request({ method: 'eth_chainId' });
   store.dispatch('updateWallet', {
-    name: WalletName.Binance,
+    name: WalletName.Math,
     address: checksumAddress,
     addressHex,
     connected: !!checksumAddress,
     chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
   });
 }
-
+const sleep = time =>
+  new Promise(res => {
+    setTimeout(() => {
+      res(null);
+    }, time);
+  });
 async function init() {
+  await sleep(2000);
   try {
-    if (!window.BinanceChain) {
-      return;
-    }
-    web3 = new Web3(window.BinanceChain);
-    store.dispatch('updateWallet', { name: WalletName.Binance, installed: true });
+    web3 = new Web3(window.web3.currentProvider);
+    store.dispatch('updateWallet', { name: WalletName.Math, installed: true });
 
-    if (sessionStorage.getItem(BINANCE_CONNECTED_KEY) === 'true') {
+    if (sessionStorage.getItem(MATH_CONNECTED_KEY) === 'true') {
       await queryState();
     }
-
-    window.BinanceChain.on('accountsChanged', async accounts => {
+    web3.currentProvider.on('accountsChanged', async accounts => {
+      debugger;
+      if (sessionStorage.getItem(MATH_CONNECTED_KEY) !== 'true') {
+        return;
+      }
       const address = accounts[0] || null;
-      const addressHex = await tryToConvertAddressToHex(WalletName.Binance, address);
+      const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
       const checksumAddress = address && web3.utils.toChecksumAddress(address);
       store.dispatch('updateWallet', {
-        name: WalletName.Binance,
+        name: WalletName.Math,
         address: checksumAddress,
         addressHex,
         connected: !!checksumAddress,
       });
     });
 
-    window.BinanceChain.on('chainChanged', network => {
+    web3.currentProvider.on('chainChanged', network => {
       store.dispatch('updateWallet', {
-        name: WalletName.Binance,
+        name: WalletName.Math,
         chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
       });
     });
   } finally {
-    store.getters.getWallet(WalletName.Binance).deferred.resolve();
+    store.getters.getWallet(WalletName.Math).deferred.resolve();
   }
 }
 
 async function connect() {
   try {
-    await window.BinanceChain.request({ method: 'eth_requestAccounts' });
+    await web3.currentProvider.request({ method: 'eth_requestAccounts' });
     await queryState();
-    sessionStorage.setItem(BINANCE_CONNECTED_KEY, 'true');
+    sessionStorage.setItem(MATH_CONNECTED_KEY, 'true');
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -103,7 +112,6 @@ async function connect() {
 async function getBalance({ chainId, address, tokenHash }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
-
     if (tokenHash === '0000000000000000000000000000000000000000') {
       const result = await web3.eth.getBalance(address);
       return integerToDecimal(result, tokenBasic.decimals);
@@ -131,7 +139,6 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
 }
 
 async function getTotalSupply({ chainId, tokenHash }) {
-  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -196,7 +203,6 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
       tokenHash,
     );
     const result = await tokenContract.methods.getApproved(tokenID).call();
-    console.log(result);
     return !(result === chain.nftLockContractHash);
   } catch (error) {
     throw convertWalletError(error);
@@ -223,10 +229,15 @@ async function lock({
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
+    console.log(chain);
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
+    console.log(toAddressHex);
+    console.log(amountInt);
+    console.log(feeInt);
+    console.log(fromTokenHash);
 
     const result = await confirmLater(
       lockContract.methods
@@ -276,6 +287,7 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     throw convertWalletError(error);
   }
 }
+
 export default {
   install: init,
   connect,

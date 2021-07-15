@@ -3,13 +3,13 @@ import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/v1'
-  : 'https://bridge.poly.network/testnet/v1';
-// 'https://bridge.poly.network/testnet/merge/v1/bridge';
+  : //  : 'https://bridge.poly.network/testnet/v1';
+    'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/nft/v1'
-  : 'https://bridge.poly.network/testnet/nft/v1';
-//  'https://bridge.poly.network/testnet/merge/v1/nft';
+  : //  : 'https://bridge.poly.network/testnet/nft/v1';
+    'https://bridge.poly.network/testnet/merge/v1/nft';
 
 export const WALLETS = [
   {
@@ -18,6 +18,13 @@ export const WALLETS = [
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+  },
+  {
+    name: WalletName.Math,
+    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
+    icon: require('@/assets/png/math.png'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/math-wallet/afbcbjpbpfadlkmhmclhkeeodmamcflc',
   },
   {
     name: WalletName.NeoLine,

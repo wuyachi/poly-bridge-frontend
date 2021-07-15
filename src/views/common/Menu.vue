@@ -1,13 +1,17 @@
 <template>
   <div class="menu">
-    <CLink :to="{ name: 'home' }"
-           :class="$route.name == 'home' ? 'active item': 'item'"
-           target="_self">
+    <CLink
+      :to="{ name: 'home' }"
+      :class="$route.name == 'home' ? 'active item' : 'item'"
+      target="_self"
+    >
       {{ $t('common.menu.token') }}
     </CLink>
-    <CLink :to="{ name: 'nft' }"
-           :class="$route.name == 'nft' ? 'active item': 'item'"
-           target="_self">
+    <CLink
+      :to="{ name: 'nft' }"
+      :class="$route.name == 'nft' ? 'active item' : 'item'"
+      target="_self"
+    >
       {{ $t('common.menu.nft') }}
     </CLink>
   </div>
@@ -18,14 +22,11 @@ import { TARGET_MAINNET } from '@/utils/env';
 
 export default {
   name: 'Menu',
-  data () {
+  data() {
     return {
       mainnet: TARGET_MAINNET,
     };
   },
-  mounted () {
-    console.log(this.$route)
-  }
 };
 </script>
 <style scoped lang="scss">
