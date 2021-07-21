@@ -3,13 +3,13 @@ import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/v1'
-  : //  : 'https://bridge.poly.network/testnet/v1';
-    'https://bridge.poly.network/testnet/merge/v1/bridge';
+  : 'https://bridge.poly.network/testnet/v1';
+//  'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/nft/v1'
-  : //  : 'https://bridge.poly.network/testnet/nft/v1';
-    'https://bridge.poly.network/testnet/merge/v1/nft';
+  : 'https://bridge.poly.network/testnet/nft/v1';
+// 'https://bridge.poly.network/testnet/merge/v1/nft';
 
 export const WALLETS = [
   {
