@@ -3,18 +3,18 @@ import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/v1'
-  : //  : 'https://bridge.poly.network/testnet/v1';
-    'https://bridge.poly.network/testnet/merge/v1/bridge';
+  : 'https://bridge.poly.network/testnet/v1';
+//  'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
   ? 'https://bridge.poly.network/nft/v1'
-  : //  : 'https://bridge.poly.network/testnet/nft/v1';
-    'https://bridge.poly.network/testnet/merge/v1/nft';
+  : 'https://bridge.poly.network/testnet/nft/v1';
+// 'https://bridge.poly.network/testnet/merge/v1/nft';
 
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
+    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok, ChainId.Polygon],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
@@ -139,6 +139,18 @@ export const CHAINS = [
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'HT',
+  },
+  {
+    id: ChainId.Polygon,
+    icon: require('@/assets/svg/polygon.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://mumbai.polygonscan.com/tx/0x{txHash}'
+      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D'
+      : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
   },
