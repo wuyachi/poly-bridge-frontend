@@ -152,7 +152,7 @@ export const CHAINS = [
       ? '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D'
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
-    nftFeeName: 'HT',
+    nftFeeName: 'MATIC',
   },
   {
     id: ChainId.Ok,
