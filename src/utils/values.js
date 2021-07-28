@@ -14,7 +14,7 @@ export const HTTP_NFT_BASE_URL = TARGET_MAINNET
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
+    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok, ChainId.Polygon],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
@@ -141,6 +141,18 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+  },
+  {
+    id: ChainId.Polygon,
+    icon: require('@/assets/svg/polygon.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://polygonscan.com/tx/0x{txHash}'
+      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xB88f13682F3C602aCD84B4b2eEB96A9DD75Afd89'
+      : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'MATIC',
   },
   {
     id: ChainId.Ok,

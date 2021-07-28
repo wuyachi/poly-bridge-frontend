@@ -18,6 +18,7 @@ export const ChainId = {
   Bsc: TARGET_MAINNET ? 6 : 79,
   Heco: 7,
   Ok: TARGET_MAINNET ? 12 : 200,
+  Polygon: TARGET_MAINNET ? 17 : 202,
 };
 
 export const SingleTransactionStatus = {

@@ -143,9 +143,11 @@ export default {
       [ChainId.Heco]: 'Heco',
       [ChainId.Ont]: 'Ontology',
       [ChainId.Ok]: 'OKExChain',
+      [ChainId.Polygon]: 'Polygon',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Polygon]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Eth]: TARGET_MAINNET ? 'MainNet' : 'Ropsten TestNet',
       [ChainId.Neo]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Bsc]: TARGET_MAINNET ? 'BSC MainNet' : 'BSC TestNet',
