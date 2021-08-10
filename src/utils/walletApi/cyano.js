@@ -235,6 +235,7 @@ async function lock ({
   fee,
 }) {
   try {
+    debugger
     const chain = store.getters.getChain(fromChainId);
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({
       chainId: fromChainId,
@@ -253,10 +254,11 @@ async function lock ({
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, tokenBasic.decimals);
+    const hexChainid = utils.num2VarInt(toChainId)
     let parameters = [
       { type: 'ByteArray', value: fromAddressHex },
       { type: 'ByteArray', value: fromTokenHashReversed },
-      { type: 'Integer', value: toChainId },
+      { type: 'ByteArray', value: hexChainid },
       { type: 'ByteArray', value: toAddressHex },
       { type: 'Long', value: amountInt },
       { type: 'Long', value: feeInt },
