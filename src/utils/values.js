@@ -170,8 +170,8 @@ export const CHAINS = [
       ? 'http://106.75.251.68/#/chain/tx/0x{txHash}'
       : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac'
-      : 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac',
+      ? '2D44Db62D82EE13ff7DD02C03CA37b240213175C'
+      : '2D44Db62D82EE13ff7DD02C03CA37b240213175C',
     nftFeeContractHash: '0000000000000000000000000000000000000103',
     nftFeeName: 'PLT  ',
   },
