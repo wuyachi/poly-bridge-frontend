@@ -167,8 +167,8 @@ export const CHAINS = [
     id: ChainId.Palette,
     icon: require('@/assets/svg/plt.svg'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://polygonscan.com/tx/0x{txHash}'
-      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+      ? 'http://106.75.251.68/#/chain/tx/0x{txHash}'
+      : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac'
       : 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac',
