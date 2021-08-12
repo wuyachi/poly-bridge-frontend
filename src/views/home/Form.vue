@@ -1,6 +1,19 @@
 <template>
   <ValidationObserver ref="validation" tag="div" v-slot="{ invalid }" class="form">
     <div class="card">
+      <div class="card-hidden">
+        <div>
+          <div style="padding-bottom:20px;font-size:32px">
+            <span>The Poly Bridge is temporarily closed.</span>
+          </div>
+          <div style="font-size:20px">
+            <span>Please check all the updates through offical twitter </span>
+            <a href="https://twitter.com/PolyNetwork2" style="color:#3ec7eb" target="_blank"
+              >https://twitter.com/PolyNetwork2</a
+            >
+          </div>
+        </div>
+      </div>
       <div class="title">{{ $t('home.form.title') }}</div>
       <div class="fields">
         <div class="field">
@@ -399,7 +412,7 @@ export default {
             ? this.fromChain.nftFeeContractHash
             : this.fromToken.hash,
           toChainId: this.toChainId,
-          toTokenHash: this.fromToken.hash
+          toTokenHash: this.fromToken.hash,
         };
       }
       return null;
@@ -617,6 +630,23 @@ export default {
   background: #171f31;
   box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
   border-radius: 10px;
+  position: relative;
+}
+.card-hidden {
+  box-sizing: border-box;
+  width: 452px;
+  height: 100%;
+  padding: 40px 50px 54px;
+  background: rgba(23, 31, 49, 0.9);
+  box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
