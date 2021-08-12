@@ -16,7 +16,14 @@ export const HTTP_NFT_BASE_URL = TARGET_MAINNET
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok, ChainId.Polygon],
+    supportedChainIds: [
+      ChainId.Eth,
+      ChainId.Bsc,
+      ChainId.Heco,
+      ChainId.Ok,
+      ChainId.Polygon,
+      ChainId.Palette,
+    ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
@@ -155,6 +162,18 @@ export const CHAINS = [
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+  },
+  {
+    id: ChainId.Palette,
+    icon: require('@/assets/svg/plt.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://polygonscan.com/tx/0x{txHash}'
+      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac'
+      : 'FeEbBc92365a203a2FDCc4B1bBDAA2489A9bb6Ac',
+    nftFeeContractHash: '0000000000000000000000000000000000000103',
+    nftFeeName: 'PLT  ',
   },
   {
     id: ChainId.Ok,
