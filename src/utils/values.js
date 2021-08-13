@@ -173,7 +173,7 @@ export const CHAINS = [
       ? '2D44Db62D82EE13ff7DD02C03CA37b240213175C'
       : '2D44Db62D82EE13ff7DD02C03CA37b240213175C',
     nftFeeContractHash: '0000000000000000000000000000000000000103',
-    nftFeeName: 'PLT  ',
+    nftFeeName: 'PLT',
   },
   {
     id: ChainId.Ok,
