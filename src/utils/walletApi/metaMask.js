@@ -233,7 +233,7 @@ async function lock({
     console.log(amountInt);
     console.log(feeInt);
     console.log(fromTokenHash);
-
+    debugger;
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
