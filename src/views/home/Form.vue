@@ -144,9 +144,7 @@
               </template>
             </CTooltip>
             <CFlexSpan />
-            <span class="fee-value">{{
-              $formatNumber(fromChain.nftFeeName === 'PLT' ? 0 : fee.TokenAmount)
-            }}</span>
+            <span class="fee-value">{{ $formatNumber(fee.TokenAmount) }}</span>
             <img class="fee-icon" :src="fromChain.nftFeeName ? fromChain.icon : tokenBasic.meta" />
             <span class="fee-token">{{
               fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name
@@ -541,7 +539,7 @@ export default {
         fromTokenHash: this.fromToken.hash,
         toTokenHash: this.toToken.hash,
         amount: this.amount,
-        fee: this.fromChain.nftFeeName === 'PLT' ? 0 : this.fee.TokenAmount,
+        fee: this.fee.TokenAmount,
       };
       this.confirmVisible = true;
     },
