@@ -180,14 +180,7 @@ export default {
           res = this.confirmingData && new BigNumber(this.confirmingData.amount).toString();
         }
       } else {
-        if (this.fromChain.nftFeeName === 'PLT') {
-          res =
-            this.confirmingData &&
-            new BigNumber(this.confirmingData.amount).minus(this.confirmingData.fee).toString();
-        }
-        if (this.fromChain.nftFeeName !== 'PLT') {
-          res = this.confirmingData && new BigNumber(this.confirmingData.amount).toString();
-        }
+        res = this.confirmingData && new BigNumber(this.confirmingData.amount).toString();
       }
       return res;
     },

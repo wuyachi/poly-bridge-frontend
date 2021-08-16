@@ -227,6 +227,7 @@ async function lock({
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
+    debugger;
     /* plt Special treatment */
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
     const nativefeeInt =
