@@ -228,7 +228,8 @@ async function lock({
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     /* plt Special treatment */
-    const feeInt =
+    const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
+    const nativefeeInt =
       fromTokenHash === '0000000000000000000000000000000000000103'
         ? 0
         : decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
@@ -237,7 +238,8 @@ async function lock({
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
-          value: fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
+          value:
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
     );
     return toStandardHex(result);
