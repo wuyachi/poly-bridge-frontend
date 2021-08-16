@@ -224,16 +224,14 @@ async function lock({
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
-    console.log(chain);
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
-    const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-    console.log(toAddressHex);
-    console.log(amountInt);
-    console.log(feeInt);
-    console.log(fromTokenHash);
-    debugger;
+    /* plt Special treatment */
+    const feeInt =
+      fromTokenHash === '0000000000000000000000000000000000000103'
+        ? 0
+        : decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)

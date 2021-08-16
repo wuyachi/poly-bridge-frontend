@@ -160,7 +160,7 @@ export default {
     },
     receivingAmount() {
       let res;
-      if (this.fromChain.nftFeeName) {
+      if (this.fromChain.nftFeeName && this.fromChain.nftFeeName !== 'PLT') {
         res = this.confirmingData && new BigNumber(this.confirmingData.amount).toString();
       } else {
         res =
@@ -194,7 +194,6 @@ export default {
   methods: {
     async confirm() {
       await this.$store.dispatch('ensureChainWalletReady', this.confirmingData.fromChainId);
-      console.log(this.confirmingData);
       try {
         this.confirming = true;
         const walletApi = await getWalletApi(this.fromWallet.name);
