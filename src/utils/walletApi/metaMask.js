@@ -181,7 +181,7 @@ async function nftApprove({ address, tokenHash, spender, id }) {
       require('@/assets/json/eth-erc721.json'),
       tokenHash,
     );
-    return await tokenContract.methods.approve(`0x${spender}`, tokenID).send({
+    return await tokenContract.methods.approve(spender, tokenID).send({
       from: address,
     });
   } catch (error) {
@@ -198,6 +198,10 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
       tokenHash,
     );
     const result = await tokenContract.methods.getApproved(tokenID).call();
+    console.log('approve');
+    console.log(result);
+    console.log(chain.nftLockContractHash);
+    console.log(!(result === chain.nftLockContractHash));
     return !(result === chain.nftLockContractHash);
   } catch (error) {
     throw convertWalletError(error);
