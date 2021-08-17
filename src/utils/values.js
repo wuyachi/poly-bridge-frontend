@@ -167,13 +167,13 @@ export const CHAINS = [
     id: ChainId.Palette,
     icon: require('@/assets/svg/plt.svg'),
     explorerUrl: TARGET_MAINNET
-      ? 'http://106.75.251.68/#/chain/tx/0x{txHash}'
+      ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
       : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
     nftexplorerUrl: TARGET_MAINNET
-      ? 'http://106.75.251.68/#/chain/tx/0x{txHash}'
+      ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
       : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x3b855e095b32fcd2811663cba56bbfa6b1781821'
+      ? '0x0A9C412633465fdeE4861CeE02987386100bEAe6'
       : '0x3b855e095b32fcd2811663cba56bbfa6b1781821',
     nftLockContractHash: TARGET_MAINNET
       ? '0x0806e6925e6960E06cD4781e22A636bA233B53De'
