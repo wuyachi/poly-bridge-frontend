@@ -158,7 +158,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Palette,
-    icon: require('@/assets/svg/plut.svg'),
+    icon: require('@/assets/svg/plt.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
       : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
