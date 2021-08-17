@@ -235,6 +235,7 @@ async function lock ({
   fee,
 }) {
   try {
+    debugger
     const chain = store.getters.getChain(fromChainId);
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({
       chainId: fromChainId,
