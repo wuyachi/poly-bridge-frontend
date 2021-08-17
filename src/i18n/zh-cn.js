@@ -133,6 +133,7 @@ export default {
       [ChainId.Ont]: 'Ontology',
       [ChainId.Ok]: 'OKExChain',
       [ChainId.Polygon]: 'Polygon',
+      [ChainId.Palette]: 'Palette',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -142,6 +143,7 @@ export default {
       [ChainId.Bsc]: TARGET_MAINNET ? 'BSC MainNet' : 'BSC TestNet',
       [ChainId.Heco]: TARGET_MAINNET ? 'Heco MainNet' : 'Heco TestNet',
       [ChainId.Ont]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Palette]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
       [TransactionStatus.Finished]: 'Finished',

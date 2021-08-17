@@ -9,6 +9,7 @@ import { tryToConvertAddressToHex } from '.';
 
 const META_MASK_CONNECTED_KEY = 'META_MASK_CONNECTED';
 const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
+const PLT_NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000103';
 
 const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
@@ -16,6 +17,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
   [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
+  [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
 };
 
 let web3;
@@ -126,7 +128,7 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
-    return integerToDecimal(result, tokenBasic.decimals);
+    return integerToDecimal(result, tokenBasic ? tokenBasic.decimals : 18);
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -140,7 +142,8 @@ async function getTotalSupply({ chainId, tokenHash }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.totalSupply().call();
-    return integerToDecimal(result, tokenBasic.decimals);
+    console.log('tokenBasic', tokenBasic);
+    return integerToDecimal(result, tokenBasic ? tokenBasic.decimals : 18);
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -163,7 +166,7 @@ async function getTransactionStatus({ transactionHash }) {
 async function approve({ chainId, address, tokenHash, spender, amount }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
-    const amountInt = decimalToInteger(amount, tokenBasic.decimals);
+    const amountInt = decimalToInteger(amount, tokenBasic ? tokenBasic.decimals : 18);
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     return await tokenContract.methods.approve(`0x${spender}`, amountInt).send({
       from: address,
@@ -197,7 +200,12 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
       tokenHash,
     );
     const result = await tokenContract.methods.getApproved(tokenID).call();
+    console.log('approve');
+    console.log(result);
+    console.log(chain.nftLockContractHash);
+    console.log(!(result === chain.nftLockContractHash));
     return !(result === chain.nftLockContractHash);
+    // return !(result === '0x0000000000000000000000000000000000000000');
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -223,22 +231,22 @@ async function lock({
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
-    console.log(chain);
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
+    /* plt Special treatment */
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-    console.log(toAddressHex);
-    console.log(amountInt);
-    console.log(feeInt);
-    console.log(fromTokenHash);
-
+    const nativefeeInt =
+      fromTokenHash === '0000000000000000000000000000000000000103'
+        ? 0
+        : decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
-          value: fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
+          value:
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
     );
     return toStandardHex(result);
@@ -259,21 +267,14 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const tokenID = decimalToInteger(id, 0);
     const feeInt = decimalToInteger(fee, 18);
-
+    const feeHash = chain.nftFeeName === 'PLT' ? PLT_NFT_FEE_TOKEN_HASH : NFT_FEE_TOKEN_HASH;
     const result = await confirmLater(
       lockContract.methods
-        .lock(
-          `0x${fromTokenHash}`,
-          toChainId,
-          `0x${toAddressHex}`,
-          tokenID,
-          NFT_FEE_TOKEN_HASH,
-          feeInt,
-          0,
-        )
+        .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, tokenID, feeHash, feeInt, 0)
         .send({
           from: fromAddress,
-          value: feeInt,
+          value:
+            chain.nftFeeContractHash === '0000000000000000000000000000000000000000' ? feeInt : 0,
         }),
     );
     return toStandardHex(result);
