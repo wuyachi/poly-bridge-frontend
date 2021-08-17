@@ -16,7 +16,14 @@ export const HTTP_NFT_BASE_URL = TARGET_MAINNET
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok, ChainId.Polygon],
+    supportedChainIds: [
+      ChainId.Eth,
+      ChainId.Bsc,
+      ChainId.Heco,
+      ChainId.Ok,
+      ChainId.Polygon,
+      ChainId.Palette,
+    ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
@@ -155,6 +162,24 @@ export const CHAINS = [
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+  },
+  {
+    id: ChainId.Palette,
+    icon: require('@/assets/svg/plt.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
+      : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
+      : 'http://106.75.251.68/#/chain/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x0A9C412633465fdeE4861CeE02987386100bEAe6'
+      : '0x3b855e095b32fcd2811663cba56bbfa6b1781821',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0x0806e6925e6960E06cD4781e22A636bA233B53De'
+      : '0x0806e6925e6960E06cD4781e22A636bA233B53De',
+    nftFeeContractHash: '0000000000000000000000000000000000000103',
+    nftFeeName: 'PLT',
   },
   {
     id: ChainId.Ok,

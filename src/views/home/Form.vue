@@ -1,7 +1,7 @@
 <template>
   <ValidationObserver ref="validation" tag="div" v-slot="{ invalid }" class="form">
     <div class="card">
-      <div class="card-hidden">
+      <!-- <div class="card-hidden">
         <div>
           <div style="padding-bottom:20px;font-size:32px">
             <span>The Poly Bridge is temporarily closed.</span>
@@ -13,7 +13,7 @@
             >
           </div>
         </div>
-      </div>
+      </div> -->
       <div class="title">{{ $t('home.form.title') }}</div>
       <div class="fields">
         <div class="field">
