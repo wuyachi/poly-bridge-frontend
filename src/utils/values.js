@@ -16,7 +16,14 @@ export const HTTP_NFT_BASE_URL = TARGET_MAINNET
 export const WALLETS = [
   {
     name: WalletName.MetaMask,
-    supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok, ChainId.Polygon],
+    supportedChainIds: [
+      ChainId.Eth,
+      ChainId.Bsc,
+      ChainId.Heco,
+      ChainId.Ok,
+      ChainId.Polygon,
+      ChainId.Palette,
+    ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
