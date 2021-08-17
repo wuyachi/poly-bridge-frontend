@@ -16,6 +16,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
   [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
+  [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
 };
 
 let web3;
@@ -223,15 +224,10 @@ async function lock({
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
-    console.log(chain);
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-    console.log(toAddressHex);
-    console.log(amountInt);
-    console.log(feeInt);
-    console.log(fromTokenHash);
 
     const result = await confirmLater(
       lockContract.methods
