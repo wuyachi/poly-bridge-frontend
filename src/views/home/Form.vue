@@ -285,7 +285,10 @@ export default {
     minAmount() {
       let res;
       if (this.fromChain) {
-        if (this.fromChain.nftFeeContractHash) {
+        if (
+          this.fromChain.nftFeeContractHash &&
+          this.fromChain.nftFeeContractHash !== '0000000000000000000000000000000000000103'
+        ) {
           res = 0;
         } else {
           res = this.fee ? this.fee.TokenAmount : 0;

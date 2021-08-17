@@ -9,6 +9,7 @@ import { tryToConvertAddressToHex } from '.';
 
 const META_MASK_CONNECTED_KEY = 'META_MASK_CONNECTED';
 const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
+const PLT_NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000103';
 
 const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
@@ -228,13 +229,18 @@ async function lock({
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-
+    debugger;
+    const nativefeeInt =
+      fromTokenHash === '0000000000000000000000000000000000000103'
+        ? 0
+        : decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
-          value: fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
+          value:
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
     );
     return toStandardHex(result);
