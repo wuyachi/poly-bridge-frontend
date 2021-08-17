@@ -8,7 +8,7 @@ const APIS = {
   [ChainId.Heco]: () => import('./eth'),
   [ChainId.Ont]: () => import('./ont'),
   [ChainId.Ok]: () => import('./eth'),
-  [ChainId.Palette]: () => import('./Palette'),
+  [ChainId.Palette]: () => import('./eth'),
   [ChainId.Polygon]: () => import('./eth'),
 };
 
