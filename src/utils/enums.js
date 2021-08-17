@@ -18,7 +18,6 @@ export const ChainId = {
   Bsc: TARGET_MAINNET ? 6 : 79,
   Heco: 7,
   Ok: TARGET_MAINNET ? 12 : 200,
-  Palette: TARGET_MAINNET ? 8 : 107,
   Polygon: TARGET_MAINNET ? 17 : 202,
 };
 
