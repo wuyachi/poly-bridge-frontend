@@ -86,6 +86,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Eth,
+    nativeFee: true,
     icon: require('@/assets/svg/eth.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://etherscan.io/tx/0x{txHash}'
@@ -105,6 +106,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Neo,
+    nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://neotube.io/transaction/0x{txHash}'
@@ -115,6 +117,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Bsc,
+    nativeFee: true,
     icon: require('@/assets/svg/bsc.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://bscscan.com/tx/0x{txHash}'
@@ -134,6 +137,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Heco,
+    nativeFee: true,
     icon: require('@/assets/svg/heco.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://hecoinfo.com/tx/0x{txHash}'
@@ -153,6 +157,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Polygon,
+    nativeFee: true,
     icon: require('@/assets/svg/polygon.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://polygonscan.com/tx/0x{txHash}'
@@ -165,6 +170,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Palette,
+    nativeFee: false,
     icon: require('@/assets/svg/plt.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
@@ -183,6 +189,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Ok,
+    nativeFee: true,
     icon: require('@/assets/svg/ok.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
@@ -196,6 +203,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Ont,
+    nativeFee: false,
     icon: require('@/assets/svg/ONT.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://explorer.ont.io/transaction/{txHash}'

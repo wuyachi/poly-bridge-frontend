@@ -42,6 +42,12 @@ function convertWalletError(error) {
   if (error.code === 4001) {
     code = WalletError.CODES.USER_REJECTED;
   }
+  if (error.toString().indexOf('32005') > -1) {
+    return null;
+  }
+  if (error.toString().indexOf('32000') > -1) {
+    return null;
+  }
   return new WalletError(error.message, { code, cause: error });
 }
 
