@@ -18,6 +18,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
   [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
   [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
+  [TARGET_MAINNET ? 42161 : 421611]: ChainId.Arbitrum,
 };
 
 let web3;

@@ -134,10 +134,12 @@ export default {
       [ChainId.Ok]: 'OKExChain',
       [ChainId.Polygon]: 'Polygon',
       [ChainId.Palette]: 'Palette',
+      [ChainId.Arbitrum]: 'Arbitrum',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Polygon]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Arbitrum]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Palette]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Eth]: TARGET_MAINNET ? 'MainNet' : 'Ropsten TestNet',
       [ChainId.Neo]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
