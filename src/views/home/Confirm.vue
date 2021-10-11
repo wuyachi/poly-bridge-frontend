@@ -194,6 +194,7 @@ export default {
   methods: {
     async confirm() {
       await this.$store.dispatch('ensureChainWalletReady', this.confirmingData.fromChainId);
+      console.log(this.confirmingData);
       try {
         this.confirming = true;
         const walletApi = await getWalletApi(this.fromWallet.name);

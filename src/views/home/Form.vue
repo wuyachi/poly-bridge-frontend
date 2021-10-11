@@ -1,6 +1,19 @@
 <template>
   <ValidationObserver ref="validation" tag="div" v-slot="{ invalid }" class="form">
     <div class="card">
+      <!-- <div class="card-hidden">
+        <div>
+          <div style="padding-bottom:20px;font-size:32px">
+            <span>The Poly Bridge is temporarily closed.</span>
+          </div>
+          <div style="font-size:20px">
+            <span>Please check all the updates through offical twitter </span>
+            <a href="https://twitter.com/PolyNetwork2" style="color:#3ec7eb" target="_blank"
+              >https://twitter.com/PolyNetwork2</a
+            >
+          </div>
+        </div>
+      </div> -->
       <div class="title">{{ $t('home.form.title') }}</div>
       <div class="fields">
         <div class="field">
@@ -150,6 +163,17 @@
               fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name
             }}</span>
           </div>
+          <div v-if="expectTime" class="fee">
+            <span class="label">{{ $t('home.form.time') }}</span>
+            <CTooltip>
+              <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+              <template #content>
+                {{ $t('home.form.timeTooltip') }}
+              </template>
+            </CTooltip>
+            <CFlexSpan />
+            <span class="fee-value">≈ {{ expectTime.Time }}s</span>
+          </div>
         </ValidationProvider>
       </div>
 
@@ -272,7 +296,10 @@ export default {
     minAmount() {
       let res;
       if (this.fromChain) {
-        if (this.fromChain.nftFeeContractHash) {
+        if (
+          this.fromChain.nftFeeContractHash &&
+          this.fromChain.nftFeeContractHash !== '0000000000000000000000000000000000000103'
+        ) {
           res = 0;
         } else {
           res = this.fee ? this.fee.TokenAmount : 0;
@@ -404,6 +431,20 @@ export default {
       }
       return null;
     },
+    getExpectTimeParams() {
+      if (this.fromToken && this.toChainId) {
+        return {
+          fromChainId: this.fromChainId,
+          toChainId: this.toChainId,
+        };
+      }
+      return null;
+    },
+    expectTime() {
+      return (
+        this.getExpectTimeParams && this.$store.getters.getExpectTime(this.getExpectTimeParams)
+      );
+    },
     fee() {
       return this.getFeeParams && this.$store.getters.getFee(this.getFeeParams);
     },
@@ -418,6 +459,11 @@ export default {
     getFeeParams(value) {
       if (value) {
         this.$store.dispatch('getFee', value);
+      }
+    },
+    getExpectTimeParams(value) {
+      if (value) {
+        this.$store.dispatch('getExpectTime', value);
       }
     },
     getTokenMapsParams(value) {
@@ -617,6 +663,23 @@ export default {
   background: #171f31;
   box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
   border-radius: 10px;
+  position: relative;
+}
+.card-hidden {
+  box-sizing: border-box;
+  width: 452px;
+  height: 100%;
+  padding: 40px 50px 54px;
+  background: rgba(23, 31, 49, 0.9);
+  box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
+  border-radius: 10px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {

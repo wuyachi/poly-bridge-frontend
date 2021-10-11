@@ -131,6 +131,7 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
 }
 
 async function getTotalSupply({ chainId, tokenHash }) {
+  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {

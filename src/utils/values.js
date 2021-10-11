@@ -2,16 +2,16 @@ import { WalletName, ChainId } from './enums';
 import { TARGET_MAINNET } from './env';
 
 export const HTTP_BASE_URL = TARGET_MAINNET
-  ? // ? 'https://bridge.poly.network/v1'
-    // : 'https://bridge.poly.network/testnet/v1';
-    'https://bridge.poly.network/merge/v1/bridge'
-  : 'https://bridge.poly.network/testnet/merge/v1/bridge';
+  ? 'https://bridge.poly.network/v1'
+  : 'https://bridge.poly.network/testnet/v1';
+//    'https://bridge.poly.network/merge/v1/bridge'
+//  : 'https://bridge.poly.network/testnet/merge/v1/bridge';
 
 export const HTTP_NFT_BASE_URL = TARGET_MAINNET
-  ? // ? 'https://bridge.poly.network/nft/v1'
-    // : 'https://bridge.poly.network/testnet/nft/v1';
-    'https://bridge.poly.network/merge/v1/nft'
-  : 'https://bridge.poly.network/testnet/merge/v1/nft';
+  ? 'https://bridge.poly.network/nft/v1'
+  : 'https://bridge.poly.network/testnet/nft/v1';
+//    'https://bridge.poly.network/merge/v1/nft'
+//  : 'https://bridge.poly.network/testnet/merge/v1/nft';
 
 export const WALLETS = [
   {
@@ -23,6 +23,7 @@ export const WALLETS = [
       ChainId.Ok,
       ChainId.Polygon,
       ChainId.Palette,
+      ChainId.Arbitrum,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -86,6 +87,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Eth,
+    nativeFee: true,
     icon: require('@/assets/svg/eth.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://etherscan.io/tx/0x{txHash}'
@@ -105,6 +107,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Neo,
+    nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://neotube.io/transaction/0x{txHash}'
@@ -115,6 +118,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Bsc,
+    nativeFee: true,
     icon: require('@/assets/svg/bsc.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://bscscan.com/tx/0x{txHash}'
@@ -134,6 +138,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Heco,
+    nativeFee: true,
     icon: require('@/assets/svg/heco.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://hecoinfo.com/tx/0x{txHash}'
@@ -153,6 +158,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Polygon,
+    nativeFee: true,
     icon: require('@/assets/svg/polygon.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://polygonscan.com/tx/0x{txHash}'
@@ -164,7 +170,21 @@ export const CHAINS = [
     nftFeeName: 'MATIC',
   },
   {
+    id: ChainId.Arbitrum,
+    nativeFee: true,
+    icon: require('@/assets/svg/Arbitrum.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://arbiscan.io/tx/0x{txHash}'
+      : 'https://testnet.arbiscan.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x27eb74B4Db37517F1dC6dE67364e19782624402F'
+      : '0x27eb74B4Db37517F1dC6dE67364e19782624402F',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+  },
+  {
     id: ChainId.Palette,
+    nativeFee: false,
     icon: require('@/assets/svg/plt.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://palettescan.com/#/chain/tx/0x{txHash}'
@@ -183,6 +203,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Ok,
+    nativeFee: true,
     icon: require('@/assets/svg/ok.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
@@ -196,6 +217,7 @@ export const CHAINS = [
   },
   {
     id: ChainId.Ont,
+    nativeFee: false,
     icon: require('@/assets/svg/ONT.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://explorer.ont.io/transaction/{txHash}'

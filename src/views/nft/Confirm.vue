@@ -1,31 +1,34 @@
 <template>
-  <CDrawer
-    v-bind="$attrs"
-    :closeOnClickModal="!confirming"
-    :closeOnPressEscape="!confirming"
-    v-on="$listeners"
-  >
-    <transition v-if="confirmingData" name="fade" mode="out-in">
+  <CDrawer v-bind="$attrs"
+           :closeOnClickModal="!confirming"
+           :closeOnPressEscape="!confirming"
+           v-on="$listeners">
+    <transition v-if="confirmingData"
+                name="fade"
+                mode="out-in">
       <div class="content">
         <div class="title">{{ $t('home.confirm.title') }}</div>
         <CDivider />
-        <div v-if="!packing" class="scroll">
+        <div v-if="!packing"
+             class="scroll">
           <div class="fields">
             <div class="field">
               <div class="select-nft-basic">
                 <div class="image">
-                  <div v-if="confirmingData.nft.Image" class="img-wrapper">
+                  <div v-if="confirmingData.nft.Image"
+                       class="img-wrapper">
                     <img :src="confirmingData.nft.Image" />
                   </div>
                 </div>
-                <div class="token-id"># {{ confirmingData.nft.TokenId }}</div>
+                <div class="token-id"># {{confirmingData.nft.TokenId}}</div>
               </div>
             </div>
 
             <div class="field">
               <div class="label">{{ $t('home.confirm.from') }}</div>
               <div class="chain">
-                <img class="chain-icon" :src="fromChain.icon" />
+                <img class="chain-icon"
+                     :src="fromChain.icon" />
                 <span class="chain-name">
                   {{
                     $t('home.confirm.chainName', {
@@ -42,7 +45,8 @@
             <div class="field">
               <div class="label">{{ $t('home.confirm.to') }}</div>
               <div class="chain">
-                <img class="chain-icon" :src="toChain.icon" />
+                <img class="chain-icon"
+                     :src="toChain.icon" />
                 <span class="chain-name">
                   {{
                     $t('home.confirm.chainName', {
@@ -65,13 +69,16 @@
             </div>
           </div>
 
-          <CSubmitButton :loading="confirming" @click="confirm">
+          <CSubmitButton :loading="confirming"
+                         @click="confirm">
             {{ confirming ? $t('buttons.confirming') : $t('buttons.confirm') }}
           </CSubmitButton>
         </div>
 
-        <div v-else class="packing">
-          <img class="packing-icon" src="@/assets/svg/pending-large.svg" />
+        <div v-else
+             class="packing">
+          <img class="packing-icon"
+               src="@/assets/svg/pending-large.svg" />
           <span class="packing-text">
             {{
               $t('home.confirm.packing', {
@@ -79,12 +86,10 @@
               })
             }}
           </span>
-          <CLink
-            class="hash"
-            target="_blank"
-            :href="$format(fromChain.explorerUrl, { txHash: confirmingData.transactionHash })"
-            :disabled="!confirmingData.transactionHash"
-          >
+          <CLink class="hash"
+                 target="_blank"
+                 :href="$format(fromChain.explorerUrl, { txHash: confirmingData.transactionHash })"
+                 :disabled="!confirmingData.transactionHash">
             {{
               $t('home.confirm.hash', {
                 hash: $formatLongText(confirmingData.transactionHash || 'N/A', {
@@ -111,14 +116,14 @@ export default {
   props: {
     confirmingData: Object,
   },
-  data() {
+  data () {
     return {
       confirming: false,
       packing: false,
     };
   },
   computed: {
-    tokenBasic() {
+    tokenBasic () {
       return (
         this.confirmingData &&
         this.$store.getters.getTokenBasicByChainIdAndTokenHash({
@@ -127,10 +132,10 @@ export default {
         })
       );
     },
-    fromChain() {
+    fromChain () {
       return this.confirmingData && this.$store.getters.getChain(this.confirmingData.fromChainId);
     },
-    fromToken() {
+    fromToken () {
       return (
         this.tokenBasic &&
         this.$store.getters.getTokenByTokenBasicNameAndChainId({
@@ -139,10 +144,10 @@ export default {
         })
       );
     },
-    toChain() {
+    toChain () {
       return this.confirmingData && this.$store.getters.getChain(this.confirmingData.toChainId);
     },
-    toToken() {
+    toToken () {
       return (
         this.tokenBasic &&
         this.$store.getters.getTokenByTokenBasicNameAndChainId({
@@ -151,13 +156,13 @@ export default {
         })
       );
     },
-    receivingAmount() {
+    receivingAmount () {
       return (
         this.confirmingData &&
         new BigNumber(this.confirmingData.amount).minus(this.confirmingData.fee).toString()
       );
     },
-    fromWallet() {
+    fromWallet () {
       return (
         this.confirmingData &&
         this.$store.getters.getChainConnectedWallet(this.confirmingData.fromChainId)
@@ -165,7 +170,7 @@ export default {
     },
   },
   methods: {
-    async confirm() {
+    async confirm () {
       await this.$store.dispatch('ensureChainWalletReady', this.confirmingData.fromChainId);
       try {
         this.confirming = true;
@@ -206,7 +211,7 @@ export default {
           transactionHash,
           transactionStatus: status,
         });
-        this.$emit('packeds');
+        this.$emit('packed');
         this.$emit('update:visible', false);
       } finally {
         this.confirming = false;

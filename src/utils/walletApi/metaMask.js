@@ -18,6 +18,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
   [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
   [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
+  [TARGET_MAINNET ? 42161 : 421611]: ChainId.Arbitrum,
 };
 
 let web3;
@@ -41,6 +42,12 @@ function convertWalletError(error) {
   let code = WalletError.CODES.UNKNOWN_ERROR;
   if (error.code === 4001) {
     code = WalletError.CODES.USER_REJECTED;
+  }
+  if (error.toString().indexOf('32005') > -1) {
+    return null;
+  }
+  if (error.toString().indexOf('32000') > -1) {
+    return null;
   }
   return new WalletError(error.message, { code, cause: error });
 }
@@ -128,7 +135,7 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
-    return integerToDecimal(result, tokenBasic ? tokenBasic.decimals : 18);
+    return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -142,8 +149,7 @@ async function getTotalSupply({ chainId, tokenHash }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.totalSupply().call();
-    console.log('tokenBasic', tokenBasic);
-    return integerToDecimal(result, tokenBasic ? tokenBasic.decimals : 18);
+    return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -166,7 +172,7 @@ async function getTransactionStatus({ transactionHash }) {
 async function approve({ chainId, address, tokenHash, spender, amount }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
-    const amountInt = decimalToInteger(amount, tokenBasic ? tokenBasic.decimals : 18);
+    const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     return await tokenContract.methods.approve(`0x${spender}`, amountInt).send({
       from: address,
@@ -200,12 +206,7 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
       tokenHash,
     );
     const result = await tokenContract.methods.getApproved(tokenID).call();
-    console.log('approve');
-    console.log(result);
-    console.log(chain.nftLockContractHash);
-    console.log(!(result === chain.nftLockContractHash));
     return !(result === chain.nftLockContractHash);
-    // return !(result === '0x0000000000000000000000000000000000000000');
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -234,8 +235,8 @@ async function lock({
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
-    /* plt Special treatment */
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
+    debugger;
     const nativefeeInt =
       fromTokenHash === '0000000000000000000000000000000000000103'
         ? 0
@@ -267,14 +268,21 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const tokenID = decimalToInteger(id, 0);
     const feeInt = decimalToInteger(fee, 18);
-    const feeHash = chain.nftFeeName === 'PLT' ? PLT_NFT_FEE_TOKEN_HASH : NFT_FEE_TOKEN_HASH;
+
     const result = await confirmLater(
       lockContract.methods
-        .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, tokenID, feeHash, feeInt, 0)
+        .lock(
+          `0x${fromTokenHash}`,
+          toChainId,
+          `0x${toAddressHex}`,
+          tokenID,
+          NFT_FEE_TOKEN_HASH,
+          feeInt,
+          0,
+        )
         .send({
           from: fromAddress,
-          value:
-            chain.nftFeeContractHash === '0000000000000000000000000000000000000000' ? feeInt : 0,
+          value: feeInt,
         }),
     );
     return toStandardHex(result);
