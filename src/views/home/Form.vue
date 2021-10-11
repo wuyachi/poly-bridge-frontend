@@ -147,6 +147,12 @@
             <span class="label">{{ $t('home.form.balance') }}</span>
             <CFlexSpan />
             <span class="value"> {{ $formatNumber(balance) }} {{ fromToken.name }} </span>
+            <CTooltip v-if="fromToken.tokenBasicName === 'O3'">
+              <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+              <template #content>
+                {{ $t('home.form.o3ToolTip') }}
+              </template>
+            </CTooltip>
           </div>
           <div v-if="fee" class="fee">
             <span class="label">{{ $t('home.form.fee') }}</span>
@@ -394,6 +400,7 @@ export default {
           chainId: this.fromChainId,
           address: this.fromWallet.address,
           tokenHash: this.fromToken.hash,
+          tokenBasicName: this.fromToken.tokenBasicName,
         };
       }
       return null;

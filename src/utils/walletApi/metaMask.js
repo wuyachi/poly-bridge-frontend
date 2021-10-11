@@ -127,6 +127,21 @@ async function getBalance({ chainId, address, tokenHash }) {
   }
 }
 
+async function getO3Balance({ chainId, address, tokenHash }) {
+  try {
+    const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
+    if (tokenHash === '0000000000000000000000000000000000000000') {
+      const result = await web3.eth.getBalance(address);
+      return integerToDecimal(result, tokenBasic.decimals);
+    }
+    const tokenContract = new web3.eth.Contract(require('@/assets/json/o3.json'), tokenHash);
+    const result = await tokenContract.methods.unlockedOf(address).call();
+    return integerToDecimal(result, tokenBasic.decimals);
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
 async function getAllowance({ chainId, address, tokenHash, spender }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
@@ -295,6 +310,7 @@ export default {
   install: init,
   connect,
   getBalance,
+  getO3Balance,
   getAllowance,
   getTransactionStatus,
   approve,
