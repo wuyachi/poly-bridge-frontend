@@ -163,6 +163,17 @@
               fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name
             }}</span>
           </div>
+          <div v-if="expectTime" class="fee">
+            <span class="label">{{ $t('home.form.time') }}</span>
+            <CTooltip>
+              <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+              <template #content>
+                {{ $t('home.form.timeTooltip') }}
+              </template>
+            </CTooltip>
+            <CFlexSpan />
+            <span class="fee-value">≈ {{ expectTime.Time }}s</span>
+          </div>
         </ValidationProvider>
       </div>
 
@@ -420,6 +431,20 @@ export default {
       }
       return null;
     },
+    getExpectTimeParams() {
+      if (this.fromToken && this.toChainId) {
+        return {
+          fromChainId: this.fromChainId,
+          toChainId: this.toChainId,
+        };
+      }
+      return null;
+    },
+    expectTime() {
+      return (
+        this.getExpectTimeParams && this.$store.getters.getExpectTime(this.getExpectTimeParams)
+      );
+    },
     fee() {
       return this.getFeeParams && this.$store.getters.getFee(this.getFeeParams);
     },
@@ -434,6 +459,11 @@ export default {
     getFeeParams(value) {
       if (value) {
         this.$store.dispatch('getFee', value);
+      }
+    },
+    getExpectTimeParams(value) {
+      if (value) {
+        this.$store.dispatch('getExpectTime', value);
       }
     },
     getTokenMapsParams(value) {
