@@ -43,9 +43,11 @@ export default {
       max: 'MAX',
       balance: 'Balance',
       fee: 'Fee',
-      time: 'Time',
+      time: 'Estimated Transaction Time',
+      o3ToolTip: 'Available Balance',
       feeTooltip: 'Transaction fee on target chain',
-      timeTooltip: 'Estimated time based on past conditions',
+      timeTooltip:
+        'An estimation of how long funds will arrive in the destination address based on overall transfer history.',
       connectWallet: 'Connect Wallet',
       historyPrefix: 'You can view your',
       historyLink: 'history',
