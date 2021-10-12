@@ -23,7 +23,6 @@ export default {
       }
       const walletApi = await getWalletApi(wallet.name);
       let balance;
-      debugger;
       if (tokenBasicName !== 'O3') {
         balance = await walletApi.getBalance({ chainId, address, tokenHash });
       } else {
