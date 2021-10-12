@@ -177,7 +177,7 @@ export const CHAINS = [
       ? 'https://arbiscan.io/tx/0x{txHash}'
       : 'https://testnet.arbiscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x27eb74B4Db37517F1dC6dE67364e19782624402F'
+      ? '0x0f8C16BA16E58525Eb2aDc231ff360cfa00bB527'
       : '0x27eb74B4Db37517F1dC6dE67364e19782624402F',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',

@@ -73,7 +73,6 @@ async function init() {
       await queryState();
     }
     web3.currentProvider.on('accountsChanged', async accounts => {
-      debugger;
       if (sessionStorage.getItem(MATH_CONNECTED_KEY) !== 'true') {
         return;
       }
