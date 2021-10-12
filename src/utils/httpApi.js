@@ -42,13 +42,13 @@ request.interceptors.response.use(
 );
 
 export default {
-  async getTokenBasics () {
+  async getTokenBasics() {
     const result = await request({ method: 'post', url: '/tokenbasics', data: {} });
     const tokenBasics = deserialize(list(schemas.tokenBasic), result.TokenBasics || []);
     const tokens = _.flatMap(tokenBasics, tokenBasic => tokenBasic.tokens || []);
     return { tokenBasics, tokens };
   },
-  async getTokenMaps ({ fromChainId, fromTokenHash }) {
+  async getTokenMaps({ fromChainId, fromTokenHash }) {
     const result = await request({
       method: 'post',
       url: '/tokenmap',
@@ -60,7 +60,7 @@ export default {
     const tokenMaps = deserialize(list(schemas.tokenMap), result.TokenMaps);
     return tokenMaps;
   },
-  async getFee ({ fromChainId, fromTokenHash, toTokenHash, toChainId }) {
+  async getFee({ fromChainId, fromTokenHash, toTokenHash, toChainId }) {
     const result = await request({
       method: 'post',
       url: '/getfee',
@@ -73,7 +73,18 @@ export default {
     });
     return result;
   },
-  async getTransactions ({ addressHexs, page, pageSize }) {
+  async getExpectTime({ fromChainId, toChainId }) {
+    const result = await request({
+      method: 'post',
+      url: '/expecttime',
+      data: {
+        SrcChainId: fromChainId,
+        DstChainId: toChainId,
+      },
+    });
+    return result;
+  },
+  async getTransactions({ addressHexs, page, pageSize }) {
     const result = await request({
       method: 'post',
       url: 'transactionsofaddress',
@@ -89,7 +100,7 @@ export default {
       pageCount: result.TotalPage,
     };
   },
-  async getTransaction ({ hash }) {
+  async getTransaction({ hash }) {
     const result = await request({
       method: 'post',
       url: 'transactionofhash',
@@ -100,50 +111,44 @@ export default {
     const transaction = deserialize(schemas.transaction, result);
     return mapTransactionToDo(transaction);
   },
-  async getAssets (id) {
-    const result = await nftRequest(
-      {
-        method: 'post',
-        url: '/assets',
-        data: {
-          ChainId: id,
-        },
-      }
-    )
-    return result
+  async getAssets(id) {
+    const result = await nftRequest({
+      method: 'post',
+      url: '/assets',
+      data: {
+        ChainId: id,
+      },
+    });
+    return result;
   },
-  async getAssetMap (params) {
-    const result = await nftRequest(
-      {
+  async getAssetMap(params) {
+    const result = await nftRequest({
+      method: 'post',
+      url: '/asset',
+      data: {
+        ChainId: params.ChainId,
+        Hash: params.Hash,
+      },
+    });
+    return result;
+  },
+  async getitems(params) {
+    try {
+      const result = await nftRequest({
         method: 'post',
-        url: '/asset',
+        url: '/items',
         data: {
           ChainId: params.ChainId,
-          Hash: params.Hash
+          Asset: params.Asset,
+          Address: params.Address,
+          TokenId: params.TokenId,
+          PageNo: params.PageNo,
+          PageSize: params.PageSize,
         },
-      }
-    )
-    return result
-  },
-  async getitems (params) {
-    try {
-      const result = await nftRequest(
-        {
-          method: 'post',
-          url: '/items',
-          data: {
-            ChainId: params.ChainId,
-            Asset: params.Asset,
-            Address: params.Address,
-            TokenId: params.TokenId,
-            PageNo: params.PageNo,
-            PageSize: params.PageSize,
-          },
-        }
-      )
-      return result
+      });
+      return result;
     } catch (error) {
-      console.log(error)
+      console.log(error);
       const res = {
         data: {
           Items: [],
@@ -151,40 +156,36 @@ export default {
           PageSize: 6,
           TotalCount: 0,
           TotalPage: 0,
-        }
-      }
-      return res
-    };
-  },
-  async getItemsShow (params) {
-    const result = await nftRequest(
-      {
-        method: 'post',
-        url: '/assetshow',
-        data: {
-          ChainId: params.ChainId,
-          PageSize: params.PageSize,
-          PageNo: params.PageNo
         },
-      }
-    )
-    return result
+      };
+      return res;
+    }
   },
-  async getNftFee (params) {
-    const result = await nftRequest(
-      {
-        method: 'post',
-        url: '/getfee',
-        data: {
-          SrcChainId: params.SrcChainId,
-          Hash: params.Hash,
-          DstChainId: params.DstChainId,
-        },
-      }
-    )
-    return result
+  async getItemsShow(params) {
+    const result = await nftRequest({
+      method: 'post',
+      url: '/assetshow',
+      data: {
+        ChainId: params.ChainId,
+        PageSize: params.PageSize,
+        PageNo: params.PageNo,
+      },
+    });
+    return result;
   },
-  async getNftTransactions ({ addressHexs, page, pageSize }) {
+  async getNftFee(params) {
+    const result = await nftRequest({
+      method: 'post',
+      url: '/getfee',
+      data: {
+        SrcChainId: params.SrcChainId,
+        Hash: params.Hash,
+        DstChainId: params.DstChainId,
+      },
+    });
+    return result;
+  },
+  async getNftTransactions({ addressHexs, page, pageSize }) {
     const result = await nftRequest({
       method: 'post',
       url: 'transactionsofaddress',
@@ -192,7 +193,7 @@ export default {
         Addresses: addressHexs,
         PageNo: page - 1,
         PageSize: pageSize,
-        State: -1
+        State: -1,
       },
     });
     const transactions = deserialize(list(schemas.transaction), result.data.Transactions || []);
@@ -201,7 +202,7 @@ export default {
       pageCount: result.data.TotalPage,
     };
   },
-  async getNftTransaction ({ hash }) {
+  async getNftTransaction({ hash }) {
     const result = await nftRequest({
       method: 'post',
       url: 'transactionofhash',

@@ -23,6 +23,7 @@ export const WALLETS = [
       ChainId.Ok,
       ChainId.Polygon,
       ChainId.Palette,
+      ChainId.Arbitrum,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -167,6 +168,19 @@ export const CHAINS = [
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+  },
+  {
+    id: ChainId.Arbitrum,
+    nativeFee: true,
+    icon: require('@/assets/svg/Arbitrum.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://arbiscan.io/tx/0x{txHash}'
+      : 'https://testnet.arbiscan.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x0f8C16BA16E58525Eb2aDc231ff360cfa00bB527'
+      : '0x27eb74B4Db37517F1dC6dE67364e19782624402F',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
   },
   {
     id: ChainId.Palette,

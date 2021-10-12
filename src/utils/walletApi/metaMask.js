@@ -18,6 +18,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
   [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
   [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
+  [TARGET_MAINNET ? 42161 : 421611]: ChainId.Arbitrum,
 };
 
 let web3;
@@ -120,6 +121,21 @@ async function getBalance({ chainId, address, tokenHash }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.balanceOf(address).call();
+    return integerToDecimal(result, tokenBasic.decimals);
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
+async function getO3Balance({ chainId, address, tokenHash }) {
+  try {
+    const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
+    if (tokenHash === '0000000000000000000000000000000000000000') {
+      const result = await web3.eth.getBalance(address);
+      return integerToDecimal(result, tokenBasic.decimals);
+    }
+    const tokenContract = new web3.eth.Contract(require('@/assets/json/o3.json'), tokenHash);
+    const result = await tokenContract.methods.unlockedOf(address).call();
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
@@ -235,7 +251,6 @@ async function lock({
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-    debugger;
     const nativefeeInt =
       fromTokenHash === '0000000000000000000000000000000000000103'
         ? 0
@@ -294,6 +309,7 @@ export default {
   install: init,
   connect,
   getBalance,
+  getO3Balance,
   getAllowance,
   getTransactionStatus,
   approve,

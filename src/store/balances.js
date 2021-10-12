@@ -16,13 +16,18 @@ export default {
     },
   },
   actions: {
-    async getBalance({ getters, commit }, { chainId, address, tokenHash }) {
+    async getBalance({ getters, commit }, { chainId, address, tokenHash, tokenBasicName }) {
       const wallet = getters.getChainConnectedWallet(chainId);
       if (!wallet) {
         return;
       }
       const walletApi = await getWalletApi(wallet.name);
-      const balance = await walletApi.getBalance({ chainId, address, tokenHash });
+      let balance;
+      if (tokenBasicName !== 'O3') {
+        balance = await walletApi.getBalance({ chainId, address, tokenHash });
+      } else {
+        balance = await walletApi.getO3Balance({ chainId, address, tokenHash });
+      }
       const oldValue = getters.getBalance({ chainId, address, tokenHash });
       if (oldValue !== balance) {
         commit('setBalance', { params: { chainId, address, tokenHash }, value: balance });
