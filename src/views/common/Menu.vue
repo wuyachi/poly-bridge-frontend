@@ -1,5 +1,8 @@
 <template>
   <div class="menu">
+    <CLink @click="goAudit" class="item" target="_self">
+      {{ $t('common.menu.audit') }}
+    </CLink>
     <CLink
       :to="{ name: 'home' }"
       :class="$route.name == 'home' ? 'active item' : 'item'"
@@ -26,6 +29,11 @@ export default {
     return {
       mainnet: TARGET_MAINNET,
     };
+  },
+  methods: {
+    goAudit() {
+      window.open('https://github.com/polynetwork/audit-report');
+    },
   },
 };
 </script>

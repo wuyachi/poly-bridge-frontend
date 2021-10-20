@@ -16,6 +16,7 @@ export default {
       testnet: 'TestNet',
     },
     menu: {
+      audit: 'Audit Report',
       token: 'Token Asset',
       nft: 'NFT Asset',
     },
