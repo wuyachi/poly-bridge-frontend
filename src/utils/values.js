@@ -117,6 +117,17 @@ export const CHAINS = [
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
   {
+    id: ChainId.N3,
+    nativeFee: false,
+    icon: require('@/assets/svg/neo.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://neotube.io/transaction/0x{txHash}'
+      : 'https://testnet.neotube.io/transaction/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '125c83403763670c215f9c7c815ef759b258a41b'
+      : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
+  },
+  {
     id: ChainId.Bsc,
     nativeFee: true,
     icon: require('@/assets/svg/bsc.svg'),
