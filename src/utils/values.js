@@ -116,7 +116,7 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
-  {
+  /*   {
     id: ChainId.N3,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -126,7 +126,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
-  },
+  }, */
   {
     id: ChainId.Bsc,
     nativeFee: true,
