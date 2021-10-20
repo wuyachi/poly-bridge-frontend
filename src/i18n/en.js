@@ -16,6 +16,7 @@ export default {
       testnet: 'TestNet',
     },
     menu: {
+      audit: 'Audit Report',
       token: 'Token Asset',
       nft: 'NFT Asset',
     },
@@ -143,6 +144,7 @@ export default {
       [ChainId.Poly]: 'Poly',
       [ChainId.Eth]: 'Ethereum',
       [ChainId.Neo]: 'Neo',
+      [ChainId.xDai]: 'xDai',
       [ChainId.Bsc]: 'BSC',
       [ChainId.Heco]: 'Heco',
       [ChainId.Ont]: 'Ontology',
@@ -158,6 +160,7 @@ export default {
       [ChainId.Palette]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Eth]: TARGET_MAINNET ? 'MainNet' : 'Ropsten TestNet',
       [ChainId.Neo]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.xDai]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Bsc]: TARGET_MAINNET ? 'BSC MainNet' : 'BSC TestNet',
       [ChainId.Heco]: TARGET_MAINNET ? 'Heco MainNet' : 'Heco TestNet',
       [ChainId.Ok]: TARGET_MAINNET ? 'OKExChain MainNet' : 'OKExChain TestNet',
