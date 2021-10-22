@@ -24,6 +24,7 @@ export const WALLETS = [
       ChainId.Polygon,
       ChainId.Palette,
       ChainId.Arbitrum,
+      ChainId.xDai,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -127,6 +128,19 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   }, */
+  {
+    id: ChainId.xDai,
+    nativeFee: false,
+    icon: require('@/assets/png/xdai.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://blockscout.com/xdai/mainnet/tx/0x{txHash}'
+      : 'https://blockscout.com/poa/sokol/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xa7eDA65F94A2a334a0de42d479585b65D27b2249'
+      : '0xa7eDA65F94A2a334a0de42d479585b65D27b2249',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'xDai',
+  },
   {
     id: ChainId.Bsc,
     nativeFee: true,
