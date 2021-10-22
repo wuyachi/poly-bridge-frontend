@@ -3,5 +3,8 @@
   "editor.formatOnSave": true,
   "javascript.suggest.autoImports": false,
   "typescript.suggest.autoImports": false,
-  "vetur.completion.autoImport": false
+  "vetur.completion.autoImport": false,
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

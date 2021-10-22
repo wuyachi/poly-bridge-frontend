@@ -45,6 +45,13 @@ export const WALLETS = [
       'https://chrome.google.com/webstore/detail/neoline/cphhlgmgameodnhkjdmkpanlelnlohao',
   },
   {
+    name: WalletName.NeoLineN3,
+    supportedChainIds: [ChainId.N3],
+    icon: require('@/assets/svg/neoline.svg'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/neoline/cphhlgmgameodnhkjdmkpanlelnlohao',
+  },
+  {
     name: WalletName.O3,
     supportedChainIds: [ChainId.Neo],
     icon: require('@/assets/svg/o3.svg'),
@@ -117,7 +124,7 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
-  /*   {
+  {
     id: ChainId.N3,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -127,7 +134,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
-  }, */
+  },
   {
     id: ChainId.xDai,
     nativeFee: false,
