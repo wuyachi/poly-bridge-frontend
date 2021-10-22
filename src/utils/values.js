@@ -134,12 +134,12 @@ export const CHAINS = [
     icon: require('@/assets/png/xdai.png'),
     explorerUrl: TARGET_MAINNET
       ? 'https://blockscout.com/xdai/mainnet/tx/0x{txHash}'
-      : 'https://blockscout.com/poa/core/tx/0x{txHash}',
+      : 'https://blockscout.com/poa/sokol/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xa7eDA65F94A2a334a0de42d479585b65D27b2249'
       : '0xa7eDA65F94A2a334a0de42d479585b65D27b2249',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
-    nftFeeName: 'POA',
+    nftFeeName: 'xDai',
   },
   {
     id: ChainId.Bsc,
