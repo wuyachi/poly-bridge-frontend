@@ -90,13 +90,6 @@ async function init () {
       onReady();
     } catch(e){}
   }
-  // if (window.NEOLine) {
-    // await onReady();
-  // } else {
-  //   window.addEventListener('NEOLine.NEO.EVENT.READY', onReady);
-  //   await delay(2000);
-  //   store.getters.getWallet(WalletName.NeoLine).deferred.resolve();
-  // }
 }
 
 async function connect () {

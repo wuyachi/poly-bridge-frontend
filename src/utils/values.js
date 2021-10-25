@@ -25,6 +25,7 @@ export const WALLETS = [
       ChainId.Palette,
       ChainId.Arbitrum,
       ChainId.xDai,
+      ChainId.Optimistic,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -40,6 +41,13 @@ export const WALLETS = [
   {
     name: WalletName.NeoLine,
     supportedChainIds: [ChainId.Neo],
+    icon: require('@/assets/svg/neoline.svg'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/neoline/cphhlgmgameodnhkjdmkpanlelnlohao',
+  },
+  {
+    name: WalletName.NeoLineN3,
+    supportedChainIds: [ChainId.N3],
     icon: require('@/assets/svg/neoline.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/neoline/cphhlgmgameodnhkjdmkpanlelnlohao',
@@ -117,16 +125,16 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
-  /*   {
+  /* {
     id: ChainId.N3,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://neotube.io/transaction/0x{txHash}'
-      : 'https://testnet.neotube.io/transaction/0x{txHash}',
+      : 'https://neo3.testnet.neotube.io/transaction/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '125c83403763670c215f9c7c815ef759b258a41b'
-      : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
+      ? 'd63810ca692b43e0ed35bfa40e653d05b2cb3585'
+      : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
   }, */
   {
     id: ChainId.xDai,
@@ -193,6 +201,19 @@ export const CHAINS = [
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+  },
+  {
+    id: ChainId.Optimistic,
+    nativeFee: true,
+    icon: require('@/assets/svg/op.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://optimistic.etherscan.io/tx/0x{txHash}'
+      : 'https://kovan-optimistic.etherscan.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '032F9A78473F73A6E10B78CD165F547559125EF1'
+      : '032F9A78473F73A6E10B78CD165F547559125EF1',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
   },
   {
     id: ChainId.Arbitrum,

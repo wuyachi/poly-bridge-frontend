@@ -9,6 +9,7 @@ const APIS = {
   [WalletName.MetaMask]: () => import('./metaMask'),
   [WalletName.Math]: () => import('./math'),
   [WalletName.NeoLine]: () => import('./neoline'),
+  [WalletName.NeoLineN3]: () => import('./neolineN3'),
   [WalletName.O3]: () => import('./o3'),
   [WalletName.Binance]: () => import('./binance'),
   [WalletName.Cyano]: () => import('./cyano'),

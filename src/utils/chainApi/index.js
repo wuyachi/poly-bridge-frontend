@@ -4,6 +4,7 @@ import { ChainId } from '@/utils/enums';
 const APIS = {
   [ChainId.Eth]: () => import('./eth'),
   [ChainId.Neo]: () => import('./neo'),
+  [ChainId.N3]: () => import('./n3'),
   [ChainId.Bsc]: () => import('./eth'),
   [ChainId.Heco]: () => import('./eth'),
   [ChainId.Ont]: () => import('./ont'),
@@ -12,6 +13,7 @@ const APIS = {
   [ChainId.Polygon]: () => import('./eth'),
   [ChainId.Arbitrum]: () => import('./eth'),
   [ChainId.xDai]: () => import('./eth'),
+  [ChainId.Optimistic]: () => import('./eth'),
 };
 
 export async function getChainApi(chainId) {
