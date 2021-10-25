@@ -24,6 +24,7 @@ export const ChainId = {
   Palette: TARGET_MAINNET ? 8 : 107,
   Polygon: TARGET_MAINNET ? 17 : 202,
   Arbitrum: TARGET_MAINNET ? 19 : 205,
+  Optimistic: TARGET_MAINNET ? 207 : 207,
 };
 
 export const SingleTransactionStatus = {

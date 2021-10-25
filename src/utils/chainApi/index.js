@@ -13,6 +13,7 @@ const APIS = {
   [ChainId.Polygon]: () => import('./eth'),
   [ChainId.Arbitrum]: () => import('./eth'),
   [ChainId.xDai]: () => import('./eth'),
+  [ChainId.Optimistic]: () => import('./eth'),
 };
 
 export async function getChainApi(chainId) {
