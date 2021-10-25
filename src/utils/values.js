@@ -130,10 +130,10 @@ export const CHAINS = [
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://neotube.io/transaction/0x{txHash}'
-      : 'https://testnet.neotube.io/transaction/0x{txHash}',
+      : 'https://neo3.testnet.neotube.io/transaction/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '125c83403763670c215f9c7c815ef759b258a41b'
-      : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
+      ? 'd63810ca692b43e0ed35bfa40e653d05b2cb3585'
+      : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
   },
   {
     id: ChainId.xDai,

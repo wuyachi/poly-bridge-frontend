@@ -185,6 +185,8 @@ async function lock({
     });
 
     const toChainApi = await getChainApi(toChainId);
+    const fromChainApi = await getChainApi(fromChainId);
+    const fromAddressHash = await fromChainApi.addressToHash(fromAddress);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, tokenBasic.decimals);
@@ -197,16 +199,15 @@ async function lock({
         { type: 'Address', value: fromAddress },
         { type: 'Integer', value: toChainId },
         { type: 'ByteArray', value: toAddressHex },
-        { type: 'Integer', value: amountInt },
-        { type: 'Integer', value: feeInt },
+        { type: 'Integer', value: 1 },
+        { type: 'Integer', value: 0 },
         { type: 'Integer', value: 0 },
       ],
-      fee: '0.0001',
       broadcastOverride: false,
       signers: [
         {
-          account: fromAddress,
-          scopes: 1,
+          account: fromAddressHash,
+          scopes: 128,
         },
       ],
     };
