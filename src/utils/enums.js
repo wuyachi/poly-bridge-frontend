@@ -4,6 +4,7 @@ export const WalletName = {
   MetaMask: 'MetaMask',
   Math: 'Math Wallet',
   NeoLine: 'NeoLine',
+  NeoLineN3: 'NeoLineN3',
   O3: 'O3',
   Binance: 'Binance',
   Cyano: 'Cyano',
@@ -15,14 +16,15 @@ export const ChainId = {
   Eth: 2,
   Ont: 3,
   Neo: TARGET_MAINNET ? 4 : 5,
-  N3: TARGET_MAINNET ? 14 : 14,
-  xDai: TARGET_MAINNET ? 206 : 206,
+  N3: TARGET_MAINNET ? 14 : 88,
+  xDai: TARGET_MAINNET ? 20 : 206,
   Bsc: TARGET_MAINNET ? 6 : 79,
   Heco: 7,
   Ok: TARGET_MAINNET ? 12 : 200,
   Palette: TARGET_MAINNET ? 8 : 107,
   Polygon: TARGET_MAINNET ? 17 : 202,
   Arbitrum: TARGET_MAINNET ? 19 : 205,
+  Optimistic: TARGET_MAINNET ? 207 : 207,
 };
 
 export const SingleTransactionStatus = {
