@@ -141,7 +141,7 @@ export const CHAINS = [
     nativeFee: false,
     icon: require('@/assets/png/xdai.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://blockscout.com/poa/core/tx/0x{txHash}'
+      ? 'https://blockscout.com/xdai/mainnet/tx/0x{txHash}'
       : 'https://blockscout.com/poa/sokol/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0x74A7f2A3aFa8B0CB577985663B5811901A860619'
