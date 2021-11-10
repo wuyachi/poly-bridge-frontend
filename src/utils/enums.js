@@ -17,7 +17,7 @@ export const ChainId = {
   Ont: 3,
   Neo: TARGET_MAINNET ? 4 : 5,
   N3: TARGET_MAINNET ? 14 : 88,
-  xDai: TARGET_MAINNET ? 206 : 206,
+  xDai: TARGET_MAINNET ? 20 : 206,
   Bsc: TARGET_MAINNET ? 6 : 79,
   Heco: 7,
   Ok: TARGET_MAINNET ? 12 : 200,
@@ -25,6 +25,8 @@ export const ChainId = {
   Polygon: TARGET_MAINNET ? 17 : 202,
   Arbitrum: TARGET_MAINNET ? 19 : 205,
   Optimistic: TARGET_MAINNET ? 207 : 207,
+  Fantom: TARGET_MAINNET ? 208 : 208,
+  Avalanche: TARGET_MAINNET ? 209 : 209,
 };
 
 export const SingleTransactionStatus = {
