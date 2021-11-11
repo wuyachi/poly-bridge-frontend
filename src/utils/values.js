@@ -237,8 +237,8 @@ export const CHAINS = [
     nativeFee: true,
     icon: require('@/assets/png/avax.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://explorer.avax.network/tx/{txHash}'
-      : 'https://testnet.avascan.info/tx/{txHash}',
+      ? 'https://explorer.avax.network/tx/0x{txHash}'
+      : 'https://testnet.avascan.info/blockchain/c/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? 'ac0a6759696569B3729177ba6844D41FF6D57844'
       : 'ac0a6759696569B3729177ba6844D41FF6D57844',
