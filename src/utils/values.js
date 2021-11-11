@@ -206,7 +206,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
   },
-  {
+  /* {
     id: ChainId.Optimistic,
     nativeFee: true,
     icon: require('@/assets/svg/op.svg'),
@@ -218,7 +218,7 @@ export const CHAINS = [
       : '032F9A78473F73A6E10B78CD165F547559125EF1',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
-  },
+  }, */
   {
     id: ChainId.Fantom,
     nativeFee: true,
@@ -227,7 +227,7 @@ export const CHAINS = [
       ? 'https://ftmscan.com/tx/0x{txHash}'
       : 'https://testnet.ftmscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? 'FAddf0cfb08F92779560db57BE6b2C7303aaD266'
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
       : 'FAddf0cfb08F92779560db57BE6b2C7303aaD266',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'FTM',
@@ -237,10 +237,10 @@ export const CHAINS = [
     nativeFee: true,
     icon: require('@/assets/png/avax.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://explorer.avax.network/tx/0x{txHash}'
+      ? 'https://avascan.info/blockchain/c/tx/0x{txHash}'
       : 'https://testnet.avascan.info/blockchain/c/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? 'ac0a6759696569B3729177ba6844D41FF6D57844'
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
       : 'ac0a6759696569B3729177ba6844D41FF6D57844',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'AVAX',
