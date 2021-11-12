@@ -127,7 +127,7 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
-  {
+  /* {
     id: ChainId.N3,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -139,7 +139,7 @@ export const CHAINS = [
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
     nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
     nftFeeName: 'GAS',
-  },
+  }, */
   {
     id: ChainId.xDai,
     nativeFee: false,
