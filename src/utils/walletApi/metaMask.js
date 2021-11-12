@@ -286,7 +286,8 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const tokenID = decimalToInteger(id, 0);
     const feeInt = decimalToInteger(fee, 18);
-
+    let feeTokenHash = fromChainId !== 107 ? NFT_FEE_TOKEN_HASH : PLT_NFT_FEE_TOKEN_HASH;
+    feeTokenHash = fromChainId !== 8 ? NFT_FEE_TOKEN_HASH : PLT_NFT_FEE_TOKEN_HASH;
     const result = await confirmLater(
       lockContract.methods
         .lock(
@@ -294,13 +295,13 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
           toChainId,
           `0x${toAddressHex}`,
           tokenID,
-          NFT_FEE_TOKEN_HASH,
+          feeTokenHash,
           feeInt,
           0,
         )
         .send({
           from: fromAddress,
-          value: feeInt,
+          value: feeTokenHash === NFT_FEE_TOKEN_HASH ? feeInt : 0,
         }),
     );
     return toStandardHex(result);
