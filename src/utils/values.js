@@ -26,6 +26,8 @@ export const WALLETS = [
       ChainId.Arbitrum,
       ChainId.xDai,
       ChainId.Optimistic,
+      ChainId.Fantom,
+      ChainId.Avalanche,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -131,10 +133,12 @@ export const CHAINS = [
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://neotube.io/transaction/0x{txHash}'
-      : 'https://neo3.testnet.neotube.io/transaction/0x{txHash}',
+      : 'https://neo3.testnet.neotube.io/transaction/{txHash}',
     lockContractHash: TARGET_MAINNET
       ? 'd63810ca692b43e0ed35bfa40e653d05b2cb3585'
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
+    nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
+    nftFeeName: 'GAS',
   }, */
   {
     id: ChainId.xDai,
@@ -215,6 +219,32 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
   }, */
+  {
+    id: ChainId.Fantom,
+    nativeFee: true,
+    icon: require('@/assets/png/ftm.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://ftmscan.com/tx/0x{txHash}'
+      : 'https://testnet.ftmscan.com/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
+      : 'FAddf0cfb08F92779560db57BE6b2C7303aaD266',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'FTM',
+  },
+  {
+    id: ChainId.Avalanche,
+    nativeFee: true,
+    icon: require('@/assets/png/avax.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://avascan.info/blockchain/c/tx/0x{txHash}'
+      : 'https://testnet.avascan.info/blockchain/c/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
+      : 'ac0a6759696569B3729177ba6844D41FF6D57844',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'AVAX',
+  },
   {
     id: ChainId.Arbitrum,
     nativeFee: true,
