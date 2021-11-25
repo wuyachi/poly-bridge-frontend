@@ -206,7 +206,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
   },
-  /* {
+  {
     id: ChainId.Optimistic,
     nativeFee: true,
     icon: require('@/assets/svg/op.svg'),
@@ -214,11 +214,11 @@ export const CHAINS = [
       ? 'https://optimistic.etherscan.io/tx/0x{txHash}'
       : 'https://kovan-optimistic.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '032F9A78473F73A6E10B78CD165F547559125EF1'
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
       : '032F9A78473F73A6E10B78CD165F547559125EF1',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
-  }, */
+  },
   {
     id: ChainId.Fantom,
     nativeFee: true,
