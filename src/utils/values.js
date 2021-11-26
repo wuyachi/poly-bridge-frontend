@@ -127,7 +127,7 @@ export const CHAINS = [
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
   },
-  /* {
+  {
     id: ChainId.N3,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -139,7 +139,7 @@ export const CHAINS = [
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
     nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
     nftFeeName: 'GAS',
-  }, */
+  },
   {
     id: ChainId.xDai,
     nativeFee: false,
@@ -206,7 +206,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
   },
-  /* {
+  {
     id: ChainId.Optimistic,
     nativeFee: true,
     icon: require('@/assets/svg/op.svg'),
@@ -214,11 +214,11 @@ export const CHAINS = [
       ? 'https://optimistic.etherscan.io/tx/0x{txHash}'
       : 'https://kovan-optimistic.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '032F9A78473F73A6E10B78CD165F547559125EF1'
+      ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
       : '032F9A78473F73A6E10B78CD165F547559125EF1',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
-  }, */
+  },
   {
     id: ChainId.Fantom,
     nativeFee: true,
