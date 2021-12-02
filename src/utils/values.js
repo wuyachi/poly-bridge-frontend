@@ -200,6 +200,9 @@ export const CHAINS = [
     explorerUrl: TARGET_MAINNET
       ? 'https://polygonscan.com/tx/0x{txHash}'
       : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://polygonscan.com/tx/0x{txHash}'
+      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xB88f13682F3C602aCD84B4b2eEB96A9DD75Afd89'
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
