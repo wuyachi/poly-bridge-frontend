@@ -116,7 +116,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
   },
-  {
+  /*   {
     id: ChainId.Neo,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -126,7 +126,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
-  },
+  }, */
   {
     id: ChainId.N3,
     nativeFee: false,
@@ -200,9 +200,15 @@ export const CHAINS = [
     explorerUrl: TARGET_MAINNET
       ? 'https://polygonscan.com/tx/0x{txHash}'
       : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://polygonscan.com/tx/0x{txHash}'
+      : 'https://mumbai.polygonscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xB88f13682F3C602aCD84B4b2eEB96A9DD75Afd89'
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692'
+      : '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
   },
