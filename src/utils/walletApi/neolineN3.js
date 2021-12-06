@@ -197,7 +197,6 @@ async function lock({
     });
     const amountInt = decimalToInteger(amount, fromToken.decimals);
     const feeInt = decimalToInteger(fee, 8);
-
     const params = {
       scriptHash: chain.lockContractHash,
       operation: 'lock',
@@ -214,7 +213,8 @@ async function lock({
       signers: [
         {
           account: fromAddressHash,
-          scopes: 128,
+          scopes: 17,
+          allowedContracts: [`0x${fromTokenHash}`],
         },
       ],
     };
