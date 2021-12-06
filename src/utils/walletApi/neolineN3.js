@@ -138,7 +138,7 @@ async function getTransactionStatus({ transactionHash }) {
   try {
     let applicationLog = null;
     try {
-      applicationLog = await neoDapi.getApplicationLog({ txid: transactionHash });
+      applicationLog = await n3Dapi.getApplicationLog({ txid: transactionHash });
       // fix network error
       if (!applicationLog) {
         throw new WalletError('Communicate failed with wallet.', {
@@ -154,7 +154,7 @@ async function getTransactionStatus({ transactionHash }) {
     if (applicationLog) {
       const vmstate = _.get(applicationLog, 'executions[0].vmstate');
       const result = _.get(applicationLog, 'executions[0].stack[0].value');
-      return vmstate === 'HALT' && result === '1'
+      return vmstate === 'HALT' && result
         ? SingleTransactionStatus.Done
         : SingleTransactionStatus.Failed;
     }
@@ -197,7 +197,6 @@ async function lock({
     });
     const amountInt = decimalToInteger(amount, fromToken.decimals);
     const feeInt = decimalToInteger(fee, 8);
-
     const params = {
       scriptHash: chain.lockContractHash,
       operation: 'lock',
@@ -214,7 +213,8 @@ async function lock({
       signers: [
         {
           account: fromAddressHash,
-          scopes: 128,
+          scopes: 17,
+          allowedContracts: [`0x${fromTokenHash}`],
         },
       ],
     };
