@@ -206,6 +206,9 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '0xB88f13682F3C602aCD84B4b2eEB96A9DD75Afd89'
       : '0xD5d63Dce45E0275Ca76a8b2e9BD8C11679A57D0D',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692'
+      : '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
   },
