@@ -9,6 +9,9 @@ import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
 
 const NEOLINEN3_CONNECTED_KEY = 'NEOLINEN3_CONNECTED';
+const NEW_GAS = TARGET_MAINNET
+  ? '0xd2a4cff31913016155e38e474a2c06d08be276cf'
+  : '0xd2a4cff31913016155e38e474a2c06d08be276cf';
 
 const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 'MainNet' : 'N3TestNet']: ChainId.N3,
@@ -214,7 +217,7 @@ async function lock({
         {
           account: fromAddressHash,
           scopes: 17,
-          allowedContracts: [`0x${fromTokenHash}`],
+          allowedContracts: [`0x${fromTokenHash}`, NEW_GAS],
         },
       ],
     };
