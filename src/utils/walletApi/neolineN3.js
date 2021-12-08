@@ -223,7 +223,7 @@ async function lock({
     };
     console.log(params);
     const result = await n3Dapi.invoke(params);
-    return result.txid;
+    return result.txid.substr(2, 64);
   } catch (error) {
     throw convertWalletError(error);
   }
