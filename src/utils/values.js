@@ -28,6 +28,7 @@ export const WALLETS = [
       ChainId.Optimistic,
       ChainId.Fantom,
       ChainId.Avalanche,
+      ChainId.Metis,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -132,10 +133,10 @@ export const CHAINS = [
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://neotube.io/transaction/0x{txHash}'
+      ? 'https://neo3.neotube.io/transaction/{txHash}'
       : 'https://neo3.testnet.neotube.io/transaction/{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? 'd63810ca692b43e0ed35bfa40e653d05b2cb3585'
+      ? 'f8328398c4c8e77b6c5843f5e404be0170d5012e'
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
     nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
     nftFeeName: 'GAS',
@@ -152,6 +153,19 @@ export const CHAINS = [
       : '0xa7eDA65F94A2a334a0de42d479585b65D27b2249',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'xDai',
+  },
+  {
+    id: ChainId.Metis,
+    nativeFee: false,
+    icon: require('@/assets/png/metis.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'http://stardust-explorer.metis.io/tx/0x{txHash}'
+      : 'http://stardust-explorer.metis.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xb0354F5383839e163438Aa53dd58E5e70a548F2F'
+      : '0xb0354F5383839e163438Aa53dd58E5e70a548F2F',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'Metis',
   },
   {
     id: ChainId.Bsc,
