@@ -277,10 +277,13 @@ async function lock({
 async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toAddress, id, fee }) {
   try {
     const chain = store.getters.getChain(fromChainId);
-
+    let nftContract = chain.nftLockContractHash;
+    if (fromChainId === 2 && toChainId === 8) {
+      nftContract = chain.pltNftLockContractHash;
+    }
     const lockContract = new web3.eth.Contract(
       require('@/assets/json/eth-nft-lock.json'),
-      chain.nftLockContractHash,
+      nftContract,
     );
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
