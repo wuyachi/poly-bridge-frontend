@@ -154,7 +154,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'xDai',
   },
-  {
+  /*   {
     id: ChainId.Metis,
     nativeFee: false,
     icon: require('@/assets/png/metis.png'),
@@ -166,7 +166,7 @@ export const CHAINS = [
       : '0xb0354F5383839e163438Aa53dd58E5e70a548F2F',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'Metis',
-  },
+  }, */
   {
     id: ChainId.Bsc,
     nativeFee: true,
