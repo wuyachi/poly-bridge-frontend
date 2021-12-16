@@ -243,7 +243,7 @@ async function lock ({
     const toChainApi = await getChainApi(toChainId);
     const fromChainApi = await getChainApi(fromChainId);
     const fromAddressHex = fromChainApi.addressToHex(fromAddress);
-    const toAddressHex = toChainApi.addressToHex(toAddress);
+    const toAddressHex = await toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, tokenBasic.decimals);
     const hexChainid = utils.num2VarInt(toChainId)
