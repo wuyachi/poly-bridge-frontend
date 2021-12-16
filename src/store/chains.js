@@ -10,7 +10,10 @@ export default {
   state: {
     chainMap: CHAINS.reduce((pre, cur) => {
       const lockContractHash = cur.lockContractHash && toStandardHex(cur.lockContractHash);
-      return { ...pre, [cur.id]: { ...cur, lockContractHash } };
+      const lockContractHash2 = cur.lockContractHash2
+        ? cur.lockContractHash2 && toStandardHex(cur.lockContractHash2)
+        : null;
+      return { ...pre, [cur.id]: { ...cur, lockContractHash, lockContractHash2 } };
     }, {}),
     chainSelectedWalletMap: {},
   },
