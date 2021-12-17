@@ -22,11 +22,13 @@ const NETWORK_CHAIN_ID_MAPS = {
 };
 
 function convertWalletError (error) {
+  debugger
   if (error instanceof WalletError) {
     return error;
   }
   let code = '';
-  switch (error.type) {
+  const type = error.type ? error.type : error
+  switch (type) {
     case 'NO_PROVIDER':
       code = WalletError.CODES.NOT_INSTALLED;
       break;
