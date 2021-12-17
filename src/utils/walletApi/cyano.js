@@ -21,8 +21,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 'MAIN' : 'TEST']: ChainId.Ont,
 };
 
-function convertWalletError (error) {
-  debugger
+function convertWalletError (error) {  
   if (error instanceof WalletError) {
     return error;
   }
