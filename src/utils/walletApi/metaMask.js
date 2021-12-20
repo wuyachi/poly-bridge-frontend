@@ -147,14 +147,16 @@ async function getO3Balance({ chainId, address, tokenHash }) {
   }
 }
 
-async function getAllowance({ chainId, address, tokenHash, spender }) {
+async function getAllowance({ chainId, address, tokenHash, finSpender }) {
+  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
       return null;
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
-    const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
+    const result = await tokenContract.methods.allowance(address, `0x${finSpender}`).call();
+    console.log(integerToDecimal(result, tokenBasic.decimals));
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
@@ -252,10 +254,13 @@ async function lock({
       chainId: fromChainId,
       tokenHash: fromTokenHash,
     });
-
+    let finLockContractHash = chain.lockContractHash;
+    if (fromChainId === 300 || toChainId === 300) {
+      finLockContractHash = chain.lockContractHash2;
+    }
     const lockContract = new web3.eth.Contract(
       require('@/assets/json/eth-lock.json'),
-      chain.lockContractHash,
+      finLockContractHash,
     );
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = await toChainApi.addressToHex(toAddress);
