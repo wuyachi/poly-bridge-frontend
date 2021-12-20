@@ -21,12 +21,13 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 'MAIN' : 'TEST']: ChainId.Ont,
 };
 
-function convertWalletError (error) {
+function convertWalletError (error) {  
   if (error instanceof WalletError) {
     return error;
   }
   let code = '';
-  switch (error.type) {
+  const type = error.type ? error.type : error
+  switch (type) {
     case 'NO_PROVIDER':
       code = WalletError.CODES.NOT_INSTALLED;
       break;
