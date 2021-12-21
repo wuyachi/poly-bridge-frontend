@@ -409,36 +409,20 @@ export default {
       return this.getBalanceParams && this.$store.getters.getBalance(this.getBalanceParams);
     },
     getAllowanceParams() {
-      debugger;
-      if (this.fromWallet && this.fromChain && this.fromToken && this.toChain) {
+      if (this.fromWallet && this.fromChain && this.fromToken) {
         return {
           chainId: this.fromChainId,
-          toChainId: this.toChainId,
           address: this.fromWallet.address,
           tokenHash: this.fromToken.hash,
           spender: this.fromChain.lockContractHash,
-          spender2: this.fromChain.lockContractHash2,
         };
       }
       return null;
     },
     allowance() {
-      let sfinSpender = this.fromChain.lockContractHash;
-      if (this.toChainId === 300 || this.fromChainId === 300) {
-        sfinSpender = this.fromChain.lockContractHash2;
-      }
-      const params = {
-        chainId: this.fromChainId,
-        address: this.fromWallet.address,
-        tokenHash: this.fromToken.hash,
-        finSpender: sfinSpender,
-      };
-      console.log('getAllowance');
-      console.log(this.getAllowanceParams && this.$store.getters.getAllowance(params));
-      return this.getAllowanceParams && this.$store.getters.getAllowance(params);
+      return this.getAllowanceParams && this.$store.getters.getAllowance(this.getAllowanceParams);
     },
     needApproval() {
-      debugger;
       return !!this.amount && !!this.allowance && new BigNumber(this.amount).gt(this.allowance);
     },
     getFeeParams() {
@@ -568,11 +552,6 @@ export default {
     async approve() {
       await this.$store.dispatch('ensureChainWalletReady', this.fromChainId);
       // const InfinityAmount = 9999999999999
-
-      let sfinSpender = this.fromChain.lockContractHash;
-      if (this.toChainId === 300 || this.fromChainId === 300) {
-        sfinSpender = this.fromChain.lockContractHash2;
-      }
       try {
         this.approving = true;
         const walletApi = await getWalletApi(this.fromWallet.name);
@@ -586,7 +565,7 @@ export default {
             chainId: this.fromChainId,
             address: this.fromWallet.address,
             tokenHash: this.fromToken.hash,
-            spender: sfinSpender,
+            spender: this.fromChain.lockContractHash,
             amount: 0,
           });
         }
@@ -595,7 +574,7 @@ export default {
           chainId: this.fromChainId,
           address: this.fromWallet.address,
           tokenHash: this.fromToken.hash,
-          spender: sfinSpender,
+          spender: this.fromChain.lockContractHash,
           amount: this.approveInfinityChecked ? InfinityAmount : this.amount,
         });
 
