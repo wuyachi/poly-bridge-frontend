@@ -47,6 +47,7 @@ export default {
       time: 'Estimated Transaction Time',
       o3ToolTip: 'Available Balance',
       feeTooltip: 'Transaction fee on target chain',
+      selfPay: 'Self Pay',
       timeTooltip:
         'An estimation of how long funds will arrive in the destination address based on overall transfer history.',
       connectWallet: 'Connect Wallet',
@@ -122,6 +123,8 @@ export default {
   },
   buttons: {
     next: 'Next',
+    speedup: 'Speed Up',
+    pay: 'Pay',
     confirm: 'Confirm',
     confirming: 'Confirming...',
     approve: 'Approve',

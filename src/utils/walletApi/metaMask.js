@@ -238,7 +238,15 @@ async function getNFTApproved({ fromChainId, toChainId, tokenHash, id }) {
     throw convertWalletError(error);
   }
 }
-
+async function sendSelfPayTx({ txdata }) {
+  try {
+    debugger;
+    const result = web3.eth.sendSignedTransaction(`0x${txdata}`);
+    return result;
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
 async function lock({
   fromChainId,
   fromAddress,
@@ -334,6 +342,7 @@ export default {
   lock,
   nftLock,
   nftApprove,
+  sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
 };
