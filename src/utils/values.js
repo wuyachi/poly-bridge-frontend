@@ -165,8 +165,8 @@ export const CHAINS = [
       ? 'http://stardust-explorer.metis.io/tx/0x{txHash}'
       : 'http://stardust-explorer.metis.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x997a029778289BFE5777C2C48DD884D49cD3868A'
-      : '0x997a029778289BFE5777C2C48DD884D49cD3868A',
+      ? '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9'
+      : '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'Metis',
   },
@@ -183,7 +183,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '0x4b0CFdb5e1Ca898a225F9E14AfF9e4eF178a10d2'
       : //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
-        '0x9f9F15CC407F7b26f55D71D43f993580a9107007',
+        '0xfb717F8d478156fE7428369075bB2FaB4Ea659B5',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
