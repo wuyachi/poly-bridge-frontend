@@ -30,7 +30,6 @@ export default {
     },
     async getManualTxData({ commit }, polyHash) {
       const manualTxData = await httpApi.getManualTxData({ polyHash });
-      debugger;
       commit('setManualTxData', { params: { polyHash }, value: manualTxData });
     },
   },

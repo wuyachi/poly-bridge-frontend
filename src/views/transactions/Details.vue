@@ -153,7 +153,7 @@ export default {
       );
     },
     selfPay() {
-      return Number(this.transaction.FeeAmount) === 0;
+      return Number(this.transaction.fee) === 0;
     },
     finished() {
       return !!this.transaction && this.transaction.status === TransactionStatus.Finished;
@@ -174,8 +174,11 @@ export default {
     mergedHash() {
       this.getTransaction();
     },
-    manualTxData() {
-      this.sendTx();
+    manualTxData(newVal, oldVal) {
+      console.log(this.manualTxData);
+      if (newVal !== oldVal) {
+        this.sendTx();
+      }
     },
   },
   created() {
@@ -236,10 +239,15 @@ export default {
       }
     },
     async sendTx() {
-      console.log(this.fromWallet);
-      debugger;
-      const walletApi = await getWalletApi(this.fromWallet.name);
-      await walletApi.sendSelfPayTx(this.manualTxData.data);
+      const self = this;
+      console.log(self.fromWallet);
+      const walletApi = await getWalletApi(self.fromWallet.name);
+      const params = {
+        data: self.manualTxData.data,
+        toAddress: self.manualTxData.dst_ccm,
+        toChainId: self.steps[2].chainId,
+      };
+      await walletApi.sendSelfPayTx(params);
     },
   },
 };
