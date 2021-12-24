@@ -7,8 +7,8 @@ export default {
     allowanceMap: {},
   },
   getters: {
-    getAllowance: state => ({ chainId, address, tokenHash, finSpender }) =>
-      state.allowanceMap[getStoreKey({ chainId, address, tokenHash, finSpender })],
+    getAllowance: state => ({ chainId, address, tokenHash, spender }) =>
+      state.allowanceMap[getStoreKey({ chainId, address, tokenHash, spender })],
   },
   mutations: {
     setAllowance(state, { params, value }) {
@@ -16,24 +16,17 @@ export default {
     },
   },
   actions: {
-    async getAllowance(
-      { getters, commit },
-      { chainId, toChainId, address, tokenHash, spender, spender2 },
-    ) {
+    async getAllowance({ getters, commit }, { chainId, address, tokenHash, spender }) {
       const wallet = getters.getChainConnectedWallet(chainId);
       let allowance = null;
-      let finSpender = spender;
-      if (toChainId === 300 || chainId === 300) {
-        finSpender = spender2;
-      }
       if (wallet) {
         const walletApi = await getWalletApi(wallet.name);
-        allowance = await walletApi.getAllowance({ chainId, address, tokenHash, finSpender });
+        allowance = await walletApi.getAllowance({ chainId, address, tokenHash, spender });
       }
-      const oldValue = getters.getAllowance({ chainId, address, tokenHash, finSpender });
+      const oldValue = getters.getAllowance({ chainId, address, tokenHash, spender });
       if (oldValue !== allowance) {
         commit('setAllowance', {
-          params: { chainId, address, tokenHash, finSpender },
+          params: { chainId, address, tokenHash, spender },
           value: allowance,
         });
       }
