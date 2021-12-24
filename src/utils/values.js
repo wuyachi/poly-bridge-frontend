@@ -167,7 +167,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9'
       : '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9',
-    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeContractHash: 'deaddeaddeaddeaddeaddeaddeaddeaddead0000',
     nftFeeName: 'Metis',
   },
   {
