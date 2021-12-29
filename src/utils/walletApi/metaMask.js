@@ -148,7 +148,6 @@ async function getO3Balance({ chainId, address, tokenHash }) {
 }
 
 async function getAllowance({ chainId, address, tokenHash, spender }) {
-  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
