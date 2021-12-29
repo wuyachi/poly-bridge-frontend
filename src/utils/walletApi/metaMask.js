@@ -169,7 +169,6 @@ async function getO3Balance({ chainId, address, tokenHash }) {
 }
 
 async function getAllowance({ chainId, address, tokenHash, spender }) {
-  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -276,7 +275,6 @@ async function sendSelfPayTx({ data, toAddress, toChainId }) {
       chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
     };
 
-    debugger;
     const txHash = await window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],
