@@ -130,6 +130,17 @@
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
+          <div v-if="fee && selfPayFlag" class="fee">
+            <el-checkbox v-model="selfPayChecked"
+              >{{ $t('home.form.selfPay') }}
+              <CTooltip>
+                <img class="tooltip-icon" src="@/assets/svg/question.svg" />
+                <template #content>
+                  {{ $t('home.form.selfPay') }}
+                </template>
+              </CTooltip>
+            </el-checkbox>
+          </div>
           <div v-if="fee" class="fee">
             <span class="label">{{ $t('home.form.maxamount') }}</span>
             <CTooltip>
@@ -163,7 +174,7 @@
               </template>
             </CTooltip>
             <CFlexSpan />
-            <span class="fee-value">{{ $formatNumber(fee.TokenAmount) }}</span>
+            <span class="fee-value">{{ $formatNumber(selfPayChecked ? 0 : fee.TokenAmount) }}</span>
             <img class="fee-icon" :src="fromChain.nftFeeName ? fromChain.icon : tokenBasic.meta" />
             <span class="fee-token">{{
               fromChain.nftFeeName ? fromChain.nftFeeName : fromToken.name
@@ -295,6 +306,7 @@ export default {
       approving: false,
       confirmingData: null,
       approveInfinityChecked: false,
+      selfPayChecked: false,
       confirmUuid: uuidv4(),
     };
   },
@@ -381,6 +393,9 @@ export default {
     },
     toChain() {
       return this.$store.getters.getChain(this.toChainId);
+    },
+    selfPayFlag() {
+      return this.toChain.selfPay;
     },
     toToken() {
       return (
@@ -483,6 +498,15 @@ export default {
         await this.$store.dispatch('ensureChainWalletReady', value.chainId);
         this.$store.dispatch('getAllowance', value);
       }
+    },
+    fromChain() {
+      this.selfPayChecked = false;
+    },
+    fromToken() {
+      this.selfPayChecked = false;
+    },
+    toChain() {
+      this.selfPayChecked = false;
     },
   },
   created() {
@@ -592,7 +616,7 @@ export default {
         fromTokenHash: this.fromToken.hash,
         toTokenHash: this.toToken.hash,
         amount: this.amount,
-        fee: this.fee.TokenAmount,
+        fee: this.selfPayChecked ? 0 : this.fee.TokenAmount,
       };
       this.confirmVisible = true;
     },

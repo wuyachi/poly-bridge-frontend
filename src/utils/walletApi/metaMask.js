@@ -1,7 +1,13 @@
 import Web3 from 'web3';
 import store from '@/store';
 import { getChainApi } from '@/utils/chainApi';
-import { integerToDecimal, decimalToInteger, toStandardHex } from '@/utils/convertors';
+import {
+  integerToDecimal,
+  decimalToInteger,
+  toStandardHex,
+  integerToHex,
+  reverseHex,
+} from '@/utils/convertors';
 import { WalletName, ChainId, SingleTransactionStatus } from '@/utils/enums';
 import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
@@ -24,6 +30,21 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 250 : 4002]: ChainId.Fantom,
   [TARGET_MAINNET ? 43114 : 43113]: ChainId.Avalanche,
   [TARGET_MAINNET ? 1088 : 588]: ChainId.Metis,
+};
+
+const ETH_NETWORK_CHAIN_ID_MAPS = {
+  [ChainId.Eth]: TARGET_MAINNET ? 1 : 3,
+  [ChainId.Bsc]: TARGET_MAINNET ? 56 : 97,
+  [ChainId.Heco]: TARGET_MAINNET ? 128 : 256,
+  [ChainId.Ok]: TARGET_MAINNET ? 66 : 65,
+  [ChainId.xDai]: TARGET_MAINNET ? 100 : 77,
+  [ChainId.Polygon]: TARGET_MAINNET ? 137 : 80001,
+  [ChainId.Palette]: TARGET_MAINNET ? 1718 : 101,
+  [ChainId.Arbitrum]: TARGET_MAINNET ? 42161 : 421611,
+  [ChainId.Optimistic]: TARGET_MAINNET ? 10 : 69,
+  [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
+  [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
+  [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
 };
 
 let web3;
@@ -148,7 +169,6 @@ async function getO3Balance({ chainId, address, tokenHash }) {
 }
 
 async function getAllowance({ chainId, address, tokenHash, spender }) {
-  debugger;
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
     if (tokenHash === '0000000000000000000000000000000000000000') {
@@ -238,7 +258,32 @@ async function getNFTApproved({ fromChainId, toChainId, tokenHash, id }) {
     throw convertWalletError(error);
   }
 }
+async function sendSelfPayTx({ data, toAddress, toChainId }) {
+  try {
+    const txdata = data;
+    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    const address = accounts[0] || null;
+    const toEthChainID = ETH_NETWORK_CHAIN_ID_MAPS[toChainId];
+    const transactionParameters = {
+      nonce: '0x00', // ignored by MetaMask
+      // gasPrice: `0x${reverseHex(integerToHex(1000000))}`, // customizable by user during MetaMask confirmation.
+      // gas: `0x${reverseHex(integerToHex(400000))}`, // customizable by user during MetaMask confirmation.
+      to: toAddress, // Required except during contract publications.
+      from: address, // must match user's active address.
+      value: '0x00', // Only required to send ether to the recipient from the initiating external account.
+      data: txdata, // Optional, but used for defining smart contract creation and interaction.
+      chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+    };
 
+    const txHash = await window.ethereum.request({
+      method: 'eth_sendTransaction',
+      params: [transactionParameters],
+    });
+    return txHash;
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
 async function lock({
   fromChainId,
   fromAddress,
@@ -334,6 +379,7 @@ export default {
   lock,
   nftLock,
   nftApprove,
+  sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
 };

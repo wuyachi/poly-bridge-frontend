@@ -51,6 +51,13 @@
                 })
               }}
             </CLink>
+            <CSubmitButton
+              v-if="index == 2 && getStepStatus(2) === 'pending'"
+              @click="payTochainFee"
+              class="button-submit"
+            >
+              {{ selfPay ? $t('buttons.pay') : $t('buttons.speedup') }}
+            </CSubmitButton>
           </template>
 
           <template v-else-if="step.failed">
@@ -79,6 +86,7 @@
 <script>
 import { ChainId, SingleTransactionStatus, TransactionStatus } from '@/utils/enums';
 import { HttpError } from '@/utils/errors';
+import { getWalletApi } from '@/utils/walletApi';
 
 export default {
   name: 'Details',
@@ -93,6 +101,18 @@ export default {
     },
     transaction() {
       return this.$store.getters.getTransaction(this.mergedHash);
+    },
+    manualTxData() {
+      return (
+        this.transaction &&
+        this.$store.getters.getManualTxData({ polyHash: this.transaction.steps[1].hash })
+      );
+    },
+    fromWallet() {
+      return (
+        this.transaction &&
+        this.$store.getters.getChainConnectedWallet(this.transaction.fromChainId)
+      );
     },
     mergedTransaction() {
       return (
@@ -132,6 +152,9 @@ export default {
         this.confirmingData.transactionStatus === SingleTransactionStatus.Failed
       );
     },
+    selfPay() {
+      return Number(this.transaction.fee) === 0;
+    },
     finished() {
       return !!this.transaction && this.transaction.status === TransactionStatus.Finished;
     },
@@ -150,6 +173,12 @@ export default {
   watch: {
     mergedHash() {
       this.getTransaction();
+    },
+    manualTxData(newVal, oldVal) {
+      console.log(this.manualTxData);
+      if (newVal !== oldVal) {
+        this.sendTx();
+      }
     },
   },
   created() {
@@ -195,11 +224,40 @@ export default {
         }
       }
     },
+    async payTochainFee() {
+      await this.$store.dispatch('ensureChainWalletReady', this.transaction.toChainId);
+      if (this.transaction.steps[1].hash) {
+        try {
+          this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
+        } catch (error) {
+          if (error instanceof HttpError) {
+            if (error.code === HttpError.CODES.BAD_REQUEST) {
+              return;
+            }
+          }
+          throw error;
+        }
+      }
+    },
+    async sendTx() {
+      const self = this;
+      console.log(self.fromWallet);
+      const walletApi = await getWalletApi(self.fromWallet.name);
+      const params = {
+        data: self.manualTxData.data,
+        toAddress: self.manualTxData.dst_ccm,
+        toChainId: self.steps[2].chainId,
+      };
+      await walletApi.sendSelfPayTx(params);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.button-submit {
+  margin-top: 30px;
+}
 .content {
   display: flex;
   flex-direction: column;
