@@ -224,7 +224,8 @@ export default {
         }
       }
     },
-    payTochainFee() {
+    async payTochainFee() {
+      await this.$store.dispatch('ensureChainWalletReady', this.transaction.toChainId);
       if (this.transaction.steps[1].hash) {
         try {
           this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
@@ -254,6 +255,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.button-submit {
+  margin-top: 30px;
+}
 .content {
   display: flex;
   flex-direction: column;

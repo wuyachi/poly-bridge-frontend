@@ -35,7 +35,7 @@
       </div>
       <div class="chains" v-if="$route.name == 'transactions'">
         <CButton
-          v-for="chain in nftChains"
+          v-for="chain in chains"
           :key="chain.id"
           class="chain"
           :class="{ selected: chainIdWithDefault === chain.id }"

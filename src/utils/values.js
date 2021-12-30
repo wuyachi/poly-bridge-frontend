@@ -119,6 +119,7 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   /*   {
     id: ChainId.Neo,
@@ -143,6 +144,7 @@ export const CHAINS = [
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
     nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
     nftFeeName: 'GAS',
+    selfPay: false,
   },
   {
     id: ChainId.xDai,
@@ -156,6 +158,7 @@ export const CHAINS = [
       : '0xa7eDA65F94A2a334a0de42d479585b65D27b2249',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'xDai',
+    selfPay: true,
   },
   {
     id: ChainId.Metis,
@@ -165,10 +168,11 @@ export const CHAINS = [
       ? 'http://stardust-explorer.metis.io/tx/0x{txHash}'
       : 'http://stardust-explorer.metis.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x997a029778289BFE5777C2C48DD884D49cD3868A'
-      : '0x997a029778289BFE5777C2C48DD884D49cD3868A',
-    nftFeeContractHash: '0000000000000000000000000000000000000000',
+      ? '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9'
+      : '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9',
+    nftFeeContractHash: 'deaddeaddeaddeaddeaddeaddeaddeaddead0000',
     nftFeeName: 'Metis',
+    selfPay: true,
   },
   {
     id: ChainId.Bsc,
@@ -183,12 +187,13 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '0x4b0CFdb5e1Ca898a225F9E14AfF9e4eF178a10d2'
       : //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
-        '0x9f9F15CC407F7b26f55D71D43f993580a9107007',
+        '0xfb717F8d478156fE7428369075bB2FaB4Ea659B5',
     nftLockContractHash: TARGET_MAINNET
       ? '0xe2bD9dD8FAF5C4C2087Ab82eC7E63F619CcAa152'
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'BNB',
+    selfPay: true,
   },
   {
     id: ChainId.Heco,
@@ -209,6 +214,7 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+    selfPay: true,
   },
   {
     id: ChainId.Polygon,
@@ -228,6 +234,7 @@ export const CHAINS = [
       : '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+    selfPay: true,
   },
   {
     id: ChainId.Optimistic,
@@ -241,6 +248,7 @@ export const CHAINS = [
       : '032F9A78473F73A6E10B78CD165F547559125EF1',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Fantom,
@@ -254,6 +262,7 @@ export const CHAINS = [
       : 'FAddf0cfb08F92779560db57BE6b2C7303aaD266',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'FTM',
+    selfPay: true,
   },
   {
     id: ChainId.Avalanche,
@@ -267,6 +276,7 @@ export const CHAINS = [
       : 'ac0a6759696569B3729177ba6844D41FF6D57844',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'AVAX',
+    selfPay: true,
   },
   {
     id: ChainId.Arbitrum,
@@ -280,6 +290,7 @@ export const CHAINS = [
       : '0x27eb74B4Db37517F1dC6dE67364e19782624402F',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Palette,
@@ -299,6 +310,7 @@ export const CHAINS = [
       : '0x0806e6925e6960E06cD4781e22A636bA233B53De',
     nftFeeContractHash: '0000000000000000000000000000000000000103',
     nftFeeName: 'PLT',
+    selfPay: true,
   },
   {
     id: ChainId.Ok,
@@ -313,6 +325,7 @@ export const CHAINS = [
         '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'OKT',
+    selfPay: true,
   },
   {
     id: ChainId.Ont,
@@ -324,6 +337,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? 'c93837e82178d406af8c84e1841c6960af251cb5'
       : 'a5c101afa9e04e9dd2c912983795005a49e02efa',
+    selfPay: false,
   },
 ];
 

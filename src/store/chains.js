@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import {
-  stringToHex,
+  reverseHex,
   integerToHex,
   toStandardHex,
   objectToBase64,
@@ -92,7 +92,7 @@ export default {
         if (fromChainId < 16) {
           waitChainId = `0x${integerToHex(fromChainId).substr(1, 1)}`;
         } else {
-          waitChainId = `0x${integerToHex(fromChainId)}`;
+          waitChainId = `0x${reverseHex(integerToHex(fromChainId)).substr(1, 100)}`;
         }
         try {
           window.ethereum.request({

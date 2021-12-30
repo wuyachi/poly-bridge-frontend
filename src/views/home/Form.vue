@@ -130,7 +130,7 @@
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
-          <div v-if="fee" class="fee">
+          <div v-if="fee && selfPayFlag" class="fee">
             <el-checkbox v-model="selfPayChecked"
               >{{ $t('home.form.selfPay') }}
               <CTooltip>
@@ -394,6 +394,9 @@ export default {
     toChain() {
       return this.$store.getters.getChain(this.toChainId);
     },
+    selfPayFlag() {
+      return this.toChain.selfPay;
+    },
     toToken() {
       return (
         this.tokenBasic &&
@@ -495,6 +498,15 @@ export default {
         await this.$store.dispatch('ensureChainWalletReady', value.chainId);
         this.$store.dispatch('getAllowance', value);
       }
+    },
+    fromChain() {
+      this.selfPayChecked = false;
+    },
+    fromToken() {
+      this.selfPayChecked = false;
+    },
+    toChain() {
+      this.selfPayChecked = false;
     },
   },
   created() {
