@@ -153,6 +153,9 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     if (tokenHash === '0000000000000000000000000000000000000000') {
       return null;
     }
+    if (tokenHash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000') {
+      return null;
+    }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
     console.log(integerToDecimal(result, tokenBasic.decimals));
@@ -270,6 +273,7 @@ async function lock({
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
+          gas: fromChainId === 24 ? 2000000 : null,
           value:
             fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
