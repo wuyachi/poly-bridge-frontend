@@ -153,9 +153,6 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     if (tokenHash === '0000000000000000000000000000000000000000') {
       return null;
     }
-    if (tokenHash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000') {
-      return null;
-    }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
     console.log(integerToDecimal(result, tokenBasic.decimals));
