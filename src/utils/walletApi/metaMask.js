@@ -30,6 +30,9 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 250 : 4002]: ChainId.Fantom,
   [TARGET_MAINNET ? 43114 : 43113]: ChainId.Avalanche,
   [TARGET_MAINNET ? 1088 : 588]: ChainId.Metis,
+  [TARGET_MAINNET ? 6626 : 666]: ChainId.Pixie,
+  [TARGET_MAINNET ? 4 : 4]: ChainId.Rinkeby,
+  [TARGET_MAINNET ? 288 : 28]: ChainId.Boba,
 };
 
 const ETH_NETWORK_CHAIN_ID_MAPS = {
@@ -45,6 +48,9 @@ const ETH_NETWORK_CHAIN_ID_MAPS = {
   [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
   [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
   [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
+  [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
+  [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
+  [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
 };
 
 let web3;

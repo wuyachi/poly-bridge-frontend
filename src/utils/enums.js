@@ -28,6 +28,9 @@ export const ChainId = {
   Fantom: TARGET_MAINNET ? 22 : 208,
   Avalanche: TARGET_MAINNET ? 21 : 209,
   Metis: TARGET_MAINNET ? 300 : 300,
+  Pixie: TARGET_MAINNET ? 316 : 316,
+  Rinkeby: TARGET_MAINNET ? 402 : 402,
+  Boba: TARGET_MAINNET ? 400 : 400,
 };
 
 export const SingleTransactionStatus = {

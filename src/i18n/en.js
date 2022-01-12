@@ -161,6 +161,9 @@ export default {
       [ChainId.Fantom]: 'Fantom',
       [ChainId.Avalanche]: 'Avalanche',
       [ChainId.Metis]: 'Metis',
+      [ChainId.Pixie]: 'Pixie',
+      [ChainId.Rinkeby]: 'Rinkeby',
+      [ChainId.Boba]: 'Boba',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -178,6 +181,9 @@ export default {
       [ChainId.Fantom]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Avalanche]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Metis]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Pixie]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Rinkeby]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Boba]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
       [TransactionStatus.Finished]: 'Finished',

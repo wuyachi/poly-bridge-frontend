@@ -29,6 +29,9 @@ export const WALLETS = [
       ChainId.Fantom,
       ChainId.Avalanche,
       ChainId.Metis,
+      ChainId.Pixie,
+      ChainId.Rinkeby,
+      ChainId.Boba,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -175,6 +178,34 @@ export const CHAINS = [
     selfPay: true,
   },
   {
+    id: ChainId.Rinkeby,
+    nativeFee: false,
+    icon: require('@/assets/svg/eth.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://rinkeby.etherscan.io/tx/0x{txHash}'
+      : 'https://rinkeby.etherscan.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xE324EF8cd52833DD117e8ca87b483E78b30C3696'
+      : '0xE324EF8cd52833DD117e8ca87b483E78b30C3696',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+    selfPay: true,
+  },
+  {
+    id: ChainId.Boba,
+    nativeFee: false,
+    icon: require('@/assets/png/boba.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}'
+      : 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5'
+      : '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+    selfPay: true,
+  },
+  {
     id: ChainId.Bsc,
     nativeFee: true,
     icon: require('@/assets/svg/bsc.svg'),
@@ -193,6 +224,26 @@ export const CHAINS = [
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'BNB',
+    selfPay: true,
+  },
+  {
+    id: ChainId.Pixie,
+    nativeFee: true,
+    icon: require('@/assets/svg/pixie.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}'
+      : 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}'
+      : 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xE7Db150e4095Cbb35914b5dC980906C77B5990d2'
+      : '0xE7Db150e4095Cbb35914b5dC980906C77B5990d2',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0x06e3d8Eeb9DC4732e474c26674e08213c6e11921'
+      : '0x06e3d8Eeb9DC4732e474c26674e08213c6e11921',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'PIX',
     selfPay: true,
   },
   {
