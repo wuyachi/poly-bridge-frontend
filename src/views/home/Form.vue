@@ -323,12 +323,12 @@ export default {
         } else {
           res = this.fee.Balance;
         }
-        if (
+        /* if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||
           this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
         ) {
           res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
-        }
+        } */
       }
       return res;
     },
@@ -554,12 +554,12 @@ export default {
       } else {
         res = this.fee.Balance;
       }
-      if (
+      /* if (
         this.fromToken.hash === '0000000000000000000000000000000000000000' ||
         this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
       ) {
         res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
-      }
+      } */
       this.amount = res;
       this.$nextTick(() => this.$refs.amountValidation.validate());
     },
