@@ -185,8 +185,8 @@ export const CHAINS = [
       ? 'https://rinkeby.etherscan.io/tx/0x{txHash}'
       : 'https://rinkeby.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0xE324EF8cd52833DD117e8ca87b483E78b30C3696'
-      : '0xE324EF8cd52833DD117e8ca87b483E78b30C3696',
+      ? '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12'
+      : '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
     selfPay: true,
