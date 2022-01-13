@@ -172,10 +172,14 @@ export default {
       immediate: true,
     },
     netTransactions(value, oldValue) {
-      if (value.items.length > oldValue.items.length) {
-        console.log('value.items.length');
-        console.log(value.items.length);
-        console.log(oldValue.items.length);
+      if (oldValue.items) {
+        if (value.items.length >= oldValue.items.length) {
+          console.log('value.items.length');
+          console.log(value.items.length);
+          console.log(oldValue.items.length);
+          this.transactions = value;
+        }
+      } else {
         this.transactions = value;
       }
     },
