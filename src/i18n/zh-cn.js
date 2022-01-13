@@ -53,6 +53,8 @@ export default {
       historyPrefix: 'You can view your',
       historyLink: 'history',
       maxamount: 'Max Available Amount',
+      warningMsg:
+        'Please note that there is a potential risk that your transaction will be pending due to lack of liquidity.',
       maxamountTooltip:
         'The largest available number of cross-chain assets on the currently selected target chain (estimated value)',
     },

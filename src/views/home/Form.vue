@@ -130,6 +130,30 @@
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
+          <div
+            v-if="
+              fee &&
+                fee.Balance < 500 &&
+                fee.SwapTokenHash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            "
+            class="fee"
+          >
+            <span class="label" style="color:#F56C6C;opacity:1">{{
+              $t('home.form.warningMsg')
+            }}</span>
+          </div>
+          <div
+            v-if="
+              fee &&
+                fee.Balance < 500 &&
+                fee.SwapTokenHash === 'e552fb52a4f19e44ef5a967632dbc320b0820639'
+            "
+            class="fee"
+          >
+            <span class="label" style="color:#F56C6C;opacity:1">{{
+              $t('home.form.warningMsg')
+            }}</span>
+          </div>
           <div v-if="fee" class="fee">
             <span class="label">{{ $t('home.form.maxamount') }}</span>
             <CTooltip>

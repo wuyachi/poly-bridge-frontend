@@ -56,6 +56,8 @@ export default {
         'After checking, approve the infinite token usage, this behavior may be risky, please judge according to the actual situation',
       approveInfinity: 'Approve Infinity',
       maxamount: 'Max Available Amount',
+      warningMsg:
+        'Please note that there is a potential risk that your transaction will be pending due to lack of liquidity.',
       maxamountTooltip:
         'The largest available number of cross-chain assets on the currently selected target chain (estimated value)',
     },
