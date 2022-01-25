@@ -25,6 +25,7 @@ export const ChainId = {
   Polygon: TARGET_MAINNET ? 17 : 202,
   Arbitrum: TARGET_MAINNET ? 19 : 205,
   Optimistic: TARGET_MAINNET ? 23 : 210,
+  Boba: TARGET_MAINNET ? 25 : 400,
   Fantom: TARGET_MAINNET ? 22 : 208,
   Avalanche: TARGET_MAINNET ? 21 : 209,
   Metis: TARGET_MAINNET ? 24 : 300,
