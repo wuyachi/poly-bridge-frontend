@@ -14,6 +14,7 @@ const APIS = {
   [ChainId.Arbitrum]: () => import('./eth'),
   [ChainId.xDai]: () => import('./eth'),
   [ChainId.Optimistic]: () => import('./eth'),
+  [ChainId.Boba]: () => import('./eth'),
   [ChainId.Fantom]: () => import('./eth'),
   [ChainId.Avalanche]: () => import('./eth'),
   [ChainId.Metis]: () => import('./eth'),

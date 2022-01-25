@@ -24,6 +24,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 250 : 4002]: ChainId.Fantom,
   [TARGET_MAINNET ? 43114 : 43113]: ChainId.Avalanche,
   [TARGET_MAINNET ? 1088 : 588]: ChainId.Metis,
+  [TARGET_MAINNET ? 288 : 28]: ChainId.Boba,
 };
 
 let web3;
@@ -155,7 +156,6 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
-    console.log(integerToDecimal(result, tokenBasic.decimals));
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
@@ -298,9 +298,6 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     const feeInt = decimalToInteger(fee, 18);
     const feeTokenHash =
       fromChainId !== 107 && fromChainId !== 8 ? NFT_FEE_TOKEN_HASH : PLT_NFT_FEE_TOKEN_HASH;
-
-    console.log(feeTokenHash);
-    console.log(feeTokenHash === NFT_FEE_TOKEN_HASH ? feeInt : 0);
     const result = await confirmLater(
       lockContract.methods
         .lock(

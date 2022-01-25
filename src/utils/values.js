@@ -26,6 +26,7 @@ export const WALLETS = [
       ChainId.Arbitrum,
       ChainId.xDai,
       ChainId.Optimistic,
+      ChainId.Boba,
       ChainId.Fantom,
       ChainId.Avalanche,
       ChainId.Metis,
@@ -108,7 +109,7 @@ export const CHAINS = [
       ? 'https://etherscan.io/tx/0x{txHash}'
       : 'https://ropsten.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0xd380450e9e373bDC389951C54616edb2EE653524'
+      ? '0x81910675DbaF69deE0fD77570BFD07f8E436386A'
       : //   : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
         '0xDc37471Af6a8aB7f45F444c5a3Ef4758281bE32C',
     nftLockContractHash: TARGET_MAINNET
@@ -209,6 +210,20 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+  },
+  {
+    id: ChainId.Boba,
+    nativeFee: false,
+    icon: require('@/assets/png/boba.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://blockexplorer.boba.network/tx/0x{txHash}'
+      : 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x33d9bF459b39a888422580916f01C4c44a68a615'
+      : '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Polygon,
