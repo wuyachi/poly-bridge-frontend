@@ -38,6 +38,13 @@ export const WALLETS = [
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
   },
   {
+    name: WalletName.CoinBase,
+    supportedChainIds: [ChainId.Bsc, ChainId.Heco, ChainId.Polygon],
+    icon: require('@/assets/svg/meta-mask.svg'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+  },
+  {
     name: WalletName.Math,
     supportedChainIds: [ChainId.Eth, ChainId.Bsc, ChainId.Heco, ChainId.Ok],
     icon: require('@/assets/png/math.png'),
