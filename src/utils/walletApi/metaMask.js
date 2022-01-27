@@ -281,12 +281,13 @@ async function sendSelfPayTx({ data, toAddress, toChainId }) {
       chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
     };
 
-    const txHash = await window.ethereum.request({
+    const result = await window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],
     });
-    return txHash;
+    return toStandardHex(result);
   } catch (error) {
+    debugger;
     throw convertWalletError(error);
   }
 }
