@@ -227,7 +227,7 @@ export const CHAINS = [
     nftFeeName: 'BNB',
     selfPay: true,
   },
-  {
+  /* {
     id: ChainId.Pixie,
     nativeFee: true,
     icon: require('@/assets/svg/pixie.svg'),
@@ -246,7 +246,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'PIX',
     selfPay: true,
-  },
+  }, */
   {
     id: ChainId.Heco,
     nativeFee: true,
