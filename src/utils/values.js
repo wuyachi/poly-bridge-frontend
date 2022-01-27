@@ -30,6 +30,9 @@ export const WALLETS = [
       ChainId.Fantom,
       ChainId.Avalanche,
       ChainId.Metis,
+      ChainId.Pixie,
+      ChainId.Rinkeby,
+      ChainId.Boba,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -120,6 +123,7 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Neo,
@@ -144,6 +148,7 @@ export const CHAINS = [
       : 'd63810ca692b43e0ed35bfa40e653d05b2cb3585',
     nftFeeContractHash: 'd2a4cff31913016155e38e474a2c06d08be276cf',
     nftFeeName: 'GAS',
+    selfPay: false,
   },
   {
     id: ChainId.xDai,
@@ -157,6 +162,7 @@ export const CHAINS = [
       : '0xa7eDA65F94A2a334a0de42d479585b65D27b2249',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'xDai',
+    selfPay: true,
   },
   {
     id: ChainId.Metis,
@@ -170,6 +176,35 @@ export const CHAINS = [
       : '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9',
     nftFeeContractHash: 'deaddeaddeaddeaddeaddeaddeaddeaddead0000',
     nftFeeName: 'Metis',
+    selfPay: true,
+  },
+  /* {
+    id: ChainId.Rinkeby,
+    nativeFee: false,
+    icon: require('@/assets/svg/eth.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://rinkeby.etherscan.io/tx/0x{txHash}'
+      : 'https://rinkeby.etherscan.io/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12'
+      : '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+    selfPay: true,
+  }, */
+  {
+    id: ChainId.Boba,
+    nativeFee: false,
+    icon: require('@/assets/png/boba.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://blockexplorer.boba.network/tx/0x{txHash}'
+      : 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x33d9bF459b39a888422580916f01C4c44a68a615'
+      : '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Bsc,
@@ -190,7 +225,28 @@ export const CHAINS = [
       : '0x61E289D43C1FEA7598786557A2F309979ad144D3',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'BNB',
+    selfPay: true,
   },
+  /* {
+    id: ChainId.Pixie,
+    nativeFee: true,
+    icon: require('@/assets/svg/pixie.svg'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}'
+      : 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}'
+      : 'https://scan-testnet.chain.pixie.xyz/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xE7Db150e4095Cbb35914b5dC980906C77B5990d2'
+      : '0xE7Db150e4095Cbb35914b5dC980906C77B5990d2',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0x06e3d8Eeb9DC4732e474c26674e08213c6e11921'
+      : '0x06e3d8Eeb9DC4732e474c26674e08213c6e11921',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'PIX',
+    selfPay: true,
+  }, */
   {
     id: ChainId.Heco,
     nativeFee: true,
@@ -210,6 +266,7 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+    selfPay: true,
   },
   {
     id: ChainId.Boba,
@@ -243,6 +300,7 @@ export const CHAINS = [
       : '0xeA5B2a0cF4cA9bd5c72Ea1fbEE1FFe420e57f692',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'MATIC',
+    selfPay: true,
   },
   {
     id: ChainId.Optimistic,
@@ -253,9 +311,10 @@ export const CHAINS = [
       : 'https://kovan-optimistic.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
-      : '032F9A78473F73A6E10B78CD165F547559125EF1',
+      : 'E324EF8cd52833DD117e8ca87b483E78b30C3696',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Fantom,
@@ -269,6 +328,7 @@ export const CHAINS = [
       : 'FAddf0cfb08F92779560db57BE6b2C7303aaD266',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'FTM',
+    selfPay: true,
   },
   {
     id: ChainId.Avalanche,
@@ -282,6 +342,7 @@ export const CHAINS = [
       : 'ac0a6759696569B3729177ba6844D41FF6D57844',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'AVAX',
+    selfPay: true,
   },
   {
     id: ChainId.Arbitrum,
@@ -295,6 +356,7 @@ export const CHAINS = [
       : '0x27eb74B4Db37517F1dC6dE67364e19782624402F',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
   },
   {
     id: ChainId.Palette,
@@ -314,6 +376,7 @@ export const CHAINS = [
       : '0x0806e6925e6960E06cD4781e22A636bA233B53De',
     nftFeeContractHash: '0000000000000000000000000000000000000103',
     nftFeeName: 'PLT',
+    selfPay: true,
   },
   {
     id: ChainId.Ok,
@@ -328,6 +391,7 @@ export const CHAINS = [
         '0xbAa40bBd7888f79614057d82bdcE88dF2D23bf55',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'OKT',
+    selfPay: true,
   },
   {
     id: ChainId.Ont,
@@ -339,6 +403,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? 'c93837e82178d406af8c84e1841c6960af251cb5'
       : 'a5c101afa9e04e9dd2c912983795005a49e02efa',
+    selfPay: false,
   },
 ];
 

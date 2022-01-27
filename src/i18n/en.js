@@ -47,6 +47,9 @@ export default {
       time: 'Estimated Transaction Time',
       o3ToolTip: 'Available Balance',
       feeTooltip: 'Transaction fee on target chain',
+      selfPay: 'Self Pay',
+      speedup:
+        'If the waiting time is too long, you can try to speed up the transaction. Please refer to ',
       timeTooltip:
         'An estimation of how long funds will arrive in the destination address based on overall transfer history.',
       connectWallet: 'Connect Wallet',
@@ -124,6 +127,8 @@ export default {
   },
   buttons: {
     next: 'Next',
+    speedup: 'Speed Up',
+    pay: 'Pay',
     confirm: 'Confirm',
     confirming: 'Confirming...',
     approve: 'Approve',
@@ -161,6 +166,9 @@ export default {
       [ChainId.Fantom]: 'Fantom',
       [ChainId.Avalanche]: 'Avalanche',
       [ChainId.Metis]: 'Metis',
+      [ChainId.Pixie]: 'Pixie',
+      [ChainId.Rinkeby]: 'Rinkeby',
+      [ChainId.Boba]: 'Boba',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -179,6 +187,9 @@ export default {
       [ChainId.Fantom]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Avalanche]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Metis]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Pixie]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Rinkeby]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Boba]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
       [TransactionStatus.Finished]: 'Finished',
