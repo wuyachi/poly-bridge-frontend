@@ -88,6 +88,7 @@
         </div>
       </div>
     </div>
+    <ConnectWallet :visible.sync="connectWalletVisible" :toChainId="steps[2].chainId" />
   </CDrawer>
 </template>
 
@@ -95,9 +96,13 @@
 import { ChainId, SingleTransactionStatus, TransactionStatus } from '@/utils/enums';
 import { HttpError } from '@/utils/errors';
 import { getWalletApi } from '@/utils/walletApi';
+import ConnectWallet from '../home/ConnectWallet';
 
 export default {
   name: 'Details',
+  components: {
+    ConnectWallet,
+  },
   inheritAttrs: false,
   props: {
     hash: String,
@@ -106,6 +111,7 @@ export default {
   data() {
     return {
       selfPayLoading: false,
+      connectWalletVisible: false,
     };
   },
   computed: {
@@ -125,6 +131,11 @@ export default {
       return (
         this.transaction &&
         this.$store.getters.getChainConnectedWallet(this.transaction.fromChainId)
+      );
+    },
+    toWallet() {
+      return (
+        this.transaction && this.$store.getters.getChainConnectedWallet(this.transaction.toChainId)
       );
     },
     mergedTransaction() {
@@ -240,6 +251,9 @@ export default {
       }
     },
     async payTochainFee() {
+      if (!this.toWallet) {
+        this.connectWalletVisible = true;
+      }
       await this.$store.dispatch('ensureChainWalletReady', this.transaction.toChainId);
       if (this.transaction.steps[1].hash) {
         try {
@@ -257,8 +271,8 @@ export default {
     },
     async sendTx() {
       const self = this;
-      console.log(self.fromWallet);
-      const walletApi = await getWalletApi(self.fromWallet.name);
+      console.log(self.toWallet);
+      const walletApi = await getWalletApi(self.toWallet.name);
       const params = {
         data: self.manualTxData.data,
         toAddress: self.manualTxData.dst_ccm,
