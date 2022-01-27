@@ -286,7 +286,6 @@ async function sendSelfPayTx({ data, toAddress, toChainId }) {
     });
     return toStandardHex(result);
   } catch (error) {
-    debugger;
     throw convertWalletError(error);
   }
 }

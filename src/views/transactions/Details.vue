@@ -58,6 +58,18 @@
               {{ $t('home.form.speedup') }}
               <a target="_blank" href="https://baidu.com" style="color: #fff">Link</a>
             </div>
+
+            <div
+              class="speedup"
+              v-if="
+                index == 2 &&
+                  getStepStatus(2) === 'pending' &&
+                  $route.name === 'transactions' &&
+                  speedUpMSGFlag
+              "
+            >
+              {{ $t('home.form.speedUpMSG') }}
+            </div>
             <CSubmitButton
               :loading="selfPayLoading"
               v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'transactions'"
@@ -88,7 +100,11 @@
         </div>
       </div>
     </div>
-    <ConnectWallet :visible.sync="connectWalletVisible" :toChainId="steps[2].chainId" />
+    <ConnectWallet
+      v-if="steps"
+      :visible.sync="connectWalletVisible"
+      :toChainId="steps[2].chainId"
+    />
   </CDrawer>
 </template>
 
@@ -96,6 +112,7 @@
 import { ChainId, SingleTransactionStatus, TransactionStatus } from '@/utils/enums';
 import { HttpError } from '@/utils/errors';
 import { getWalletApi } from '@/utils/walletApi';
+import httpApi from '@/utils/httpApi';
 import ConnectWallet from '../home/ConnectWallet';
 
 export default {
@@ -112,6 +129,7 @@ export default {
     return {
       selfPayLoading: false,
       connectWalletVisible: false,
+      speedUpMSGFlag: false,
     };
   },
   computed: {
@@ -120,12 +138,6 @@ export default {
     },
     transaction() {
       return this.$store.getters.getTransaction(this.mergedHash);
-    },
-    manualTxData() {
-      return (
-        this.transaction &&
-        this.$store.getters.getManualTxData({ polyHash: this.transaction.steps[1].hash })
-      );
     },
     fromWallet() {
       return (
@@ -198,16 +210,13 @@ export default {
     mergedHash() {
       this.getTransaction();
     },
-    manualTxData(newVal, oldVal) {
-      console.log(this.manualTxData);
-      if (newVal !== oldVal) {
-        this.sendTx();
-      }
-    },
     finished() {
       if (this.finished) {
         this.selfPayLoading = false;
       }
+    },
+    hash() {
+      this.speedUpMSGFlag = false;
     },
   },
   created() {
@@ -262,7 +271,10 @@ export default {
       if (this.transaction.steps[1].hash) {
         try {
           this.selfPayLoading = true;
-          this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
+          // this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
+          const polyHash = this.transaction.steps[1].hash;
+          const result = await httpApi.getManualTxData({ polyHash });
+          this.sendTx(result);
         } catch (error) {
           if (error instanceof HttpError) {
             if (error.code === HttpError.CODES.BAD_REQUEST) {
@@ -273,17 +285,19 @@ export default {
         }
       }
     },
-    async sendTx() {
+    async sendTx($payload) {
       const self = this;
       console.log(self.toWallet);
       const walletApi = await getWalletApi(self.toWallet.name);
       const params = {
-        data: self.manualTxData.data,
-        toAddress: self.manualTxData.dst_ccm,
+        data: $payload.data,
+        toAddress: $payload.dst_ccm,
         toChainId: self.steps[2].chainId,
       };
       try {
         await walletApi.sendSelfPayTx(params);
+        this.selfPayLoading = false;
+        this.speedUpMSGFlag = true;
       } catch (error) {
         console.log(error);
         if (error.toString().indexOf('promise') < 0) {
