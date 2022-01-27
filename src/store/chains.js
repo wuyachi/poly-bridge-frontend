@@ -88,12 +88,7 @@ export default {
       }
       if (wallet.chainId !== chainId) {
         const fromChainId = ETH_NETWORK_CHAIN_ID_MAPS[chainId];
-        let waitChainId;
-        if (fromChainId < 16) {
-          waitChainId = `0x${integerToHex(fromChainId).substr(1, 1)}`;
-        } else {
-          waitChainId = `0x${reverseHex(integerToHex(fromChainId)).substr(1, 100)}`;
-        }
+        const waitChainId = `0x${fromChainId.toString(16)}`;
         try {
           window.ethereum.request({
             method: 'wallet_switchEthereumChain',
