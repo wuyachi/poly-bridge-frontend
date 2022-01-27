@@ -51,6 +51,21 @@
                 })
               }}
             </CLink>
+            <div
+              class="speedup"
+              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'home'"
+            >
+              {{ $t('home.form.speedup') }}
+              <a target="_blank" href="https://baidu.com" style="color: #fff">Link</a>
+            </div>
+            <CSubmitButton
+              :loading="selfPayLoading"
+              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'transactions'"
+              @click="payTochainFee"
+              class="button-submit"
+            >
+              {{ selfPay ? $t('buttons.pay') : $t('buttons.speedup') }}
+            </CSubmitButton>
           </template>
 
           <template v-else-if="step.failed">
@@ -73,19 +88,31 @@
         </div>
       </div>
     </div>
+    <ConnectWallet :visible.sync="connectWalletVisible" :toChainId="steps[2].chainId" />
   </CDrawer>
 </template>
 
 <script>
 import { ChainId, SingleTransactionStatus, TransactionStatus } from '@/utils/enums';
 import { HttpError } from '@/utils/errors';
+import { getWalletApi } from '@/utils/walletApi';
+import ConnectWallet from '../home/ConnectWallet';
 
 export default {
   name: 'Details',
+  components: {
+    ConnectWallet,
+  },
   inheritAttrs: false,
   props: {
     hash: String,
     confirmingData: Object,
+  },
+  data() {
+    return {
+      selfPayLoading: false,
+      connectWalletVisible: false,
+    };
   },
   computed: {
     mergedHash() {
@@ -93,6 +120,23 @@ export default {
     },
     transaction() {
       return this.$store.getters.getTransaction(this.mergedHash);
+    },
+    manualTxData() {
+      return (
+        this.transaction &&
+        this.$store.getters.getManualTxData({ polyHash: this.transaction.steps[1].hash })
+      );
+    },
+    fromWallet() {
+      return (
+        this.transaction &&
+        this.$store.getters.getChainConnectedWallet(this.transaction.fromChainId)
+      );
+    },
+    toWallet() {
+      return (
+        this.transaction && this.$store.getters.getChainConnectedWallet(this.transaction.toChainId)
+      );
     },
     mergedTransaction() {
       return (
@@ -132,6 +176,9 @@ export default {
         this.confirmingData.transactionStatus === SingleTransactionStatus.Failed
       );
     },
+    selfPay() {
+      return Number(this.transaction.fee) === 0;
+    },
     finished() {
       return !!this.transaction && this.transaction.status === TransactionStatus.Finished;
     },
@@ -151,8 +198,20 @@ export default {
     mergedHash() {
       this.getTransaction();
     },
+    manualTxData(newVal, oldVal) {
+      console.log(this.manualTxData);
+      if (newVal !== oldVal) {
+        this.sendTx();
+      }
+    },
+    finished() {
+      if (this.finished) {
+        this.selfPayLoading = false;
+      }
+    },
   },
   created() {
+    console.log(this.$route);
     this.interval = setInterval(() => {
       this.getTransaction();
     }, 5000);
@@ -195,11 +254,55 @@ export default {
         }
       }
     },
+    async payTochainFee() {
+      if (!this.toWallet) {
+        this.connectWalletVisible = true;
+      }
+      await this.$store.dispatch('ensureChainWalletReady', this.transaction.toChainId);
+      if (this.transaction.steps[1].hash) {
+        try {
+          this.selfPayLoading = true;
+          this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
+        } catch (error) {
+          if (error instanceof HttpError) {
+            if (error.code === HttpError.CODES.BAD_REQUEST) {
+              return;
+            }
+          }
+          throw error;
+        }
+      }
+    },
+    async sendTx() {
+      const self = this;
+      console.log(self.toWallet);
+      const walletApi = await getWalletApi(self.toWallet.name);
+      const params = {
+        data: self.manualTxData.data,
+        toAddress: self.manualTxData.dst_ccm,
+        toChainId: self.steps[2].chainId,
+      };
+      try {
+        await walletApi.sendSelfPayTx(params);
+      } catch (error) {
+        console.log(error);
+        if (error.toString().indexOf('promise') < 0) {
+          this.selfPayLoading = false;
+        }
+      }
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.speedup {
+  opacity: 0.6;
+  padding-top: 20px;
+}
+.button-submit {
+  margin-top: 30px;
+}
 .content {
   display: flex;
   flex-direction: column;

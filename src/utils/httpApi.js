@@ -73,6 +73,16 @@ export default {
     });
     return result;
   },
+  async getManualTxData({ polyHash }) {
+    const result = await request({
+      method: 'post',
+      url: '/getmanualtxdata',
+      data: {
+        polyhash: polyHash,
+      },
+    });
+    return result;
+  },
   async getExpectTime({ fromChainId, toChainId }) {
     const result = await request({
       method: 'post',
