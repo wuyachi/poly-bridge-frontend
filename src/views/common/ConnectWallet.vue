@@ -45,7 +45,7 @@
           <img class="chain-icon" :src="chain.icon" />
         </CButton>
       </div>
-      <div class="chains" v-if="$route.name == 'transactions'">
+      <!-- <div class="chains" v-if="$route.name == 'transactions'">
         <CButton
           v-for="chain in chains"
           :key="chain.id"
@@ -56,7 +56,7 @@
         >
           <img class="chain-icon" :src="chain.icon" />
         </CButton>
-      </div>
+      </div> -->
 
       <CDivider direction="vertical" />
 
