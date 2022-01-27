@@ -154,7 +154,7 @@
               $t('home.form.warningMsg')
             }}</span>
           </div>
-          <div v-if="fee && selfPayFlag" class="fee">
+          <!-- <div v-if="fee && selfPayFlag" class="fee">
             <el-checkbox v-model="selfPayChecked"
               >{{ $t('home.form.selfPay') }}
               <CTooltip>
@@ -164,7 +164,7 @@
                 </template>
               </CTooltip>
             </el-checkbox>
-          </div>
+          </div> -->
           <div v-if="fee" class="fee">
             <span class="label">{{ $t('home.form.maxamount') }}</span>
             <CTooltip>
