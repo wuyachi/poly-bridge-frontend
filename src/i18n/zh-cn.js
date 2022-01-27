@@ -48,6 +48,8 @@ export default {
       o3ToolTip: 'Available Balance',
       feeTooltip: 'Transaction fee on target chain',
       selfPay: 'Self Pay',
+      speedup:
+        'If the waiting time is too long, you can try to speed up the transaction. Please refer to ',
       timeTooltip:
         'An estimation of how long funds will arrive in the destination address based on overall transfer history.',
       connectWallet: 'Connect Wallet',

@@ -51,8 +51,16 @@
                 })
               }}
             </CLink>
+            <div
+              class="speedup"
+              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'home'"
+            >
+              {{ $t('home.form.speedup') }}
+              <a target="_blank" href="https://baidu.com" style="color: #fff">Link</a>
+            </div>
             <CSubmitButton
-              v-if="index == 2 && getStepStatus(2) === 'pending'"
+              :loading="selfPayLoading"
+              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'transactions'"
               @click="payTochainFee"
               class="button-submit"
             >
@@ -94,6 +102,11 @@ export default {
   props: {
     hash: String,
     confirmingData: Object,
+  },
+  data() {
+    return {
+      selfPayLoading: false,
+    };
   },
   computed: {
     mergedHash() {
@@ -176,12 +189,14 @@ export default {
     },
     manualTxData(newVal, oldVal) {
       console.log(this.manualTxData);
+      this.selfPayLoading = false;
       if (newVal !== oldVal) {
         this.sendTx();
       }
     },
   },
   created() {
+    console.log(this.$route);
     this.interval = setInterval(() => {
       this.getTransaction();
     }, 5000);
@@ -228,6 +243,7 @@ export default {
       await this.$store.dispatch('ensureChainWalletReady', this.transaction.toChainId);
       if (this.transaction.steps[1].hash) {
         try {
+          this.selfPayLoading = true;
           this.$store.dispatch('getManualTxData', this.transaction.steps[1].hash);
         } catch (error) {
           if (error instanceof HttpError) {
@@ -255,6 +271,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.speedup {
+  opacity: 0.6;
+  padding-top: 20px;
+}
 .button-submit {
   margin-top: 30px;
 }
