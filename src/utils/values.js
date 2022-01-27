@@ -296,7 +296,7 @@ export const CHAINS = [
       : 'https://kovan-optimistic.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? 'f06587dE89e289Ce480CDf21109A14547eb33A0d'
-      : '032F9A78473F73A6E10B78CD165F547559125EF1',
+      : 'E324EF8cd52833DD117e8ca87b483E78b30C3696',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
     selfPay: true,
