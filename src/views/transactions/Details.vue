@@ -200,9 +200,13 @@ export default {
     },
     manualTxData(newVal, oldVal) {
       console.log(this.manualTxData);
-      this.selfPayLoading = false;
       if (newVal !== oldVal) {
         this.sendTx();
+      }
+    },
+    finished() {
+      if (this.finished) {
+        this.selfPayLoading = false;
       }
     },
   },
@@ -278,7 +282,14 @@ export default {
         toAddress: self.manualTxData.dst_ccm,
         toChainId: self.steps[2].chainId,
       };
-      await walletApi.sendSelfPayTx(params);
+      try {
+        await walletApi.sendSelfPayTx(params);
+      } catch (error) {
+        console.log(error);
+        if (error.toString().indexOf('promise') < 0) {
+          this.selfPayLoading = false;
+        }
+      }
     },
   },
 };
