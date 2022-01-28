@@ -56,7 +56,12 @@
               v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'home'"
             >
               {{ $t('home.form.speedup') }}
-              <a target="_blank" href="https://baidu.com" style="color: #fff">Link</a>
+              <a
+                target="_blank"
+                href="https://medium.com/poly-network/poly-bridge-new-acceleration-function-pc-user-manual-cd0b6cacceea"
+                style="color: #fff"
+                >Link</a
+              >
             </div>
 
             <div
