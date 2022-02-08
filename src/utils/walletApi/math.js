@@ -38,6 +38,7 @@ const ETH_NETWORK_CHAIN_ID_MAPS = {
   [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
   [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
   [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
+  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
   [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
 };
 

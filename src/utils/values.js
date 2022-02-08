@@ -31,6 +31,7 @@ export const WALLETS = [
       ChainId.Metis,
       ChainId.Pixie,
       ChainId.Rinkeby,
+      ChainId.Oasis,
       ChainId.Boba,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
@@ -192,6 +193,20 @@ export const CHAINS = [
       : '0x25BB8E9C0Cc03B30d09769735208a47d389Ff36c',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
+    selfPay: true,
+  },
+  {
+    id: ChainId.Oasis,
+    nativeFee: false,
+    icon: require('@/assets/png/oasis.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://explorer.emerald.oasis.dev/tx/0x{txHash}'
+      : 'https://testnet.explorer.emerald.oasis.dev/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xc2d365475EEf3ec83e59D1BcDF3A291D7B23Ba99'
+      : '0xc2d365475EEf3ec83e59D1BcDF3A291D7B23Ba99',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ROSE',
     selfPay: true,
   },
   {
