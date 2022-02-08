@@ -27,6 +27,7 @@ const ETH_NETWORK_CHAIN_ID_MAPS = {
   [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
   [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
   [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
+  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
 };
 
 export default {
