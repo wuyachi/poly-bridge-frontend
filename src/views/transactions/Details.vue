@@ -88,7 +88,11 @@
         </div>
       </div>
     </div>
-    <ConnectWallet :visible.sync="connectWalletVisible" :toChainId="steps[2].chainId" />
+    <ConnectWallet
+      :visible.sync="connectWalletVisible"
+      v-if="steps && steps[2]"
+      :toChainId="steps[2].chainId"
+    />
   </CDrawer>
 </template>
 
@@ -286,7 +290,7 @@ export default {
         await walletApi.sendSelfPayTx(params);
       } catch (error) {
         console.log(error);
-        if (error.toString().indexOf('promise') < 0) {
+        if (error && error.toString().indexOf('promise') < 0) {
           this.selfPayLoading = false;
         }
       }
