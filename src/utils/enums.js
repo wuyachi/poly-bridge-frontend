@@ -30,6 +30,7 @@ export const ChainId = {
   Metis: TARGET_MAINNET ? 300 : 300,
   Pixie: TARGET_MAINNET ? 316 : 316,
   Rinkeby: TARGET_MAINNET ? 402 : 402,
+  Oasis: TARGET_MAINNET ? 500 : 500,
   Boba: TARGET_MAINNET ? 400 : 400,
 };
 
