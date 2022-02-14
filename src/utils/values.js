@@ -185,6 +185,9 @@ export const CHAINS = [
     explorerUrl: TARGET_MAINNET
       ? 'https://rinkeby.etherscan.io/tx/0x{txHash}'
       : 'https://rinkeby.etherscan.io/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://rinkeby.etherscan.io/tx/0x{txHash}'
+      : 'https://rinkeby.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12'
       : '0xD5a240f7F755bCa2aE992E807b06d24eB6DF7C12',

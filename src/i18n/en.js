@@ -26,7 +26,7 @@ export default {
       connectWallet: 'Connect {walletName}',
     },
     footer: {
-      copyright: '© 2021 Polynetwork. All rights reserved.',
+      copyright: '© 2022 Polynetwork. All rights reserved.',
     },
   },
   home: {
@@ -163,7 +163,7 @@ export default {
       [ChainId.Fantom]: 'Fantom',
       [ChainId.Avalanche]: 'Avalanche',
       [ChainId.Metis]: 'Metis',
-      [ChainId.Pixie]: 'Pixie',
+      [ChainId.Pixie]: 'Pixie Chain',
       [ChainId.Rinkeby]: 'Rinkeby',
       [ChainId.Oasis]: 'Oasis',
       [ChainId.Boba]: 'Boba',
