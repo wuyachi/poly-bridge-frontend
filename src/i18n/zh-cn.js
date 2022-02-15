@@ -155,6 +155,7 @@ export default {
       [ChainId.Pixie]: 'Pixie Chain',
       [ChainId.Rinkeby]: 'Rinkeby',
       [ChainId.Oasis]: 'Oasis',
+      [ChainId.Oasis1]: 'Oasis1',
       [ChainId.Boba]: 'Boba',
     },
     chainNetworkName: {
@@ -175,6 +176,7 @@ export default {
       [ChainId.Pixie]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Rinkeby]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Oasis]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Oasis1]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Boba]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
