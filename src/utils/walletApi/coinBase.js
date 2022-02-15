@@ -1,4 +1,4 @@
-import WalletLink from 'walletlink';
+// import WalletLink from 'walletlink';
 import Web3 from 'web3';
 import store from '@/store';
 import { getChainApi } from '@/utils/chainApi';
@@ -19,11 +19,11 @@ const APP_LOGO_URL = 'https://bridge.poly.network/img/logo.2e569620.svg';
 const ETH_JSONRPC_URL = 'https://rpc-mainnet.maticvigil.com/';
 const CHAIN_ID = 137;
 // Initialize WalletLink
-export const walletLink = new WalletLink({
-  appName: APP_NAME,
-  appLogoUrl: APP_LOGO_URL,
-  darkMode: false,
-});
+// export const walletLink = new WalletLink({
+//   appName: APP_NAME,
+//   appLogoUrl: APP_LOGO_URL,
+//   darkMode: false,
+// });
 // Initialize a Web3 Provider object
 // export const ethereum = walletLink.makeWeb3Provider()
 
