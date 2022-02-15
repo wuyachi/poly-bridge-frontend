@@ -20,6 +20,7 @@ const APIS = {
   [ChainId.Pixie]: () => import('./eth'),
   [ChainId.Rinkeby]: () => import('./eth'),
   [ChainId.Oasis]: () => import('./eth'),
+  [ChainId.Oasis1]: () => import('./eth'),
   [ChainId.Boba]: () => import('./eth'),
 };
 
