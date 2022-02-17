@@ -155,6 +155,7 @@ async function init() {
 async function connect() {
   try {
     console.log('get connect to wallet', ethereum);
+    console.log('get connect to wallet', web3);
     // await ethereum.request({ method: 'eth_requestAccounts' });
     await ethereum.enable();
     await queryState();
