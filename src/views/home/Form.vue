@@ -138,7 +138,7 @@
             "
             class="fee"
           >
-            <span class="label" style="color:#F56C6C;opacity:1">{{
+            <span class="label" style="color: #f56c6c; opacity: 1">{{
               $t('home.form.warningMsg')
             }}</span>
           </div>
@@ -150,7 +150,7 @@
             "
             class="fee"
           >
-            <span class="label" style="color:#F56C6C;opacity:1">{{
+            <span class="label" style="color: #f56c6c; opacity: 1">{{
               $t('home.form.warningMsg')
             }}</span>
           </div>
@@ -358,6 +358,9 @@ export default {
           res = this.balance;
         } else {
           res = this.fee.Balance;
+        }
+        if (this.fromToken.name === 'C' && res > 2000000000000) {
+          res = 2000000000000;
         }
         /* if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||

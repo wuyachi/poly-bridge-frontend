@@ -53,7 +53,16 @@
             </CLink>
             <div
               class="speedup"
-              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'home'"
+              v-if="
+                index == 2 &&
+                  getStepStatus(2) === 'pending' &&
+                  $route.name === 'home' &&
+                  step.chainId !== 3 &&
+                  step.chainId !== 4 &&
+                  step.chainId !== 5 &&
+                  step.chainId !== 20 &&
+                  step.chainId !== 206
+              "
             >
               {{ $t('home.form.speedup') }}
               <a
@@ -70,7 +79,12 @@
                 index == 2 &&
                   getStepStatus(2) === 'pending' &&
                   $route.name === 'transactions' &&
-                  speedUpMSGFlag
+                  speedUpMSGFlag &&
+                  step.chainId !== 3 &&
+                  step.chainId !== 4 &&
+                  step.chainId !== 5 &&
+                  step.chainId !== 20 &&
+                  step.chainId !== 206
               "
             >
               {{ $t('home.form.speedUpMSG') }}
