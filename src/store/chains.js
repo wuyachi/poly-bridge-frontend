@@ -11,6 +11,7 @@ import { WalletError } from '@/utils/errors';
 import { formatEnum } from '@/utils/formatters';
 import { CHAINS } from '@/utils/values';
 import { TARGET_MAINNET } from '@/utils/env';
+import { getWalletApi } from '@/utils/walletApi';
 
 const CHAIN_SELECTED_WALLETS_KEY = 'CHAIN_SELECTED_WALLETS';
 
@@ -78,6 +79,7 @@ export default {
     },
     async ensureChainWalletReady({ getters }, chainId) {
       const wallet = getters.getChainConnectedWallet(chainId);
+      const walletApi = await getWalletApi(wallet.name);
       debugger;
       if (!wallet) {
         throw new WalletError('Wallet is not connected.', {
@@ -92,10 +94,11 @@ export default {
         const waitChainId = `0x${fromChainId.toString(16)}`;
         try {
           debugger;
-          window.ethereum.request({
+          /* window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: waitChainId }],
-          });
+          }); */
+          walletApi.changeChain(waitChainId);
         } catch (switchError) {
           console.log(switchError);
         }

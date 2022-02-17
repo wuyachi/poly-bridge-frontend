@@ -144,6 +144,18 @@ async function connect() {
   }
 }
 
+async function changeChain(waitChainId) {
+  debugger;
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: waitChainId }],
+    });
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
 async function getBalance({ chainId, address, tokenHash }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
@@ -385,4 +397,5 @@ export default {
   sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
+  changeChain,
 };
