@@ -16,6 +16,8 @@ import { tryToConvertAddressToHex } from '.';
 
 const APP_NAME = 'Poly Bridge';
 const APP_LOGO_URL = 'https://bridge.poly.network/img/logo.2e569620.svg';
+const DEFAULT_ETH_JSONRPC_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+const DEFAULT_CHAIN_ID = 1;
 // Initialize WalletLink
 export const walletLink = new WalletLink({
   appName: APP_NAME,
@@ -23,7 +25,7 @@ export const walletLink = new WalletLink({
   darkMode: false,
 });
 // Initialize a Web3 Provider object
-export const ethereum = walletLink.makeWeb3Provider();
+export const ethereum = walletLink.makeWeb3Provider(DEFAULT_ETH_JSONRPC_URL, DEFAULT_CHAIN_ID);
 
 // Initialize a Web3 object
 // export const web3 = new Web3(ethereum)
@@ -156,6 +158,17 @@ async function connect() {
     await ethereum.request({ method: 'eth_requestAccounts' });
     await queryState();
     sessionStorage.setItem(COINBASE_CONNECTED_KEY, 'true');
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
+async function changeChain(waitChainId) {
+  try {
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: waitChainId }],
+    });
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -405,4 +418,5 @@ export default {
   sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
+  changeChain,
 };
