@@ -101,6 +101,7 @@ function convertWalletError(error) {
 
 async function queryState() {
   const accounts = await ethereum.request({ method: 'eth_accounts' });
+  console.log('get accounts from wallet', accounts);
   const address = accounts[0] || null;
   const addressHex = await tryToConvertAddressToHex(WalletName.CoinBase, address);
   const checksumAddress = address && web3.utils.toChecksumAddress(address);
@@ -152,6 +153,7 @@ async function init() {
 async function connect() {
   try {
     await ethereum.request({ method: 'eth_requestAccounts' });
+    console.log('get connect to wallet', ethereum);
     await queryState();
     sessionStorage.setItem(COINBASE_CONNECTED_KEY, 'true');
   } catch (error) {
