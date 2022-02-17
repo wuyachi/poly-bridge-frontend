@@ -59,7 +59,7 @@ export const WALLETS = [
     ],
     icon: require('@/assets/png/coinbase.png'),
     downloadUrl:
-      'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+      'https://chrome.google.com/webstore/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad',
   },
   {
     name: WalletName.Math,

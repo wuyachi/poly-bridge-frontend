@@ -1,4 +1,4 @@
-// import WalletLink from 'walletlink';
+import WalletLink from 'walletlink';
 import Web3 from 'web3';
 import store from '@/store';
 import { getChainApi } from '@/utils/chainApi';
@@ -14,18 +14,16 @@ import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
 
-const APP_NAME = 'My Awesome App';
+const APP_NAME = 'Poly Bridge';
 const APP_LOGO_URL = 'https://bridge.poly.network/img/logo.2e569620.svg';
-const ETH_JSONRPC_URL = 'https://rpc-mainnet.maticvigil.com/';
-const CHAIN_ID = 137;
 // Initialize WalletLink
-// export const walletLink = new WalletLink({
-//   appName: APP_NAME,
-//   appLogoUrl: APP_LOGO_URL,
-//   darkMode: false,
-// });
+export const walletLink = new WalletLink({
+  appName: APP_NAME,
+  appLogoUrl: APP_LOGO_URL,
+  darkMode: false,
+});
 // Initialize a Web3 Provider object
-// export const ethereum = walletLink.makeWeb3Provider()
+export const ethereum = walletLink.makeWeb3Provider();
 
 // Initialize a Web3 object
 // export const web3 = new Web3(ethereum)
@@ -102,12 +100,11 @@ function convertWalletError(error) {
 }
 
 async function queryState() {
-  const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+  const accounts = await ethereum.request({ method: 'eth_accounts' });
   const address = accounts[0] || null;
   const addressHex = await tryToConvertAddressToHex(WalletName.CoinBase, address);
   const checksumAddress = address && web3.utils.toChecksumAddress(address);
-  const network = await window.ethereum.request({ method: 'eth_chainId' });
-  debugger;
+  const network = await ethereum.request({ method: 'eth_chainId' });
   store.dispatch('updateWallet', {
     name: WalletName.CoinBase,
     address: checksumAddress,
@@ -119,17 +116,17 @@ async function queryState() {
 
 async function init() {
   try {
-    if (!window.ethereum) {
+    if (!ethereum) {
       return;
     }
-    web3 = new Web3(window.ethereum);
+    web3 = new Web3(ethereum);
     store.dispatch('updateWallet', { name: WalletName.CoinBase, installed: true });
 
     if (sessionStorage.getItem(COINBASE_CONNECTED_KEY) === 'true') {
       await queryState();
     }
 
-    window.ethereum.on('accountsChanged', async accounts => {
+    ethereum.on('accountsChanged', async accounts => {
       const address = accounts[0] || null;
       const addressHex = await tryToConvertAddressToHex(WalletName.CoinBase, address);
       const checksumAddress = address && web3.utils.toChecksumAddress(address);
@@ -141,7 +138,7 @@ async function init() {
       });
     });
 
-    window.ethereum.on('chainChanged', network => {
+    ethereum.on('chainChanged', network => {
       store.dispatch('updateWallet', {
         name: WalletName.CoinBase,
         chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
@@ -154,7 +151,7 @@ async function init() {
 
 async function connect() {
   try {
-    await window.ethereum.request({ method: 'eth_requestAccounts' });
+    await ethereum.request({ method: 'eth_requestAccounts' });
     await queryState();
     sessionStorage.setItem(COINBASE_CONNECTED_KEY, 'true');
   } catch (error) {
@@ -285,7 +282,7 @@ async function getNFTApproved({ fromChainId, toChainId, tokenHash, id }) {
 async function sendSelfPayTx({ data, toAddress, toChainId }) {
   try {
     const txdata = data;
-    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
     const address = accounts[0] || null;
     const toEthChainID = ETH_NETWORK_CHAIN_ID_MAPS[toChainId];
     const transactionParameters = {
@@ -299,7 +296,7 @@ async function sendSelfPayTx({ data, toAddress, toChainId }) {
       chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by CoinBase.
     };
 
-    const txHash = await window.ethereum.request({
+    const txHash = await ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],
     });
