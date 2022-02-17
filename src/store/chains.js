@@ -78,6 +78,7 @@ export default {
     },
     async ensureChainWalletReady({ getters }, chainId) {
       const wallet = getters.getChainConnectedWallet(chainId);
+      debugger;
       if (!wallet) {
         throw new WalletError('Wallet is not connected.', {
           code: WalletError.CODES.NOT_CONNECTED,
@@ -90,6 +91,7 @@ export default {
         const fromChainId = ETH_NETWORK_CHAIN_ID_MAPS[chainId];
         const waitChainId = `0x${fromChainId.toString(16)}`;
         try {
+          debugger;
           window.ethereum.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: waitChainId }],

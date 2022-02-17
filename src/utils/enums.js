@@ -2,6 +2,7 @@ import { TARGET_MAINNET } from '@/utils/env';
 
 export const WalletName = {
   MetaMask: 'MetaMask',
+  CoinBase: 'CoinBase',
   Math: 'Math Wallet',
   NeoLine: 'NeoLine',
   NeoLineN3: 'NeoLineN3',
