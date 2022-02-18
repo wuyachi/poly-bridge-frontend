@@ -60,8 +60,8 @@
                   step.chainId !== 3 &&
                   step.chainId !== 4 &&
                   step.chainId !== 5 &&
-                  step.chainId !== 20 &&
-                  step.chainId !== 206
+                  step.chainId !== 14 &&
+                  step.chainId !== 88
               "
             >
               {{ $t('home.form.speedup') }}
@@ -83,8 +83,8 @@
                   step.chainId !== 3 &&
                   step.chainId !== 4 &&
                   step.chainId !== 5 &&
-                  step.chainId !== 20 &&
-                  step.chainId !== 206
+                  step.chainId !== 14 &&
+                  step.chainId !== 88
               "
             >
               {{ $t('home.form.speedUpMSG') }}

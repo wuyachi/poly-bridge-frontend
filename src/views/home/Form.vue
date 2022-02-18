@@ -359,8 +359,8 @@ export default {
         } else {
           res = this.fee.Balance;
         }
-        if (this.fromToken.name === 'C' && res > 2000000000000) {
-          res = 2000000000000;
+        if (this.fromToken.name === 'NB' && res > 50000) {
+          res = 50000;
         }
         /* if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||
