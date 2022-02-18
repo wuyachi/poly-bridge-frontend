@@ -353,7 +353,7 @@ export default {
     },
     maxAmount() {
       let res;
-      if (this.fee) {
+      if (this.fee && this.tofee) {
         if (Number(this.fee.Balance) > Number(this.balance)) {
           res = this.balance;
         } else {
@@ -362,12 +362,13 @@ export default {
         if (this.fromToken.name === 'NB' && res > 50000) {
           res = 50000;
         }
-        /* if (
+        if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||
           this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
         ) {
           res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
-        } */
+          res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+        }
       }
       return res;
     },
@@ -486,6 +487,17 @@ export default {
       }
       return null;
     },
+    getToFeeParams() {
+      if (this.toToken && this.fromChainId) {
+        return {
+          fromChainId: this.toChainId,
+          fromTokenHash: this.toToken.hash,
+          toChainId: this.fromChainId,
+          toTokenHash: this.toToken.hash,
+        };
+      }
+      return null;
+    },
     getExpectTimeParams() {
       if (this.fromToken && this.toChainId) {
         return {
@@ -503,6 +515,9 @@ export default {
     fee() {
       return this.getFeeParams && this.$store.getters.getFee(this.getFeeParams);
     },
+    tofee() {
+      return this.getToFeeParams && this.$store.getters.getFee(this.getToFeeParams);
+    },
   },
   watch: {
     async getBalanceParams(value) {
@@ -512,6 +527,11 @@ export default {
       }
     },
     getFeeParams(value) {
+      if (value) {
+        this.$store.dispatch('getFee', value);
+      }
+    },
+    getToFeeParams(value) {
       if (value) {
         this.$store.dispatch('getFee', value);
       }
@@ -605,12 +625,14 @@ export default {
       } else {
         res = this.fee.Balance;
       }
-      /* if (
+      if (
         this.fromToken.hash === '0000000000000000000000000000000000000000' ||
         this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
       ) {
         res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
-      } */
+        debugger;
+        res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+      }
       this.amount = res;
       this.$nextTick(() => this.$refs.amountValidation.validate());
     },
