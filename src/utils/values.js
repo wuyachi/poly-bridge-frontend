@@ -404,7 +404,7 @@ export const CHAINS = [
   {
     id: ChainId.Ok,
     nativeFee: true,
-    icon: require('@/assets/svg/ok.svg'),
+    icon: require('@/assets/jpg/oecd.jpg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',
