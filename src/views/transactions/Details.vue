@@ -91,7 +91,16 @@
             </div>
             <CSubmitButton
               :loading="selfPayLoading"
-              v-if="index == 2 && getStepStatus(2) === 'pending' && $route.name === 'transactions'"
+              v-if="
+                index == 2 &&
+                  getStepStatus(2) === 'pending' &&
+                  $route.name === 'transactions' &&
+                  step.chainId !== 3 &&
+                  step.chainId !== 4 &&
+                  step.chainId !== 5 &&
+                  step.chainId !== 14 &&
+                  step.chainId !== 88
+              "
               @click="payTochainFee"
               class="button-submit"
             >
