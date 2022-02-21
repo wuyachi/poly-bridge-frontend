@@ -151,7 +151,6 @@ async function changeChain(waitChainId) {
       params: [{ chainId: waitChainId }],
     });
   } catch (error) {
-    console.log(error);
     throw convertWalletError(error);
   }
 }
