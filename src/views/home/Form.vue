@@ -359,8 +359,8 @@ export default {
         } else {
           res = this.fee.Balance;
         }
-        if (this.fromToken.name === 'NB' && res > 50000) {
-          res = 50000;
+        if (this.fromToken.name === 'NB' && res > 0.5) {
+          res = 0.5;
         }
         if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||
@@ -368,6 +368,9 @@ export default {
         ) {
           res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
           res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+        }
+        if (res < 0) {
+          res = 0;
         }
       }
       return res;
@@ -630,8 +633,11 @@ export default {
         this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
       ) {
         res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
-        debugger;
         res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+      }
+      if (res < 0) {
+        this.$message.error(this.$t('errors.wallet.INSUFFICIENT_FUNDS'));
+        res = 0;
       }
       this.amount = res;
       this.$nextTick(() => this.$refs.amountValidation.validate());
