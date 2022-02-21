@@ -145,7 +145,6 @@ async function connect() {
 }
 
 async function changeChain(waitChainId) {
-  debugger;
   try {
     await window.ethereum.request({
       method: 'wallet_switchEthereumChain',

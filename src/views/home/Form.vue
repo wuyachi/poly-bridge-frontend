@@ -359,8 +359,8 @@ export default {
         } else {
           res = this.fee.Balance;
         }
-        if (this.fromToken.name === 'NB' && res > 0.5) {
-          res = 0.5;
+        if (this.fromToken.name === 'C' && res > 2000000000000) {
+          res = 2000000000000;
         }
         if (
           this.fromToken.hash === '0000000000000000000000000000000000000000' ||
@@ -461,7 +461,7 @@ export default {
       return this.getBalanceParams && this.$store.getters.getBalance(this.getBalanceParams);
     },
     getAllowanceParams() {
-      if (this.fromWallet && this.fromChain && this.fromToken) {
+      if (this.fromWallet && this.fromChain && this.fromToken && this.balance) {
         return {
           chainId: this.fromChainId,
           address: this.fromWallet.address,
