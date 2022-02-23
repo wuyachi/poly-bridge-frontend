@@ -8,7 +8,7 @@ import {
   integerToHex,
   reverseHex,
 } from '@/utils/convertors';
-import { WalletName, ChainId, SingleTransactionStatus } from '@/utils/enums';
+import { WalletName, ChainId, SingleTransactionStatus, EthNetworkChainIdMaps } from '@/utils/enums';
 import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
@@ -23,24 +23,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
 };
 
-const ETH_NETWORK_CHAIN_ID_MAPS = {
-  [ChainId.Eth]: TARGET_MAINNET ? 1 : 3,
-  [ChainId.Bsc]: TARGET_MAINNET ? 56 : 97,
-  [ChainId.Heco]: TARGET_MAINNET ? 128 : 256,
-  [ChainId.Ok]: TARGET_MAINNET ? 66 : 65,
-  [ChainId.xDai]: TARGET_MAINNET ? 100 : 77,
-  [ChainId.Polygon]: TARGET_MAINNET ? 137 : 80001,
-  [ChainId.Palette]: TARGET_MAINNET ? 1718 : 101,
-  [ChainId.Arbitrum]: TARGET_MAINNET ? 42161 : 421611,
-  [ChainId.Optimistic]: TARGET_MAINNET ? 10 : 69,
-  [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
-  [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
-  [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
-  [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
-  [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
-  [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
-  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
-};
+const ETH_NETWORK_CHAIN_ID_MAPS = EthNetworkChainIdMaps;
 
 let web3;
 
