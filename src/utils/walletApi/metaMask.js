@@ -33,6 +33,7 @@ const NETWORK_CHAIN_ID_MAPS = {
   [TARGET_MAINNET ? 6626 : 666]: ChainId.Pixie,
   [TARGET_MAINNET ? 4 : 4]: ChainId.Rinkeby,
   [TARGET_MAINNET ? 288 : 28]: ChainId.Boba,
+  [TARGET_MAINNET ? 42262 : 42261]: ChainId.Oasis,
 };
 
 const ETH_NETWORK_CHAIN_ID_MAPS = {
@@ -51,6 +52,7 @@ const ETH_NETWORK_CHAIN_ID_MAPS = {
   [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
   [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
   [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
+  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
 };
 
 let web3;

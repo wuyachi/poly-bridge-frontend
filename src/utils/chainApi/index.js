@@ -20,7 +20,7 @@ const APIS = {
   [ChainId.Metis]: () => import('./eth'),
   [ChainId.Pixie]: () => import('./eth'),
   [ChainId.Rinkeby]: () => import('./eth'),
-  [ChainId.Boba]: () => import('./eth'),
+  [ChainId.Oasis]: () => import('./eth'),
 };
 
 export async function getChainApi(chainId) {

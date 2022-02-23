@@ -27,6 +27,7 @@ export const ChainId = {
   Arbitrum: TARGET_MAINNET ? 19 : 205,
   Optimistic: TARGET_MAINNET ? 23 : 210,
   Boba: TARGET_MAINNET ? 25 : 400,
+  Oasis: TARGET_MAINNET ? 26 : 500,
   Fantom: TARGET_MAINNET ? 22 : 208,
   Avalanche: TARGET_MAINNET ? 21 : 209,
   Metis: TARGET_MAINNET ? 24 : 300,
