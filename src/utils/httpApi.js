@@ -43,20 +43,166 @@ request.interceptors.response.use(
 
 export default {
   async getTokenBasics() {
+    // https://bridge.poly.network/testnet/v1/tokenbasics
     const result = await request({ method: 'post', url: '/tokenbasics', data: {} });
+    result.TokenBasics.push({
+      Name: 'STC',
+      Precision: 9,
+      Price: '0.09',
+      Ind: 1,
+      Time: 1616371229,
+      Property: 1,
+      Meta: '',
+      PriceMarkets: null,
+      Tokens: [
+        {
+          Hash: '00000000000000000000000000000001::STC::STC',
+          ChainId: 1,
+          Name: 'STC',
+          Property: 1,
+          TokenBasicName: 'STC',
+          Precision: 9,
+          AvailableAmount: 71745132220000000000,
+          TokenBasic: null,
+          TokenMaps: null,
+        },
+        {
+          Hash: '00000000000000000000000000000001::STC::STC',
+          ChainId: 318,
+          Name: 'STC',
+          Property: 1,
+          TokenBasicName: 'STC',
+          Precision: 9,
+          AvailableAmount: 71745132220000000000,
+          TokenBasic: null,
+          TokenMaps: null,
+        },
+      ],
+    });
+    result.TokenBasics.map(token => {
+      if (token.Name === 'ETH') {
+        console.log('token1', token);
+        token.Tokens.push({
+          Hash: '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH',
+          ChainId: 318,
+          Name: 'xETH',
+          Property: 1,
+          TokenBasicName: 'ETH',
+          Precision: 18,
+          AvailableAmount: '1000555555555000000',
+          TokenBasic: null,
+          TokenMaps: null,
+        });
+        console.log('token2', token);
+      }
+      return token;
+    });
     const tokenBasics = deserialize(list(schemas.tokenBasic), result.TokenBasics || []);
+
     const tokens = _.flatMap(tokenBasics, tokenBasic => tokenBasic.tokens || []);
     return { tokenBasics, tokens };
   },
   async getTokenMaps({ fromChainId, fromTokenHash }) {
-    const result = await request({
-      method: 'post',
-      url: '/tokenmap',
-      data: {
-        ChainId: fromChainId,
-        Hash: fromTokenHash,
-      },
-    });
+    // https://bridge.poly.network/testnet/v1/tokenmap
+    let result;
+    if (fromChainId === 318) {
+      if (fromTokenHash === '0x00000000000000000000000000000001::STC::STC') {
+        result = {
+          TotalCount: 1,
+          TokenMaps: [
+            {
+              SrcTokenHash: '00000000000000000000000000000001',
+              SrcToken: {
+                Hash: '00000000000000000000000000000001',
+                ChainId: 318,
+                Name: 'STC',
+                Property: 1,
+                TokenBasicName: 'STC',
+                Precision: 9,
+                AvailableAmount: '9999999999999999999999999999999999999999875349141',
+                TokenBasic: null,
+                TokenMaps: null,
+              },
+              DstTokenHash: 'ad3f96ae966ad60347f31845b7e4b333104c52fb',
+              DstToken: {
+                Hash: 'ad3f96ae966ad60347f31845b7e4b333104c52fb',
+                ChainId: 2,
+                Name: 'STC',
+                Property: 1,
+                TokenBasicName: 'STC',
+                Precision: 9,
+                AvailableAmount: '11985645907739',
+                TokenBasic: null,
+                TokenMaps: null,
+              },
+              Property: 1,
+            },
+          ],
+        };
+      } else if (fromTokenHash === '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH') {
+        result = {
+          TotalCount: 1,
+          TokenMaps: [
+            {
+              SrcTokenHash: '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH',
+              SrcToken: {
+                Hash: '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH',
+                ChainId: 318,
+                Name: 'xETH',
+                Property: 1,
+                TokenBasicName: 'ETH',
+                Precision: 18,
+                AvailableAmount: '1000555555555000000',
+                TokenBasic: null,
+                TokenMaps: null,
+              },
+              DstTokenHash: '0000000000000000000000000000000000000000',
+              DstToken: {
+                Hash: '0000000000000000000000000000000000000000',
+                ChainId: 2,
+                Name: 'ETH',
+                Property: 1,
+                TokenBasicName: 'ETH',
+                Precision: 18,
+                AvailableAmount: '167419898320559332669',
+                TokenBasic: null,
+                TokenMaps: null,
+              },
+              Property: 1,
+            },
+          ],
+        };
+      }
+    } else {
+      result = await request({
+        method: 'post',
+        url: '/tokenmap',
+        data: {
+          ChainId: fromChainId,
+          Hash: fromTokenHash,
+        },
+      });
+      if (fromTokenHash === '0000000000000000000000000000000000000000') {
+        result.TotalCount += 1;
+        result.TokenMaps.push({
+          SrcTokenHash: result.TokenMaps[0].SrcTokenHash,
+          SrcToken: result.TokenMaps[0].SrcToken,
+          DstTokenHash: '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH',
+          DstToken: {
+            Hash: '0x18351d311d32201149a4df2a9fc2db8a::XETH::XETH',
+            ChainId: 318,
+            Name: 'xETH',
+            Property: 1,
+            TokenBasicName: 'ETH',
+            Precision: 18,
+            AvailableAmount: '1000555555555000000',
+            TokenBasic: null,
+            TokenMaps: null,
+          },
+          Property: 1,
+        });
+      }
+    }
     const tokenMaps = deserialize(list(schemas.tokenMap), result.TokenMaps);
     return tokenMaps;
   },

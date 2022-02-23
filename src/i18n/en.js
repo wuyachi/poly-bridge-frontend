@@ -148,6 +148,7 @@ export default {
       [WalletName.Binance]: 'Binance',
       [WalletName.Cyano]: 'Cyano',
       [WalletName.WalletConnect]: 'WalletConnect',
+      [WalletName.StarMask]: 'StarMask',
     },
     chainName: {
       [ChainId.Poly]: 'Poly',
@@ -170,6 +171,7 @@ export default {
       [ChainId.Pixie]: 'Pixie',
       [ChainId.Rinkeby]: 'Rinkeby',
       [ChainId.Boba]: 'Boba',
+      [ChainId.Stc]: 'Starcoin',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -191,6 +193,7 @@ export default {
       [ChainId.Pixie]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Rinkeby]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Boba]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Stc]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
       [TransactionStatus.Finished]: 'Finished',

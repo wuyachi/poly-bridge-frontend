@@ -21,6 +21,7 @@ const APIS = {
   [ChainId.Pixie]: () => import('./eth'),
   [ChainId.Rinkeby]: () => import('./eth'),
   [ChainId.Boba]: () => import('./eth'),
+  [ChainId.Stc]: () => import('./stc'),
 };
 
 export async function getChainApi(chainId) {
