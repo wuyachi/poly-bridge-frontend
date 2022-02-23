@@ -17,14 +17,7 @@ export default {
   },
   actions: {
     async getExpectTime({ commit }, { fromChainId, toChainId }) {
-      // const time = await httpApi.getExpectTime({ fromChainId, toChainId });
-      let time;
-      // mock data to test Eth(Ethereum) to xEth(Starcoiin)
-      if (fromChainId === 2 && toChainId === 318) {
-        time = { SrcChainId: 2, DstChainId: 318, Time: 242 };
-      } else {
-        time = await httpApi.getExpectTime({ fromChainId, toChainId });
-      }
+      const time = await httpApi.getExpectTime({ fromChainId, toChainId });
       commit('setExpectTime', { params: { fromChainId, toChainId }, value: time });
     },
   },
