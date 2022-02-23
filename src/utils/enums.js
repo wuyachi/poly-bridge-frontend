@@ -35,6 +35,44 @@ export const ChainId = {
   Rinkeby: TARGET_MAINNET ? 402 : 402,
 };
 
+export const NetworkChainIdMaps = {
+  [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
+  [TARGET_MAINNET ? 56 : 97]: ChainId.Bsc,
+  [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
+  [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
+  [TARGET_MAINNET ? 100 : 77]: ChainId.xDai,
+  [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
+  [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
+  [TARGET_MAINNET ? 42161 : 421611]: ChainId.Arbitrum,
+  [TARGET_MAINNET ? 10 : 69]: ChainId.Optimistic,
+  [TARGET_MAINNET ? 250 : 4002]: ChainId.Fantom,
+  [TARGET_MAINNET ? 43114 : 43113]: ChainId.Avalanche,
+  [TARGET_MAINNET ? 1088 : 588]: ChainId.Metis,
+  [TARGET_MAINNET ? 6626 : 666]: ChainId.Pixie,
+  [TARGET_MAINNET ? 4 : 4]: ChainId.Rinkeby,
+  [TARGET_MAINNET ? 288 : 28]: ChainId.Boba,
+  [TARGET_MAINNET ? 42262 : 42261]: ChainId.Oasis,
+};
+
+export const EthNetworkChainIdMaps = {
+  [ChainId.Eth]: TARGET_MAINNET ? 1 : 3,
+  [ChainId.Bsc]: TARGET_MAINNET ? 56 : 97,
+  [ChainId.Heco]: TARGET_MAINNET ? 128 : 256,
+  [ChainId.Ok]: TARGET_MAINNET ? 66 : 65,
+  [ChainId.xDai]: TARGET_MAINNET ? 100 : 77,
+  [ChainId.Polygon]: TARGET_MAINNET ? 137 : 80001,
+  [ChainId.Palette]: TARGET_MAINNET ? 1718 : 101,
+  [ChainId.Arbitrum]: TARGET_MAINNET ? 42161 : 421611,
+  [ChainId.Optimistic]: TARGET_MAINNET ? 10 : 69,
+  [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
+  [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
+  [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
+  [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
+  [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
+  [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
+  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
+};
+
 export const SingleTransactionStatus = {
   Failed: -1,
   Pending: 1,

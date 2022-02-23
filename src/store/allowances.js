@@ -21,6 +21,7 @@ export default {
       let allowance = null;
       if (wallet) {
         const walletApi = await getWalletApi(wallet.name);
+        console.log('getAllowance111', chainId);
         allowance = await walletApi.getAllowance({ chainId, address, tokenHash, spender });
       }
       const oldValue = getters.getAllowance({ chainId, address, tokenHash, spender });
