@@ -1,3 +1,4 @@
+import WalletLink from 'walletlink';
 import Web3 from 'web3';
 import store from '@/store';
 import { getChainApi } from '@/utils/chainApi';
@@ -8,20 +9,38 @@ import {
   integerToHex,
   reverseHex,
 } from '@/utils/convertors';
-import { WalletName, ChainId, SingleTransactionStatus, EthNetworkChainIdMaps } from '@/utils/enums';
+import {
+  WalletName,
+  ChainId,
+  SingleTransactionStatus,
+  NetworkChainIdMaps,
+  EthNetworkChainIdMaps,
+} from '@/utils/enums';
 import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
 
-const MATH_CONNECTED_KEY = 'MATH_CONNECTED';
-const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
+const APP_NAME = 'Poly Bridge';
+const APP_LOGO_URL = 'https://bridge.poly.network/img/logo.2e569620.svg';
+const DEFAULT_ETH_JSONRPC_URL = 'https://mainnet.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161';
+const DEFAULT_CHAIN_ID = 1;
+// Initialize WalletLink
+export const walletLink = new WalletLink({
+  appName: APP_NAME,
+  appLogoUrl: APP_LOGO_URL,
+  darkMode: false,
+});
+// Initialize a Web3 Provider object
+export const ethereum = walletLink.makeWeb3Provider(DEFAULT_ETH_JSONRPC_URL, DEFAULT_CHAIN_ID);
 
-const NETWORK_CHAIN_ID_MAPS = {
-  [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
-  [TARGET_MAINNET ? 56 : 97]: ChainId.Bsc,
-  [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
-  [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
-};
+// Initialize a Web3 object
+// export const web3 = new Web3(ethereum)
+
+const COINBASE_CONNECTED_KEY = 'COINBASE_CONNECTED';
+const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
+const PLT_NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000103';
+
+const NETWORK_CHAIN_ID_MAPS = NetworkChainIdMaps;
 
 const ETH_NETWORK_CHAIN_ID_MAPS = EthNetworkChainIdMaps;
 
@@ -47,70 +66,85 @@ function convertWalletError(error) {
   if (error.code === 4001) {
     code = WalletError.CODES.USER_REJECTED;
   }
+  if (error.toString().indexOf('32005') > -1) {
+    return null;
+  }
+  if (error.toString().indexOf('32000') > -1) {
+    return null;
+  }
   return new WalletError(error.message, { code, cause: error });
 }
 
 async function queryState() {
-  console.log(web3.currentProvider);
-  const accounts = await web3.currentProvider.request({ method: 'eth_accounts' });
+  const accounts = await ethereum.request({ method: 'eth_accounts' });
+  console.log('get accounts from wallet', accounts);
   const address = accounts[0] || null;
-  const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
+  const addressHex = await tryToConvertAddressToHex(WalletName.CoinBase, address);
   const checksumAddress = address && web3.utils.toChecksumAddress(address);
-  const network = await web3.currentProvider.request({ method: 'eth_chainId' });
+  const network = await ethereum.request({ method: 'eth_chainId' });
   store.dispatch('updateWallet', {
-    name: WalletName.Math,
+    name: WalletName.CoinBase,
     address: checksumAddress,
     addressHex,
     connected: !!checksumAddress,
     chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
   });
 }
-const sleep = time =>
-  new Promise(res => {
-    setTimeout(() => {
-      res(null);
-    }, time);
-  });
-async function init() {
-  await sleep(2000);
-  try {
-    web3 = new Web3(window.web3.currentProvider);
-    store.dispatch('updateWallet', { name: WalletName.Math, installed: true });
 
-    if (sessionStorage.getItem(MATH_CONNECTED_KEY) === 'true') {
+async function init() {
+  try {
+    if (!ethereum) {
+      return;
+    }
+    web3 = new Web3(ethereum);
+    store.dispatch('updateWallet', { name: WalletName.CoinBase, installed: true });
+
+    if (sessionStorage.getItem(COINBASE_CONNECTED_KEY) === 'true') {
       await queryState();
     }
-    web3.currentProvider.on('accountsChanged', async accounts => {
-      if (sessionStorage.getItem(MATH_CONNECTED_KEY) !== 'true') {
-        return;
-      }
+
+    ethereum.on('accountsChanged', async accounts => {
       const address = accounts[0] || null;
-      const addressHex = await tryToConvertAddressToHex(WalletName.Math, address);
+      const addressHex = await tryToConvertAddressToHex(WalletName.CoinBase, address);
       const checksumAddress = address && web3.utils.toChecksumAddress(address);
       store.dispatch('updateWallet', {
-        name: WalletName.Math,
+        name: WalletName.CoinBase,
         address: checksumAddress,
         addressHex,
         connected: !!checksumAddress,
       });
     });
 
-    web3.currentProvider.on('chainChanged', network => {
+    ethereum.on('chainChanged', network => {
       store.dispatch('updateWallet', {
-        name: WalletName.Math,
+        name: WalletName.CoinBase,
         chainId: NETWORK_CHAIN_ID_MAPS[Number(network)],
       });
     });
   } finally {
-    store.getters.getWallet(WalletName.Math).deferred.resolve();
+    store.getters.getWallet(WalletName.CoinBase).deferred.resolve();
   }
 }
 
 async function connect() {
   try {
-    await web3.currentProvider.request({ method: 'eth_requestAccounts' });
+    console.log('get connect to wallet', ethereum);
+    console.log('get connect to wallet', web3);
+    // await ethereum.request({ method: 'eth_requestAccounts' });
+    await ethereum.enable();
     await queryState();
-    sessionStorage.setItem(MATH_CONNECTED_KEY, 'true');
+    sessionStorage.setItem(COINBASE_CONNECTED_KEY, 'true');
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
+async function changeChain(waitChainId) {
+  try {
+    await ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: waitChainId }],
+    });
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -131,6 +165,21 @@ async function getBalance({ chainId, address, tokenHash }) {
   }
 }
 
+async function getO3Balance({ chainId, address, tokenHash }) {
+  try {
+    const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
+    if (tokenHash === '0000000000000000000000000000000000000000') {
+      const result = await web3.eth.getBalance(address);
+      return integerToDecimal(result, tokenBasic.decimals);
+    }
+    const tokenContract = new web3.eth.Contract(require('@/assets/json/o3.json'), tokenHash);
+    const result = await tokenContract.methods.unlockedOf(address).call();
+    return integerToDecimal(result, tokenBasic.decimals);
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
 async function getAllowance({ chainId, address, tokenHash, spender }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
@@ -139,6 +188,7 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
+    console.log(integerToDecimal(result, tokenBasic.decimals));
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
@@ -201,16 +251,21 @@ async function nftApprove({ address, tokenHash, spender, id }) {
   }
 }
 
-async function getNFTApproved({ fromChainId, tokenHash, id }) {
+async function getNFTApproved({ fromChainId, toChainId, tokenHash, id }) {
   try {
     const chain = store.getters.getChain(fromChainId);
+
+    let nftContract = chain.nftLockContractHash;
+    if (fromChainId === 2 && toChainId === 8) {
+      nftContract = chain.pltNftLockContractHash;
+    }
     const tokenID = decimalToInteger(id, 0);
     const tokenContract = new web3.eth.Contract(
       require('@/assets/json/eth-erc721.json'),
       tokenHash,
     );
     const result = await tokenContract.methods.getApproved(tokenID).call();
-    return !(result === chain.nftLockContractHash);
+    return !(result === nftContract);
   } catch (error) {
     throw convertWalletError(error);
   }
@@ -218,21 +273,21 @@ async function getNFTApproved({ fromChainId, tokenHash, id }) {
 async function sendSelfPayTx({ data, toAddress, toChainId }) {
   try {
     const txdata = data;
-    const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
     const address = accounts[0] || null;
     const toEthChainID = ETH_NETWORK_CHAIN_ID_MAPS[toChainId];
     const transactionParameters = {
-      nonce: '0x00', // ignored by MetaMask
-      // gasPrice: `0x${reverseHex(integerToHex(1000000))}`, // customizable by user during MetaMask confirmation.
-      // gas: `0x${reverseHex(integerToHex(400000))}`, // customizable by user during MetaMask confirmation.
+      nonce: '0x00', // ignored by CoinBase
+      // gasPrice: `0x${reverseHex(integerToHex(1000000))}`, // customizable by user during CoinBase confirmation.
+      // gas: `0x${reverseHex(integerToHex(400000))}`, // customizable by user during CoinBase confirmation.
       to: toAddress, // Required except during contract publications.
       from: address, // must match user's active address.
       value: '0x00', // Only required to send ether to the recipient from the initiating external account.
       data: txdata, // Optional, but used for defining smart contract creation and interaction.
-      chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by MetaMask.
+      chainId: `0x${reverseHex(integerToHex(toEthChainID))}`, // Used to prevent transaction reuse across blockchains. Auto-filled by CoinBase.
     };
 
-    const txHash = await window.ethereum.request({
+    const txHash = await ethereum.request({
       method: 'eth_sendTransaction',
       params: [transactionParameters],
     });
@@ -256,27 +311,25 @@ async function lock({
       chainId: fromChainId,
       tokenHash: fromTokenHash,
     });
-
     const lockContract = new web3.eth.Contract(
       require('@/assets/json/eth-lock.json'),
       chain.lockContractHash,
     );
-    console.log(chain);
     const toChainApi = await getChainApi(toChainId);
-    const toAddressHex = toChainApi.addressToHex(toAddress);
+    const toAddressHex = await toChainApi.addressToHex(toAddress);
     const amountInt = decimalToInteger(amount, tokenBasic.decimals);
     const feeInt = decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
-    console.log(toAddressHex);
-    console.log(amountInt);
-    console.log(feeInt);
-    console.log(fromTokenHash);
-
+    const nativefeeInt =
+      fromTokenHash === '0000000000000000000000000000000000000103'
+        ? 0
+        : decimalToInteger(fee, chain.nftFeeName ? 18 : tokenBasic.decimals);
     const result = await confirmLater(
       lockContract.methods
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
-          value: fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : feeInt,
+          value:
+            fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
     );
     return toStandardHex(result);
@@ -288,16 +341,23 @@ async function lock({
 async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toAddress, id, fee }) {
   try {
     const chain = store.getters.getChain(fromChainId);
-
+    let nftContract = chain.nftLockContractHash;
+    if (fromChainId === 2 && toChainId === 8) {
+      nftContract = chain.pltNftLockContractHash;
+    }
     const lockContract = new web3.eth.Contract(
       require('@/assets/json/eth-nft-lock.json'),
-      chain.nftLockContractHash,
+      nftContract,
     );
     const toChainApi = await getChainApi(toChainId);
     const toAddressHex = toChainApi.addressToHex(toAddress);
     const tokenID = decimalToInteger(id, 0);
     const feeInt = decimalToInteger(fee, 18);
+    const feeTokenHash =
+      fromChainId !== 107 && fromChainId !== 8 ? NFT_FEE_TOKEN_HASH : PLT_NFT_FEE_TOKEN_HASH;
 
+    console.log(feeTokenHash);
+    console.log(feeTokenHash === NFT_FEE_TOKEN_HASH ? feeInt : 0);
     const result = await confirmLater(
       lockContract.methods
         .lock(
@@ -305,13 +365,13 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
           toChainId,
           `0x${toAddressHex}`,
           tokenID,
-          NFT_FEE_TOKEN_HASH,
+          feeTokenHash,
           feeInt,
           0,
         )
         .send({
           from: fromAddress,
-          value: feeInt,
+          value: feeTokenHash === NFT_FEE_TOKEN_HASH ? feeInt : 0,
         }),
     );
     return toStandardHex(result);
@@ -324,13 +384,15 @@ export default {
   install: init,
   connect,
   getBalance,
+  getO3Balance,
   getAllowance,
   getTransactionStatus,
   approve,
   lock,
   nftLock,
   nftApprove,
+  sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
-  sendSelfPayTx,
+  changeChain,
 };

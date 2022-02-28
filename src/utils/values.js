@@ -25,7 +25,9 @@ export const WALLETS = [
       ChainId.Palette,
       ChainId.Arbitrum,
       ChainId.xDai,
+      ChainId.HSC,
       ChainId.Optimistic,
+      ChainId.Boba,
       ChainId.Fantom,
       ChainId.Avalanche,
       ChainId.Metis,
@@ -38,6 +40,31 @@ export const WALLETS = [
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
       'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
+  },
+  {
+    name: WalletName.CoinBase,
+    supportedChainIds: [
+      ChainId.Eth,
+      ChainId.Bsc,
+      ChainId.Heco,
+      ChainId.Ok,
+      ChainId.Polygon,
+      ChainId.Palette,
+      ChainId.Arbitrum,
+      ChainId.xDai,
+      ChainId.HSC,
+      ChainId.Optimistic,
+      ChainId.Fantom,
+      ChainId.Avalanche,
+      ChainId.Metis,
+      ChainId.Pixie,
+      ChainId.Rinkeby,
+      ChainId.Boba,
+      ChainId.Oasis,
+    ],
+    icon: require('@/assets/png/coinbase.png'),
+    downloadUrl:
+      'https://chrome.google.com/webstore/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad',
   },
   {
     name: WalletName.Math,
@@ -113,7 +140,7 @@ export const CHAINS = [
       ? 'https://etherscan.io/tx/0x{txHash}'
       : 'https://ropsten.etherscan.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0xd380450e9e373bDC389951C54616edb2EE653524'
+      ? '0x81910675DbaF69deE0fD77570BFD07f8E436386A'
       : //   : '0xe498fb7D00468a67A79dE5D4Ca264d3350165280',
         '0xDc37471Af6a8aB7f45F444c5a3Ef4758281bE32C',
     nftLockContractHash: TARGET_MAINNET
@@ -126,7 +153,7 @@ export const CHAINS = [
     nftFeeName: 'ETH',
     selfPay: true,
   },
-  /*   {
+  {
     id: ChainId.Neo,
     nativeFee: false,
     icon: require('@/assets/svg/neo.svg'),
@@ -136,7 +163,7 @@ export const CHAINS = [
     lockContractHash: TARGET_MAINNET
       ? '125c83403763670c215f9c7c815ef759b258a41b'
       : 'cd074cd290acc3d73c030784101afbcf40fd86a1',
-  }, */
+  },
   {
     id: ChainId.N3,
     nativeFee: false,
@@ -166,20 +193,34 @@ export const CHAINS = [
     selfPay: true,
   },
   {
+    id: ChainId.HSC,
+    nativeFee: false,
+    icon: require('@/assets/png/hoo.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://hooscan.com/tx/0x{txHash}'
+      : 'https://hooscan.com/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0x5906777d34257a2b479c291871C9BFdFB922D67D'
+      : '0x5906777d34257a2b479c291871C9BFdFB922D67D',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'HSC',
+    selfPay: true,
+  },
+  {
     id: ChainId.Metis,
     nativeFee: false,
     icon: require('@/assets/png/metis.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'http://stardust-explorer.metis.io/tx/0x{txHash}'
+      ? 'https://andromeda-explorer.metis.io/tx/0x{txHash}'
       : 'http://stardust-explorer.metis.io/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9'
+      ? '0xFbFDfc95B8EAe4719Ae7D7b94e6F7aCC2DC2e0D7'
       : '0xA09E4d0406123d14CFB1d60D78C6Dc386b7de7F9',
     nftFeeContractHash: 'deaddeaddeaddeaddeaddeaddeaddeaddead0000',
     nftFeeName: 'Metis',
     selfPay: true,
   },
-  {
+  /* {
     id: ChainId.Rinkeby,
     nativeFee: false,
     icon: require('@/assets/svg/eth.svg'),
@@ -198,7 +239,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
     selfPay: true,
-  },
+  }, */
   {
     id: ChainId.Oasis,
     nativeFee: false,
@@ -232,10 +273,10 @@ export const CHAINS = [
     nativeFee: false,
     icon: require('@/assets/png/boba.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}'
+      ? 'https://blockexplorer.boba.network/tx/0x{txHash}'
       : 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5'
+      ? '0x33d9bF459b39a888422580916f01C4c44a68a615'
       : '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
@@ -252,7 +293,7 @@ export const CHAINS = [
       ? 'https://bscscan.com/tx/0x{txHash}'
       : 'https://testnet.bscscan.com/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x4b0CFdb5e1Ca898a225F9E14AfF9e4eF178a10d2'
+      ? '0xbc3B4E7517c06019F30Bf2f707eD2770b85f9928'
       : //  : '0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5',
         '0xfb717F8d478156fE7428369075bB2FaB4Ea659B5',
     nftLockContractHash: TARGET_MAINNET
@@ -262,7 +303,7 @@ export const CHAINS = [
     nftFeeName: 'BNB',
     selfPay: true,
   },
-  {
+  /* {
     id: ChainId.Pixie,
     nativeFee: true,
     icon: require('@/assets/svg/pixie.svg'),
@@ -281,7 +322,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'PIX',
     selfPay: true,
-  },
+  }, */
   {
     id: ChainId.Heco,
     nativeFee: true,
@@ -301,6 +342,20 @@ export const CHAINS = [
       : '0xbaBaAF5CF7f63437755aAAFE7a4106463c5cD540',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'HT',
+    selfPay: true,
+  },
+  {
+    id: ChainId.Oasis,
+    nativeFee: false,
+    icon: require('@/assets/png/oasis.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://explorer.emerald.oasis.dev/tx/0x{txHash}'
+      : 'https://testnet.explorer.emerald.oasis.dev/tx/0x{txHash}',
+    lockContractHash: TARGET_MAINNET
+      ? '0xbaf396bD590D23D4F4dF5f21b09bA9F869C4B7A6'
+      : '0xc2d365475EEf3ec83e59D1BcDF3A291D7B23Ba99',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'ROSE',
     selfPay: true,
   },
   {
@@ -402,7 +457,7 @@ export const CHAINS = [
   {
     id: ChainId.Ok,
     nativeFee: true,
-    icon: require('@/assets/svg/ok.svg'),
+    icon: require('@/assets/jpg/oecd.jpg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://www.oklink.com/okexchain/tx/0x{txHash}'
       : 'https://www.oklink.com/okexchain-test/tx/0x{txHash}',

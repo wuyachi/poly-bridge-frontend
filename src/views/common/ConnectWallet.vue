@@ -21,18 +21,6 @@
           <img class="chain-icon" :src="chain.icon" />
         </CButton>
       </div>
-      <div class="chains" v-if="$route.name == 'nft'">
-        <CButton
-          v-for="chain in nftChains"
-          :key="chain.id"
-          class="chain"
-          :class="{ selected: chainIdWithDefault === chain.id }"
-          @click="chainId = chain.id"
-          @mouseover="chainId = chain.id"
-        >
-          <img class="chain-icon" :src="chain.icon" />
-        </CButton>
-      </div>
       <div class="chains" v-if="$route.name == 'transactions'">
         <CButton
           v-for="chain in chains"
@@ -45,6 +33,30 @@
           <img class="chain-icon" :src="chain.icon" />
         </CButton>
       </div>
+      <div class="chains" v-if="$route.name == 'nft'">
+        <CButton
+          v-for="chain in nftChains"
+          :key="chain.id"
+          class="chain"
+          :class="{ selected: chainIdWithDefault === chain.id }"
+          @click="chainId = chain.id"
+          @mouseover="chainId = chain.id"
+        >
+          <img class="chain-icon" :src="chain.icon" />
+        </CButton>
+      </div>
+      <!-- <div class="chains" v-if="$route.name == 'transactions'">
+        <CButton
+          v-for="chain in chains"
+          :key="chain.id"
+          class="chain"
+          :class="{ selected: chainIdWithDefault === chain.id }"
+          @click="chainId = chain.id"
+          @mouseover="chainId = chain.id"
+        >
+          <img class="chain-icon" :src="chain.icon" />
+        </CButton>
+      </div> -->
 
       <CDivider direction="vertical" />
 
