@@ -130,6 +130,30 @@
             </CButton>
           </div>
           <div class="input-error">{{ errors[0] }}</div>
+          <div
+            v-if="
+              fee &&
+                fee.Balance < 500 &&
+                fee.SwapTokenHash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
+            "
+            class="fee"
+          >
+            <span class="label" style="color: #f56c6c; opacity: 1">{{
+              $t('home.form.warningMsg')
+            }}</span>
+          </div>
+          <div
+            v-if="
+              fee &&
+                fee.Balance < 500 &&
+                fee.SwapTokenHash === 'e552fb52a4f19e44ef5a967632dbc320b0820639'
+            "
+            class="fee"
+          >
+            <span class="label" style="color: #f56c6c; opacity: 1">{{
+              $t('home.form.warningMsg')
+            }}</span>
+          </div>
           <!-- <div v-if="fee && selfPayFlag" class="fee">
             <el-checkbox v-model="selfPayChecked"
               >{{ $t('home.form.selfPay') }}
@@ -329,11 +353,24 @@ export default {
     },
     maxAmount() {
       let res;
-      if (this.fee) {
+      if (this.fee && this.tofee) {
         if (Number(this.fee.Balance) > Number(this.balance)) {
           res = this.balance;
         } else {
           res = this.fee.Balance;
+        }
+        if (this.fromToken.name === 'C' && res > 2000000000000) {
+          res = 2000000000000;
+        }
+        if (
+          this.fromToken.hash === '0000000000000000000000000000000000000000' ||
+          this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
+        ) {
+          res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
+          res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+        }
+        if (res < 0) {
+          res = 0;
         }
       }
       return res;
@@ -424,7 +461,7 @@ export default {
       return this.getBalanceParams && this.$store.getters.getBalance(this.getBalanceParams);
     },
     getAllowanceParams() {
-      if (this.fromWallet && this.fromChain && this.fromToken) {
+      if (this.fromWallet && this.fromChain && this.fromToken && this.balance) {
         return {
           chainId: this.fromChainId,
           address: this.fromWallet.address,
@@ -453,6 +490,17 @@ export default {
       }
       return null;
     },
+    getToFeeParams() {
+      if (this.toToken && this.fromChainId) {
+        return {
+          fromChainId: this.toChainId,
+          fromTokenHash: this.toToken.hash,
+          toChainId: this.fromChainId,
+          toTokenHash: this.toToken.hash,
+        };
+      }
+      return null;
+    },
     getExpectTimeParams() {
       if (this.fromToken && this.toChainId) {
         return {
@@ -470,6 +518,9 @@ export default {
     fee() {
       return this.getFeeParams && this.$store.getters.getFee(this.getFeeParams);
     },
+    tofee() {
+      return this.getToFeeParams && this.$store.getters.getFee(this.getToFeeParams);
+    },
   },
   watch: {
     async getBalanceParams(value) {
@@ -479,6 +530,11 @@ export default {
       }
     },
     getFeeParams(value) {
+      if (value) {
+        this.$store.dispatch('getFee', value);
+      }
+    },
+    getToFeeParams(value) {
       if (value) {
         this.$store.dispatch('getFee', value);
       }
@@ -566,11 +622,24 @@ export default {
       this.$message.success(this.$t('messages.copied', { text }));
     },
     transferAll() {
+      let res;
       if (Number(this.fee.Balance) > Number(this.balance)) {
-        this.amount = this.balance;
+        res = this.balance;
       } else {
-        this.amount = this.fee.Balance;
+        res = this.fee.Balance;
       }
+      if (
+        this.fromToken.hash === '0000000000000000000000000000000000000000' ||
+        this.fromToken.hash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
+      ) {
+        res = new BigNumber(res).minus(this.fee.TokenAmount).toNumber();
+        res = new BigNumber(res).minus(this.tofee.TokenAmount).toNumber();
+      }
+      if (res < 0) {
+        this.$message.error(this.$t('errors.wallet.INSUFFICIENT_FUNDS'));
+        res = 0;
+      }
+      this.amount = res;
       this.$nextTick(() => this.$refs.amountValidation.validate());
     },
     async approve() {

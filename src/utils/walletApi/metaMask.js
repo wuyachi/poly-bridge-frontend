@@ -8,7 +8,13 @@ import {
   integerToHex,
   reverseHex,
 } from '@/utils/convertors';
-import { WalletName, ChainId, SingleTransactionStatus } from '@/utils/enums';
+import {
+  WalletName,
+  ChainId,
+  SingleTransactionStatus,
+  NetworkChainIdMaps,
+  EthNetworkChainIdMaps,
+} from '@/utils/enums';
 import { WalletError } from '@/utils/errors';
 import { TARGET_MAINNET } from '@/utils/env';
 import { tryToConvertAddressToHex } from '.';
@@ -17,45 +23,9 @@ const META_MASK_CONNECTED_KEY = 'META_MASK_CONNECTED';
 const NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000000';
 const PLT_NFT_FEE_TOKEN_HASH = '0x0000000000000000000000000000000000000103';
 
-const NETWORK_CHAIN_ID_MAPS = {
-  [TARGET_MAINNET ? 1 : 3]: ChainId.Eth,
-  [TARGET_MAINNET ? 56 : 97]: ChainId.Bsc,
-  [TARGET_MAINNET ? 128 : 256]: ChainId.Heco,
-  [TARGET_MAINNET ? 66 : 65]: ChainId.Ok,
-  [TARGET_MAINNET ? 100 : 77]: ChainId.xDai,
-  [TARGET_MAINNET ? 137 : 80001]: ChainId.Polygon,
-  [TARGET_MAINNET ? 1718 : 101]: ChainId.Palette,
-  [TARGET_MAINNET ? 42161 : 421611]: ChainId.Arbitrum,
-  [TARGET_MAINNET ? 10 : 69]: ChainId.Optimistic,
-  [TARGET_MAINNET ? 250 : 4002]: ChainId.Fantom,
-  [TARGET_MAINNET ? 43114 : 43113]: ChainId.Avalanche,
-  [TARGET_MAINNET ? 1088 : 588]: ChainId.Metis,
-  [TARGET_MAINNET ? 6626 : 666]: ChainId.Pixie,
-  [TARGET_MAINNET ? 4 : 4]: ChainId.Rinkeby,
-  [TARGET_MAINNET ? 42261 : 42261]: ChainId.Oasis,
-  [TARGET_MAINNET ? 42262 : 42262]: ChainId.Oasis1,
-  [TARGET_MAINNET ? 288 : 28]: ChainId.Boba,
-};
+const NETWORK_CHAIN_ID_MAPS = NetworkChainIdMaps;
 
-const ETH_NETWORK_CHAIN_ID_MAPS = {
-  [ChainId.Eth]: TARGET_MAINNET ? 1 : 3,
-  [ChainId.Bsc]: TARGET_MAINNET ? 56 : 97,
-  [ChainId.Heco]: TARGET_MAINNET ? 128 : 256,
-  [ChainId.Ok]: TARGET_MAINNET ? 66 : 65,
-  [ChainId.xDai]: TARGET_MAINNET ? 100 : 77,
-  [ChainId.Polygon]: TARGET_MAINNET ? 137 : 80001,
-  [ChainId.Palette]: TARGET_MAINNET ? 1718 : 101,
-  [ChainId.Arbitrum]: TARGET_MAINNET ? 42161 : 421611,
-  [ChainId.Optimistic]: TARGET_MAINNET ? 10 : 69,
-  [ChainId.Fantom]: TARGET_MAINNET ? 250 : 4002,
-  [ChainId.Avalanche]: TARGET_MAINNET ? 43114 : 43113,
-  [ChainId.Metis]: TARGET_MAINNET ? 1088 : 588,
-  [ChainId.Pixie]: TARGET_MAINNET ? 6626 : 666,
-  [ChainId.Rinkeby]: TARGET_MAINNET ? 4 : 4,
-  [ChainId.Oasis]: TARGET_MAINNET ? 42262 : 42261,
-  [ChainId.Oasis1]: TARGET_MAINNET ? 42262 : 42262,
-  [ChainId.Boba]: TARGET_MAINNET ? 288 : 28,
-};
+const ETH_NETWORK_CHAIN_ID_MAPS = EthNetworkChainIdMaps;
 
 let web3;
 
@@ -148,6 +118,17 @@ async function connect() {
   }
 }
 
+async function changeChain(waitChainId) {
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId: waitChainId }],
+    });
+  } catch (error) {
+    throw convertWalletError(error);
+  }
+}
+
 async function getBalance({ chainId, address, tokenHash }) {
   try {
     const tokenBasic = store.getters.getTokenBasicByChainIdAndTokenHash({ chainId, tokenHash });
@@ -186,7 +167,6 @@ async function getAllowance({ chainId, address, tokenHash, spender }) {
     }
     const tokenContract = new web3.eth.Contract(require('@/assets/json/eth-erc20.json'), tokenHash);
     const result = await tokenContract.methods.allowance(address, `0x${spender}`).call();
-    console.log(integerToDecimal(result, tokenBasic.decimals));
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
@@ -291,7 +271,6 @@ async function sendSelfPayTx({ data, toAddress, toChainId }) {
     });
     return toStandardHex(result);
   } catch (error) {
-    debugger;
     throw convertWalletError(error);
   }
 }
@@ -327,6 +306,7 @@ async function lock({
         .lock(`0x${fromTokenHash}`, toChainId, `0x${toAddressHex}`, amountInt, feeInt, 0)
         .send({
           from: fromAddress,
+          gas: fromChainId === 24 ? 2000000 : null,
           value:
             fromTokenHash === '0000000000000000000000000000000000000000' ? amountInt : nativefeeInt,
         }),
@@ -354,9 +334,6 @@ async function nftLock({ fromChainId, fromAddress, fromTokenHash, toChainId, toA
     const feeInt = decimalToInteger(fee, 18);
     const feeTokenHash =
       fromChainId !== 107 && fromChainId !== 8 ? NFT_FEE_TOKEN_HASH : PLT_NFT_FEE_TOKEN_HASH;
-
-    console.log(feeTokenHash);
-    console.log(feeTokenHash === NFT_FEE_TOKEN_HASH ? feeInt : 0);
     const result = await confirmLater(
       lockContract.methods
         .lock(
@@ -393,4 +370,5 @@ export default {
   sendSelfPayTx,
   getTotalSupply,
   getNFTApproved,
+  changeChain,
 };
