@@ -1,5 +1,5 @@
 <template>
-  <CDrawer
+  <CDialog
     v-bind="$attrs"
     :closeOnClickModal="!confirming"
     :closeOnPressEscape="!confirming"
@@ -7,7 +7,14 @@
   >
     <transition v-if="confirmingData" name="fade" mode="out-in">
       <div class="content">
-        <div class="title">{{ $t('home.confirm.title') }}</div>
+        <div class="title">
+          {{ $t('home.confirm.title') }}
+          <img
+            class="close-btn"
+            src="@/assets/svg/close.svg"
+            @click="$emit('update:visible', false)"
+          />
+        </div>
         <CDivider />
         <div v-if="!packing" class="scroll">
           <div class="fields">
@@ -103,7 +110,7 @@
         </div>
       </div>
     </transition>
-  </CDrawer>
+  </CDialog>
 </template>
 
 <script>
@@ -250,14 +257,26 @@ export default {
   display: flex;
   flex-direction: column;
   width: 500px;
-  height: 100vh;
   background: #171f31;
   box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
 }
 
 .title {
-  padding: 80px 50px 20px;
+  padding: 40px;
   font-weight: 500;
+  font-size: 24px;
+  line-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .close-btn {
+    width: 30px;
+    cursor: pointer;
+    transition: all 0.3s;
+    &:hover {
+      opacity: 0.6;
+    }
+  }
 }
 
 .scroll {
@@ -290,7 +309,8 @@ export default {
 
 .amount-value {
   font-weight: 500;
-  font-size: 20px;
+  font-size: 32px;
+  line-height: 48px;
 }
 
 .token-basic-name {
@@ -305,7 +325,7 @@ export default {
 }
 
 .chain-icon {
-  width: 20px;
+  width: 30px;
 }
 
 .chain-name {
@@ -326,7 +346,8 @@ export default {
 
 .fee-value {
   font-weight: 500;
-  font-size: 14px;
+  font-size: 18px;
+  line-height: 23px;
 }
 
 .packing {

@@ -1,14 +1,7 @@
 <template>
-  <CDialog v-bind="$attrs" v-on="$listeners">
+  <CDrawer v-bind="$attrs" v-on="$listeners">
     <div class="content">
-      <div class="title">
-        {{ $t('home.connectWallet.title') }}
-        <img
-          class="close-btn"
-          src="@/assets/svg/close.svg"
-          @click="$emit('update:visible', false)"
-        />
-      </div>
+      <div class="title">{{ $t('home.connectWallet.title') }}</div>
       <CDivider />
       <div class="scroll">
         <div v-if="fromChain" class="from">
@@ -92,7 +85,7 @@
         </div>
       </div>
     </div>
-  </CDialog>
+  </CDrawer>
 </template>
 
 <script>
@@ -127,7 +120,6 @@ export default {
   },
   methods: {
     async connect(chain, wallet) {
-      console.log(wallet);
       if (wallet.installed) {
         if (!wallet.connected) {
           const walletApi = await getWalletApi(wallet.name);
@@ -141,7 +133,6 @@ export default {
           this.$emit('update:visible', false);
         }
       } else {
-        console.log(2);
         window.open(wallet.downloadUrl);
       }
     },
@@ -160,21 +151,8 @@ export default {
 }
 
 .title {
-  padding: 40px;
+  padding: 80px 50px 20px;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 36px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  .close-btn {
-    width: 30px;
-    cursor: pointer;
-    transition: all 0.3s;
-    &:hover {
-      opacity: 0.6;
-    }
-  }
 }
 
 .from,
@@ -207,7 +185,6 @@ export default {
 }
 
 .wallets {
-  width: 100%;
   display: flex;
   flex-direction: column;
   @include child-margin-v(16px);
@@ -237,38 +214,11 @@ export default {
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
-  width: 100%;
+  min-width: 167px;
   height: 34px;
   padding: 0px 15px;
   border-radius: 4px;
   border: 1px solid #ffffff;
   @include child-margin-h(8px);
-  .scroll {
-    .from {
-      width: 45%;
-      .wallets {
-        width: 100%;
-      }
-    }
-    .to {
-      width: 45%;
-    }
-  }
-}
-</style>
-<style lang="scss" scoped>
-@media screen and (max-width: 900px) {
-  .content {
-    width: 100vw;
-  }
-  .scroll {
-    display: flex;
-    justify-content: initial;
-    flex-direction: column;
-    padding: 16px 35px;
-    .from {
-      margin-bottom: 20px;
-    }
-  }
 }
 </style>

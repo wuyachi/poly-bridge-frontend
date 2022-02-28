@@ -1,5 +1,5 @@
 <template>
-  <CDialog
+  <CDrawer
     v-bind="$attrs"
     :closeOnClickModal="!confirming"
     :closeOnPressEscape="!confirming"
@@ -96,7 +96,7 @@
         </div>
       </div>
     </transition>
-  </CDialog>
+  </CDrawer>
 </template>
 
 <script>

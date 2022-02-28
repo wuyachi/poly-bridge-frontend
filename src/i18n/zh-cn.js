@@ -39,7 +39,7 @@ export default {
       asset: 'Asset',
       from: 'From',
       to: 'To',
-      chainName: '{chainName}\nNetwork',
+      chainName: '{chainName}',
       amount: 'Amount',
       max: 'MAX',
       balance: 'Balance',

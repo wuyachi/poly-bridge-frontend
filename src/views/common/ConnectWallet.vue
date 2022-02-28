@@ -1,6 +1,6 @@
 /* eslint-disable */
 <template>
-  <CCard>
+  <CDialog v-bind="$attrs" v-on="$listeners">
     <div class="header-mobile" style="display: none">
       <div class="header-mobile-title">Connect wallet</div>
       <CButton class="header-mobile-close" @click="$emit('close')">
@@ -22,6 +22,18 @@
         </CButton>
       </div>
       <div class="chains" v-if="$route.name == 'transactions'">
+        <CButton
+          v-for="chain in chains"
+          :key="chain.id"
+          class="chain"
+          :class="{ selected: chainIdWithDefault === chain.id }"
+          @click="chainId = chain.id"
+          @mouseover="chainId = chain.id"
+        >
+          <img class="chain-icon" :src="chain.icon" />
+        </CButton>
+      </div>
+      <div class="chains" v-if="$route.name == 'token'">
         <CButton
           v-for="chain in chains"
           :key="chain.id"
@@ -94,7 +106,7 @@
         </div>
       </transition>
     </div>
-  </CCard>
+  </CDialog>
 </template>
 
 <script>
@@ -152,6 +164,7 @@ export default {
 .content {
   display: flex;
   min-width: 310px;
+  width: 640px;
   max-height: calc(100vh - 100px);
 }
 
@@ -200,6 +213,7 @@ export default {
 }
 
 .wallets {
+  width: 136px;
   display: flex;
   flex-direction: column;
   flex: 1;

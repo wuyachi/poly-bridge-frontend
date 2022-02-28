@@ -3,7 +3,7 @@
     <CPopover v-if="!connectedWallets.length" v-model="connectWalletVisible">
       <CButton class="connect-wallet-button">{{ $t('common.wallets.connectWallet') }}</CButton>
       <template #content>
-        <ConnectWallet @close="connectWalletVisible = false" />
+        <ConnectWallet :visible.sync="connectWalletVisible" />
       </template>
     </CPopover>
 
@@ -22,7 +22,7 @@
           <img src="@/assets/svg/chevron-down.svg" />
         </CButton>
         <template #content>
-          <ConnectWallet @close="connectWalletVisible = false" />
+          <ConnectWallet :visible.sync="connectWalletVisible" />
         </template>
       </CPopover>
     </template>
@@ -71,6 +71,7 @@ export default {
 <style lang="scss" scoped>
 .wallets {
   @include child-margin-h(4px);
+  width: 136px;
 }
 
 .show-all {
@@ -80,10 +81,12 @@ export default {
   width: 24px;
 }
 .connect-wallet-button {
-  padding: 8px 20px;
-  border: 1px solid #ffffff;
+  padding: 8px 15px;
+  // border: 1px solid #ffffff;
   border-radius: 4px;
   font-size: 14px;
+  line-height: 21px;
+  background: linear-gradient(270deg, #282bdb 1.43%, #3ec7eb 100%);
 }
 </style>
 
