@@ -15,6 +15,7 @@ const APIS = {
   [WalletName.Binance]: () => import('./binance'),
   [WalletName.Cyano]: () => import('./cyano'),
   [WalletName.WalletConnect]: () => import('./walletConnect'),
+  [WalletName.StarMask]: () => import('./starMask'),
 };
 
 export async function getWalletApi (walletName) {
