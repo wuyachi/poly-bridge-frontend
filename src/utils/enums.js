@@ -10,6 +10,7 @@ export const WalletName = {
   Binance: 'Binance',
   Cyano: 'Cyano',
   WalletConnect: 'WalletConnnect',
+  StarMask: 'StarMask',
 };
 
 export const ChainId = {
@@ -35,6 +36,7 @@ export const ChainId = {
   Pixie: TARGET_MAINNET ? 316 : 316,
   Rinkeby: TARGET_MAINNET ? 402 : 402,
   Oasis1: TARGET_MAINNET ? 501 : 501,
+  Stc: TARGET_MAINNET ? 1 : 318,
 };
 
 export const NetworkChainIdMaps = {
