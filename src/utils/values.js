@@ -32,7 +32,7 @@ export const WALLETS = [
       ChainId.Metis,
       ChainId.Pixie,
       ChainId.Rinkeby,
-      ChainId.Boba,
+      ChainId.Oasis,
     ],
     icon: require('@/assets/svg/meta-mask.svg'),
     downloadUrl:
@@ -56,6 +56,7 @@ export const WALLETS = [
       ChainId.Pixie,
       ChainId.Rinkeby,
       ChainId.Boba,
+      ChainId.Oasis,
     ],
     icon: require('@/assets/png/coinbase.png'),
     downloadUrl:
@@ -299,17 +300,17 @@ export const CHAINS = [
     selfPay: true,
   },
   {
-    id: ChainId.Boba,
+    id: ChainId.Oasis,
     nativeFee: false,
-    icon: require('@/assets/png/boba.png'),
+    icon: require('@/assets/png/oasis.png'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://blockexplorer.boba.network/tx/0x{txHash}'
-      : 'https://blockexplorer.rinkeby.boba.network/tx/0x{txHash}',
+      ? 'https://explorer.emerald.oasis.dev/tx/0x{txHash}'
+      : 'https://testnet.explorer.emerald.oasis.dev/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
-      ? '0x33d9bF459b39a888422580916f01C4c44a68a615'
-      : '0xF87527a74215777391fE4AfD082FeeED3E5A0ca5',
+      ? '0xbaf396bD590D23D4F4dF5f21b09bA9F869C4B7A6'
+      : '0xc2d365475EEf3ec83e59D1BcDF3A291D7B23Ba99',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
-    nftFeeName: 'ETH',
+    nftFeeName: 'ROSE',
     selfPay: true,
   },
   {

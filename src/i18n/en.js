@@ -156,7 +156,7 @@ export default {
       [ChainId.Neo]: 'Neo',
       [ChainId.N3]: 'N3',
       [ChainId.xDai]: 'xDai',
-      [ChainId.Bsc]: 'BSC',
+      [ChainId.Bsc]: 'BNB',
       [ChainId.Heco]: 'Heco',
       [ChainId.Ont]: 'Ontology',
       [ChainId.Ok]: 'OKExChain',
@@ -172,6 +172,7 @@ export default {
       [ChainId.Rinkeby]: 'Rinkeby',
       [ChainId.Boba]: 'Boba',
       [ChainId.Stc]: 'Starcoin',
+      [ChainId.Oasis]: 'Oasis',
     },
     chainNetworkName: {
       [ChainId.Poly]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -183,7 +184,7 @@ export default {
       [ChainId.Eth]: TARGET_MAINNET ? 'MainNet' : 'Ropsten TestNet',
       [ChainId.Neo]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.xDai]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
-      [ChainId.Bsc]: TARGET_MAINNET ? 'BSC MainNet' : 'BSC TestNet',
+      [ChainId.Bsc]: TARGET_MAINNET ? 'BNB MainNet' : 'BNB TestNet',
       [ChainId.Heco]: TARGET_MAINNET ? 'Heco MainNet' : 'Heco TestNet',
       [ChainId.Ok]: TARGET_MAINNET ? 'OKExChain MainNet' : 'OKExChain TestNet',
       [ChainId.Ont]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
@@ -194,6 +195,7 @@ export default {
       [ChainId.Rinkeby]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Boba]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
       [ChainId.Stc]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
+      [ChainId.Oasis]: TARGET_MAINNET ? 'MainNet' : 'TestNet',
     },
     transactionStatus: {
       [TransactionStatus.Finished]: 'Finished',
