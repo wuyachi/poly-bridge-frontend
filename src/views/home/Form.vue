@@ -27,7 +27,6 @@
             <img src="@/assets/svg/chevron-right.svg" />
           </CButton>
         </div>
-
         <div class="fields-row">
           <div class="field">
             <div class="label">{{ $t('home.form.from') }}</div>

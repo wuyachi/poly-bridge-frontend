@@ -119,7 +119,7 @@ async function getBalance({ chainId, address, tokenHash }) {
       params: [address, `0x1::Account::Balance<${tokenHash}>`],
     });
     const result = response?.value[0][1].Struct.value[0][1].U128;
-
+    console.log(result);
     return integerToDecimal(result, tokenBasic.decimals);
   } catch (error) {
     throw convertWalletError(error);
