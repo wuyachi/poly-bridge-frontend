@@ -61,7 +61,8 @@
                   step.chainId !== 4 &&
                   step.chainId !== 5 &&
                   step.chainId !== 14 &&
-                  step.chainId !== 88
+                  step.chainId !== 88 &&
+                  step.chainId !== 318
               "
             >
               {{ $t('home.form.speedup') }}
@@ -84,7 +85,8 @@
                   step.chainId !== 4 &&
                   step.chainId !== 5 &&
                   step.chainId !== 14 &&
-                  step.chainId !== 88
+                  step.chainId !== 88 &&
+                  step.chainId !== 318
               "
             >
               {{ $t('home.form.speedUpMSG') }}
@@ -99,7 +101,8 @@
                   step.chainId !== 4 &&
                   step.chainId !== 5 &&
                   step.chainId !== 14 &&
-                  step.chainId !== 88
+                  step.chainId !== 88 &&
+                  step.chainId !== 318
               "
               @click="payTochainFee"
               class="button-submit"
