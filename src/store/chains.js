@@ -75,7 +75,7 @@ export default {
           },
         });
       }
-      if (wallet.chainId !== chainId) {
+      if (wallet.chainId !== chainId && wallet.name !== 'StarMask') {
         const fromChainId = ETH_NETWORK_CHAIN_ID_MAPS[chainId];
         const waitChainId = `0x${fromChainId.toString(16)}`;
         try {
