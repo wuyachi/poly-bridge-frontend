@@ -95,6 +95,7 @@ export default {
     form: {
       chain: 'Chain',
       items: 'Items',
+      item: 'Item',
       search: 'Search',
       result: 'results',
     },

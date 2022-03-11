@@ -42,33 +42,48 @@
               </CButton>
             </div>
           </div>
+
           <div class="field">
             <div class="label">{{ $t('home.form.asset') }}</div>
-            <CButton class="select-token-basic" @click="selectTokenBasicVisible = true">
-              <template v-if="tokenBasic"> </template>
-              <CFlexSpan />
-              <img src="@/assets/svg/down2.svg" />
-            </CButton>
+            <div class="field-wrapper">
+              <CButton class="select-token-basic" @click="selectAssetVisible = true">
+                <template v-if="assets">
+                  {{ assetName }}
+                </template>
+                <CFlexSpan />
+                <img src="@/assets/svg/down2.svg" />
+              </CButton>
+            </div>
+          </div>
+          <div class="field">
+            <div class="label">{{ $t('nft.form.item') }}</div>
+            <div class="field-wrapper">
+              <CButton class="select-token-basic" @click="selectTokenBasicVisible = true">
+                <template v-if="tokenBasic"> </template>
+                <CFlexSpan />
+                <img src="@/assets/svg/down2.svg" />
+              </CButton>
+            </div>
           </div>
 
           <CButton class="exchange" :disabled="!toChainId" @click="exchangeFromTo">
             <img class="exchange-icon" src="@/assets/svg/exchange.svg" />
           </CButton>
 
-          <div class="label">
-            <div class="label-left">
-              <div class="label-name">{{ $t('home.form.to') }}</div>
-              <div v-if="toWallet" class="address">
-                <span class="address-value">
-                  {{ $formatLongText(toWallet.address, { headTailLength: 6 }) }}
-                </span>
-                <CButton @click="copy(toWallet.address)">
-                  <img src="@/assets/svg/copy.svg" />
-                </CButton>
+          <div class="field">
+            <div class="label">
+              <div class="label-left">
+                <div class="label-name">{{ $t('home.form.to') }}</div>
+                <div v-if="toWallet" class="address">
+                  <span class="address-value">
+                    {{ $formatLongText(toWallet.address, { headTailLength: 6 }) }}
+                  </span>
+                  <CButton @click="copy(toWallet.address)">
+                    <img src="@/assets/svg/copy.svg" />
+                  </CButton>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="field">
             <div class="field-wrapper">
               <CButton
                 class="select-chain"
@@ -92,7 +107,7 @@
                       {{ $t('home.form.chainName', { chainName: $t('home.form.to') }) }}
                     </span>
                   </template>
-                  <img class="chevron-right" src="@/assets/svg/chevron-right.svg" />
+                  <img class="chevron-right" src="@/assets/svg/down2.svg" />
                 </div>
               </CButton>
             </div>
@@ -173,6 +188,18 @@
       @update:chainId="changeToChainId"
       :chains="toChains || []"
     />
+    <SelectAsset
+      :visible.sync="selectAssetVisible"
+      :assetHash="assetHash"
+      @update:asset="changeAsset"
+      :assets="assets || []"
+    />
+    <SelectItem
+      :visible.sync="selectItemVisible"
+      :itemId="assetHash"
+      @update:item="changeItem"
+      :items="items || []"
+    />
     <ConnectWallet
       :visible.sync="connectWalletVisible"
       :fromChainId="fromChainId"
@@ -210,6 +237,8 @@ import TransactionDetails from '@/views/nfttransactions/Details';
 import { getWalletApi } from '@/utils/walletApi';
 import SelectTokenBasic from './SelectTokenBasic';
 import SelectChain from './SelectChain';
+import SelectAsset from './SelectAsset';
+import SelectItem from './SelectItem';
 import ConnectWallet from './ConnectWallet';
 import Confirm from './Confirm';
 import Detail from './Detail';
@@ -218,6 +247,8 @@ export default {
   name: 'Form',
   components: {
     SelectTokenBasic,
+    SelectAsset,
+    SelectItem,
     SelectChain,
     ConnectWallet,
     Confirm,
@@ -232,17 +263,19 @@ export default {
       connectWalletVisible: false,
       confirmVisible: false,
       transactionDetailsVisible: false,
+      selectAssetVisible: false,
       detailVisible: false,
       tokenBasicName: DEFAULT_CHAIN_NAME,
       chainBasicName: DEFAULT_CHAIN_NAME,
       fromChainId: 2,
       toChainId: null,
+      assetName: '',
       amount: '',
       approving: false,
       confirmingData: null,
       nftData: null,
       confirmUuid: uuidv4(),
-      itemHash: null,
+      assetHash: null,
       unknowNFT: require('../../assets/svg/back.svg'),
       currentPage: 1,
       currentShowPage: 1,
@@ -281,12 +314,12 @@ export default {
       return itemsTotal;
     },
     items() {
-      const AssetsShow = this.$store.getters.getItemsShow.Assets
-        ? this.$store.getters.getItemsShow.Assets
-        : [];
-      const itemsShow = AssetsShow[0] ? AssetsShow[0].Items : [];
+      // const AssetsShow = this.$store.getters.getItemsShow.Assets
+      //   ? this.$store.getters.getItemsShow.Assets
+      //   : [];
+      // const itemsShow = AssetsShow[0] ? AssetsShow[0].Items : [];
       const items = this.$store.getters.getItems ? this.$store.getters.getItems.Items : [];
-      return this.fromWallet ? items : itemsShow;
+      return this.fromWallet ? items : [];
     },
     itemsShow() {
       return this.$store.getters.getItemsShow.Assets;
@@ -423,9 +456,9 @@ export default {
     },
     assets() {
       if (this.assets[0]) {
-        this.itemHash = this.itemHash ? this.itemHash : this.assets[0].Hash;
+        this.assetHash = this.assetHash ? this.assetHash : this.assets[0].Hash;
         if (this.fromWallet) {
-          this.getItems(this.itemHash, '', this.currentPage);
+          this.getItems(this.assetHash, '', this.currentPage);
           this.getAssetMap();
         }
       }
@@ -489,16 +522,16 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getItems(this.itemHash, '', this.currentPage);
+      this.getItems(this.assetHash, '', this.currentPage);
     },
     handleCurrentShowChange(val) {
       this.currentShowPage = val;
       this.getItemsShow();
     },
     itemSelect(item) {
-      this.itemHash = item.Hash;
-      console.log(this.itemHash);
-      this.getItems(this.itemHash, '', this.currentPage);
+      this.assetHash = item.Hash;
+      console.log(this.assetHash);
+      this.getItems(this.assetHash, '', this.currentPage);
     },
     async tokenSelect(item) {
       if (!this.fromWallet) {
@@ -509,7 +542,7 @@ export default {
       const walletApi = await getWalletApi(this.fromWallet.name);
       const Approval = await walletApi.getNFTApproved({
         fromChainId: this.fromChainId,
-        tokenHash: this.itemHash,
+        tokenHash: this.assetHash,
         id: item.TokenId,
       });
       this.toChainId = null;
@@ -518,7 +551,7 @@ export default {
         toChains: this.toChains,
         toChainId: this.toChainId,
         nft: item,
-        assetHash: this.itemHash,
+        assetHash: this.assetHash,
         fromWallet: this.fromWallet,
         toWallet: null,
         needApproval: Approval,
@@ -527,7 +560,9 @@ export default {
     },
     async init() {
       this.currentPage = 1;
-      this.getItemsShow();
+      // this.getItemsShow();
+      this.assetHash = null;
+      this.assetName = '';
       this.getAssets();
     },
     getItemsShow() {
@@ -545,7 +580,7 @@ export default {
     getAssetMap() {
       const params = {
         ChainId: this.fromChain.id,
-        Hash: this.itemHash,
+        Hash: this.assetHash,
       };
       this.$store.dispatch('getAssetMap', params);
     },
@@ -577,7 +612,7 @@ export default {
         toAddress: this.toWallet.address,
         fromChainId: this.fromChainId,
         toChainId: this.toChainId,
-        fromTokenHash: this.itemHash,
+        fromTokenHash: this.assetHash,
         nft: this.nftData.nft,
         amount: 0,
         fee: this.fee,
@@ -604,6 +639,11 @@ export default {
         DstChainId: this.toChainId,
       };
       this.$store.dispatch('getNftFee', params);
+    },
+    changeAsset(asset) {
+      this.assetHash = asset.Hash;
+      this.assetName = asset.Name;
+      this.getItems(this.assetHash, '', this.currentPage);
     },
     async exchangeFromTo() {
       await this.$store.dispatch('getTokenMaps', {
@@ -776,7 +816,7 @@ export default {
 .fields-row {
   display: flex;
   flex-direction: column;
-  @include child-margin-h(0px);
+  @include child-margin-v(20px);
 }
 
 .field {
@@ -830,7 +870,7 @@ export default {
 }
 
 .select-chain {
-  width: 50%;
+  width: 100%;
   padding: 35px 0 35px 30px;
 }
 

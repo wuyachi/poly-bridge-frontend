@@ -147,7 +147,7 @@
                         {{ $t('home.form.chainName', { chainName: $t('home.form.to') }) }}
                       </span>
                     </template>
-                    <img class="chevron-right" src="@/assets/svg/chevron-right.svg" />
+                    <img class="chevron-right" src="@/assets/svg/down2.svg" />
                   </div>
                 </CButton>
                 <div class="input">
