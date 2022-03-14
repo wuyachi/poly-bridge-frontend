@@ -223,7 +223,7 @@ export const CHAINS = [
     icon: require('@/assets/svg/Harmony.svg'),
     explorerUrl: TARGET_MAINNET
       ? 'https://explorer.harmony.one/tx/0x{txHash}'
-      : 'https://explorer.harmony.one/tx/0x{txHash}',
+      : 'https://explorer.pops.one/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xc927f0EF4f25E19a40F0Cb34da841B45c13649fd'
       : '0xc927f0EF4f25E19a40F0Cb34da841B45c13649fd',
