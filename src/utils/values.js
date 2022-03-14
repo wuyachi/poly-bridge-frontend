@@ -27,6 +27,7 @@ export const WALLETS = [
       ChainId.xDai,
       ChainId.HSC,
       ChainId.Harmony,
+      ChainId.BYTOM,
       ChainId.Optimistic,
       ChainId.Boba,
       ChainId.Fantom,
@@ -55,6 +56,7 @@ export const WALLETS = [
       ChainId.xDai,
       ChainId.HSC,
       ChainId.Harmony,
+      ChainId.BYTOM,
       ChainId.Optimistic,
       ChainId.Fantom,
       ChainId.Avalanche,
@@ -220,13 +222,27 @@ export const CHAINS = [
     nativeFee: false,
     icon: require('@/assets/svg/Harmony.svg'),
     explorerUrl: TARGET_MAINNET
-      ? 'https://hooscan.com/tx/0x{txHash}'
-      : 'https://hooscan.com/tx/0x{txHash}',
+      ? 'https://explorer.harmony.one/tx/0x{txHash}'
+      : 'https://explorer.harmony.one/tx/0x{txHash}',
     lockContractHash: TARGET_MAINNET
       ? '0xc927f0EF4f25E19a40F0Cb34da841B45c13649fd'
       : '0xc927f0EF4f25E19a40F0Cb34da841B45c13649fd',
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ONE',
+    selfPay: true,
+  },
+  {
+    id: ChainId.BYTOM,
+    nativeFee: false,
+    icon: require('@/assets/png/bytom.png'),
+    explorerUrl: TARGET_MAINNET
+      ? 'https://bmctestnet.blockmeta.com/tx/0x{txHash}'
+      : 'https://bmctestnet.blockmeta.com/tx/0x{txHash}',
+    nftLockContractHash: TARGET_MAINNET
+      ? '0x6fd13dd4181dDb0f7463e19caC659FD3e9FB8a82'
+      : '0x6fd13dd4181dDb0f7463e19caC659FD3e9FB8a82',
+    nftFeeContractHash: '0000000000000000000000000000000000000000',
+    nftFeeName: 'BTM',
     selfPay: true,
   },
   {
