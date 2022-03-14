@@ -1,11 +1,12 @@
 <template>
   <CDialog v-bind="$attrs" v-on="$listeners">
     <div class="content">
-      <div class="title">{{ $t('home.selectChain.title') }}</div>
+      <div class="title">{{ $t('home.selectItem.title') }}</div>
       <CDivider />
       <div class="scroll">
         <div v-for="item in items" :key="item.TokenId" class="chain" @click="select(item)">
           <span class="chain-left">
+            <img :src="item.url ? item.url : unknown" />
             <span>{{ item.AssetName }} {{ item.TokenId }}</span>
           </span>
           <img v-if="itemId === item.TokenId" src="@/assets/svg/check.svg" />
@@ -22,6 +23,11 @@ export default {
   props: {
     itemId: String,
     items: Array,
+  },
+  data() {
+    return {
+      unknown: require('@/assets/svg/unknown.svg'),
+    };
   },
   methods: {
     select(item) {

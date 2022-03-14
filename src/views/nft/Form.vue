@@ -58,15 +58,23 @@
           <div class="field">
             <div class="label">{{ $t('nft.form.item') }}</div>
             <div class="field-wrapper">
-              <CButton class="select-token-basic" @click="selectTokenBasicVisible = true">
-                <template v-if="tokenBasic"> </template>
+              <CButton
+                class="select-token-basic"
+                :disabled="items.length < 1"
+                @click="selectItemVisible = items.length > 0 ? true : false"
+              >
+                <template v-if="item">
+                  <img class="selected-img" :src="item.url ? item.url : unknowNFT" />
+                  {{ item.AssetName }}
+                  {{ item.TokenId }}
+                </template>
                 <CFlexSpan />
                 <img src="@/assets/svg/down2.svg" />
               </CButton>
             </div>
           </div>
 
-          <CButton class="exchange" :disabled="!toChainId" @click="exchangeFromTo">
+          <CButton class="exchange" :disabled="!toChainId">
             <img class="exchange-icon" src="@/assets/svg/exchange.svg" />
           </CButton>
 
@@ -145,24 +153,15 @@
       >
         {{ $t('home.form.connectWallet') }}
       </CSubmitButton>
-      <div v-else-if="!invalid && fromToken && toToken && needApproval" class="approve-wrapper">
-        <el-checkbox v-model="approveInfinityChecked"
-          >{{ $t('home.form.approveInfinity') }}
-          <CTooltip>
-            <img class="tooltip-icon" src="@/assets/svg/question.svg" />
-            <template #content>
-              {{ $t('home.form.approveInfinitytip') }}
-            </template>
-          </CTooltip>
-        </el-checkbox>
+      <div v-else-if="fromChain && toChain && item && needApproval" class="approve-wrapper">
         <CSubmitButton :loading="approving" @click="approve">
           {{ approving ? $t('buttons.approving') : $t('buttons.approve') }}
         </CSubmitButton>
       </div>
       <CSubmitButton
         v-else
-        :disabled="invalid || !(fromToken && toToken)"
-        @click="next"
+        :disabled="!(item && toChain)"
+        @click="openConfirm"
         class="button-submit"
       >
         {{ $t('buttons.next') }}
@@ -196,7 +195,7 @@
     />
     <SelectItem
       :visible.sync="selectItemVisible"
-      :itemId="assetHash"
+      :itemId="item ? item.TokenId : null"
       @update:item="changeItem"
       :items="items || []"
     />
@@ -264,6 +263,7 @@ export default {
       confirmVisible: false,
       transactionDetailsVisible: false,
       selectAssetVisible: false,
+      selectItemVisible: false,
       detailVisible: false,
       tokenBasicName: DEFAULT_CHAIN_NAME,
       chainBasicName: DEFAULT_CHAIN_NAME,
@@ -276,13 +276,15 @@ export default {
       nftData: null,
       confirmUuid: uuidv4(),
       assetHash: null,
-      unknowNFT: require('../../assets/svg/back.svg'),
+      item: null,
+      unknowNFT: require('../../assets/svg/unknown.svg'),
       currentPage: 1,
       currentShowPage: 1,
       itemsShowTotal: 20,
       assetsName: '',
       searchTokenID: '',
       itemLoading: false,
+      needApproval: true,
       defaultImg: 'this.src="'.concat(require('../../assets/svg/back.svg'), '"'),
     };
   },
@@ -424,9 +426,6 @@ export default {
     allowance() {
       return this.getAllowanceParams && this.$store.getters.getAllowance(this.getAllowanceParams);
     },
-    needApproval() {
-      return !!this.amount && !!this.allowance && new BigNumber(this.amount).gt(this.allowance);
-    },
     fee() {
       return this.$store.getters.getNftFee;
     },
@@ -468,19 +467,6 @@ export default {
     },
     items() {
       console.log(this.items);
-    },
-    itemsShow() {
-      this.itemLoading = false;
-      if (this.itemsShowTotal < 191) {
-        if (this.itemsShow[0]) {
-          if (this.itemsShow[0].HasMore) {
-            this.itemsShowTotal = this.currentShowPage * 12 + 1;
-          }
-          if (!this.itemsShow[0].HasMore && this.itemsShow[0].Items.length > 0) {
-            this.itemsShowTotal = this.currentShowPage * 12 + this.itemsShow[0].Items.length - 12;
-          }
-        }
-      }
     },
     itemsTrue() {
       this.itemLoading = false;
@@ -528,10 +514,38 @@ export default {
       this.currentShowPage = val;
       this.getItemsShow();
     },
-    itemSelect(item) {
-      this.assetHash = item.Hash;
-      console.log(this.assetHash);
-      this.getItems(this.assetHash, '', this.currentPage);
+    async changeItem(item) {
+      this.item = item;
+      const walletApi = await getWalletApi(this.fromWallet.name);
+      this.needApproval = await walletApi.getNFTApproved({
+        fromChainId: this.fromChainId,
+        tokenHash: this.assetHash,
+        id: item.TokenId,
+      });
+    },
+    async approve() {
+      try {
+        this.approving = true;
+        let nftspender = this.fromChain.nftLockContractHash;
+        if (this.fromChain.id === 2 && this.toChain.id === 8) {
+          nftspender = this.fromChain.pltNftLockContractHash;
+        }
+        const walletApi = await getWalletApi(this.fromWallet.name);
+        await walletApi.nftApprove({
+          address: this.fromWallet.address,
+          tokenHash: this.assetHash,
+          spender: nftspender,
+          id: this.item.TokenId,
+        });
+        this.needApproval = await walletApi.getNFTApproved({
+          fromChainId: this.fromChainId,
+          toChainId: this.toChainId,
+          tokenHash: this.assetHash,
+          id: this.item.TokenId,
+        });
+      } finally {
+        this.approving = false;
+      }
     },
     async tokenSelect(item) {
       if (!this.fromWallet) {
@@ -613,7 +627,7 @@ export default {
         fromChainId: this.fromChainId,
         toChainId: this.toChainId,
         fromTokenHash: this.assetHash,
-        nft: this.nftData.nft,
+        nft: this.item,
         amount: 0,
         fee: this.fee,
       };
@@ -631,8 +645,8 @@ export default {
       this.init();
     },
     changeToChainId(chainId) {
+      debugger;
       this.toChainId = chainId;
-      this.nftData.toChainId = chainId;
       const params = {
         SrcChainId: this.fromChainId,
         Hash: this.fromChain.nftFeeContractHash,
@@ -641,60 +655,24 @@ export default {
       this.$store.dispatch('getNftFee', params);
     },
     changeAsset(asset) {
+      this.item = null;
       this.assetHash = asset.Hash;
       this.assetName = asset.Name;
       this.getItems(this.assetHash, '', this.currentPage);
-    },
-    async exchangeFromTo() {
-      await this.$store.dispatch('getTokenMaps', {
-        fromChainId: this.toChainId,
-        fromTokenHash: this.toToken.hash,
-      });
-      const { fromChainId } = this;
-      this.fromChainId = this.toChainId;
-      if (this.toChains && this.toChains.find(chain => chain.id === fromChainId)) {
-        this.toChainId = fromChainId;
-      } else {
-        this.toChainId = null;
-      }
-      this.clearAmount();
+      this.getAssetMap();
     },
     copy(text) {
       copy(text);
       this.$message.success(this.$t('messages.copied', { text }));
     },
-    transferAll() {
-      this.amount = this.balance;
-      this.$nextTick(() => this.$refs.amountValidation.validate());
-    },
-    async approve() {
-      await this.$store.dispatch('ensureChainWalletReady', this.fromChainId);
-      try {
-        this.approving = true;
-        const walletApi = await getWalletApi(this.fromWallet.name);
-
-        if (!new BigNumber(this.allowance).isZero()) {
-          await walletApi.approve({
-            chainId: this.fromChainId,
-            address: this.fromWallet.address,
-            tokenHash: this.fromToken.hash,
-            spender: this.fromChain.lockContractHash,
-            amount: 0,
-          });
-        }
-
-        await walletApi.approve({
-          chainId: this.fromChainId,
-          address: this.fromWallet.address,
-          tokenHash: this.fromToken.hash,
-          spender: this.fromChain.lockContractHash,
-          amount: this.amount,
-        });
-
-        await this.$store.dispatch('getAllowance', this.getAllowanceParams);
-      } finally {
-        this.approving = false;
-      }
+    async getApproved() {
+      const walletApi = await getWalletApi(this.nftData.fromWallet.name);
+      this.nftData.needApproval = await walletApi.getNFTApproved({
+        fromChainId: this.nftData.fromChainId,
+        tokenHash: this.nftData.assetHash,
+        id: this.nftData.nft.TokenId,
+      });
+      console.log(this.needApproval);
     },
     next() {
       this.confirmingData = {
@@ -859,7 +837,9 @@ export default {
   border-radius: 24px;
   @include child-margin-h(8px);
 }
-
+.selected-img {
+  margin-right: 10px;
+}
 .select-token-basic-icon {
   width: 30px;
   border-radius: 15px;

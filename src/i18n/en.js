@@ -73,6 +73,9 @@ export default {
     selectChain: {
       title: 'Select Network',
     },
+    selectItem: {
+      title: 'Select Token',
+    },
     connectWallet: {
       title: 'Connect Wallet',
       chainName: '{chainName} Network',

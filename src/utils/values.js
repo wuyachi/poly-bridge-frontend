@@ -202,7 +202,7 @@ export const CHAINS = [
     nftFeeName: 'Metis',
     selfPay: true,
   },
-  /* {
+  {
     id: ChainId.Rinkeby,
     nativeFee: false,
     icon: require('@/assets/svg/eth.svg'),
@@ -215,7 +215,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
     selfPay: true,
-  }, */
+  },
   {
     id: ChainId.Boba,
     nativeFee: false,
@@ -251,7 +251,7 @@ export const CHAINS = [
     nftFeeName: 'BNB',
     selfPay: true,
   },
-  /* {
+  {
     id: ChainId.Pixie,
     nativeFee: true,
     icon: require('@/assets/svg/pixie.svg'),
@@ -270,7 +270,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'PIX',
     selfPay: true,
-  }, */
+  },
   {
     id: ChainId.Heco,
     nativeFee: true,
