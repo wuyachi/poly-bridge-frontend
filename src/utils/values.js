@@ -238,6 +238,9 @@ export const CHAINS = [
     explorerUrl: TARGET_MAINNET
       ? 'https://bmctestnet.blockmeta.com/tx/0x{txHash}'
       : 'https://bmctestnet.blockmeta.com/tx/0x{txHash}',
+    nftexplorerUrl: TARGET_MAINNET
+      ? 'https://bmctestnet.blockmeta.com/tx/0x{txHash}'
+      : 'https://bmctestnet.blockmeta.com/tx/0x{txHash}',
     nftLockContractHash: TARGET_MAINNET
       ? '0x6fd13dd4181dDb0f7463e19caC659FD3e9FB8a82'
       : '0x6fd13dd4181dDb0f7463e19caC659FD3e9FB8a82',
@@ -259,7 +262,7 @@ export const CHAINS = [
     nftFeeName: 'Metis',
     selfPay: true,
   },
-  /* {
+  {
     id: ChainId.Rinkeby,
     nativeFee: false,
     icon: require('@/assets/svg/eth.svg'),
@@ -278,7 +281,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'ETH',
     selfPay: true,
-  }, */
+  },
   {
     id: ChainId.Oasis,
     nativeFee: false,
@@ -342,7 +345,7 @@ export const CHAINS = [
     nftFeeName: 'BNB',
     selfPay: true,
   },
-  /* {
+  {
     id: ChainId.Pixie,
     nativeFee: true,
     icon: require('@/assets/svg/pixie.svg'),
@@ -361,7 +364,7 @@ export const CHAINS = [
     nftFeeContractHash: '0000000000000000000000000000000000000000',
     nftFeeName: 'PIX',
     selfPay: true,
-  }, */
+  },
   {
     id: ChainId.Heco,
     nativeFee: true,
