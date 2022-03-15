@@ -15,6 +15,7 @@ const APIS = {
   [ChainId.xDai]: () => import('./eth'),
   [ChainId.HSC]: () => import('./eth'),
   [ChainId.Harmony]: () => import('./eth'),
+  [ChainId.BYTOM]: () => import('./eth'),
   [ChainId.Optimistic]: () => import('./eth'),
   [ChainId.Boba]: () => import('./eth'),
   [ChainId.Fantom]: () => import('./eth'),
