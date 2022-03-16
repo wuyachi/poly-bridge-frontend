@@ -1,5 +1,5 @@
 <template>
-  <CDrawer v-bind="$attrs" v-on="$listeners">
+  <CDialog v-bind="$attrs" v-on="$listeners">
     <div class="content">
       <div class="title">{{ $t('home.connectWallet.title') }}</div>
       <CDivider />
@@ -85,7 +85,7 @@
         </div>
       </div>
     </div>
-  </CDrawer>
+  </CDialog>
 </template>
 
 <script>

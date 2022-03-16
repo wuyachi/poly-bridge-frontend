@@ -1,15 +1,15 @@
 <template>
   <CDialog v-bind="$attrs" v-on="$listeners">
     <div class="content">
-      <div class="title">{{ $t('home.selectChain.title') }}</div>
+      <div class="title">{{ $t('home.selectItem.title') }}</div>
       <CDivider />
       <div class="scroll">
-        <div v-for="chain in chains" :key="chain.id" class="chain" @click="select(chain)">
+        <div v-for="item in items" :key="item.TokenId" class="chain" @click="select(item)">
           <span class="chain-left">
-            <img class="chain-icon" :src="chain.icon" />
-            <span>{{ $formatEnum(chain.id, { type: 'chainName' }) }}</span>
+            <img :src="item.url ? item.url : unknown" />
+            <span>{{ item.AssetName }} {{ item.TokenId }}</span>
           </span>
-          <img v-if="chainId === chain.id" src="@/assets/svg/check.svg" />
+          <img v-if="itemId === item.TokenId" src="@/assets/svg/check.svg" />
         </div>
       </div>
     </div>
@@ -18,16 +18,21 @@
 
 <script>
 export default {
-  name: 'SelectChain',
+  name: 'SelectAsset',
   inheritAttrs: false,
   props: {
-    chainId: Number,
-    chains: Array,
+    itemId: String,
+    items: Array,
+  },
+  data() {
+    return {
+      unknown: require('@/assets/svg/unknown.svg'),
+    };
   },
   methods: {
-    select(chain) {
+    select(item) {
       this.$emit('update:visible', false);
-      this.$emit('update:chainId', chain.id);
+      this.$emit('update:item', item);
     },
   },
 };

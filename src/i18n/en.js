@@ -39,7 +39,7 @@ export default {
       asset: 'Asset',
       from: 'From',
       to: 'To',
-      chainName: '{chainName}\nNetwork',
+      chainName: '{chainName}',
       amount: 'Amount',
       max: 'MAX',
       balance: 'Balance',
@@ -73,6 +73,9 @@ export default {
     selectChain: {
       title: 'Select Network',
     },
+    selectItem: {
+      title: 'Select Token',
+    },
     connectWallet: {
       title: 'Connect Wallet',
       chainName: '{chainName} Network',
@@ -95,6 +98,7 @@ export default {
     form: {
       chain: 'Chain',
       items: 'Items',
+      item: 'Item',
       search: 'Search',
       result: 'results',
     },

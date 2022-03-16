@@ -1,21 +1,21 @@
 <template>
-  <CDrawer v-bind="$attrs"
-           :closeOnClickModal="!confirmingData || failed || finished"
-           :closeOnPressEscape="!confirmingData || failed || finished"
-           v-on="$listeners">
+  <CDialog
+    v-bind="$attrs"
+    :closeOnClickModal="!confirmingData || failed || finished"
+    :closeOnPressEscape="!confirmingData || failed || finished"
+    v-on="$listeners"
+  >
     <div class="content">
       <div class="title">{{ $t('transactions.details.title') }}</div>
-      <div v-if="steps"
-           class="scroll">
-        <div v-for="(step, index) in steps"
-             :key="step.chainId"
-             class="step">
+      <div v-if="steps" class="scroll">
+        <div v-for="(step, index) in steps" :key="step.chainId" class="step">
           <template v-if="step.chainId != null">
-            <img class="step-icon"
-                 :class="{ [getStepStatus(index)]: true }"
-                 :src="statusIcons[getStepStatus(index)]" />
-            <div v-if="index !== steps.length - 1"
-                 class="step-line" />
+            <img
+              class="step-icon"
+              :class="{ [getStepStatus(index)]: true }"
+              :src="statusIcons[getStepStatus(index)]"
+            />
+            <div v-if="index !== steps.length - 1" class="step-line" />
             <div class="step-title">{{ $formatEnum(step.chainId, { type: 'chainName' }) }}</div>
             <div class="description">
               {{
@@ -25,9 +25,11 @@
               }}
             </div>
             <div class="progress">
-              <ElProgress class="progress-bar"
-                          :percentage="(step.blocks / step.needBlocks || 0) * 100"
-                          :showText="false" />
+              <ElProgress
+                class="progress-bar"
+                :percentage="(step.blocks / step.needBlocks || 0) * 100"
+                :showText="false"
+              />
               <span class="progress-text">
                 {{
                   $t('transactions.details.confirmation', {
@@ -37,10 +39,12 @@
                 }}
               </span>
             </div>
-            <CLink class="link"
-                   :href="$format(getChain(step.chainId).nftexplorerUrl, { txHash: step.hash })"
-                   target="_blank"
-                   :disabled="!step.hash">
+            <CLink
+              class="link"
+              :href="$format(getChain(step.chainId).nftexplorerUrl, { txHash: step.hash })"
+              target="_blank"
+              :disabled="!step.hash"
+            >
               {{
                 $t('transactions.details.hash', {
                   hash: $formatLongText(step.hash || 'N/A', { headTailLength: 16 }),
@@ -50,34 +54,26 @@
           </template>
 
           <template v-else-if="step.failed">
-            <img class="step-icon failed"
-                 src="@/assets/svg/status-failed.svg" />
-            <div v-if="index !== steps.length - 1"
-                 class="step-line" />
+            <img class="step-icon failed" src="@/assets/svg/status-failed.svg" />
+            <div v-if="index !== steps.length - 1" class="step-line" />
             <div class="failed-title">{{ $t('transactions.details.failedTitle') }}</div>
-            <CLink v-if="confirmingData"
-                   class="link"
-                   :to="{ name: 'nfttransactions' }">
+            <CLink v-if="confirmingData" class="link" :to="{ name: 'nfttransactions' }">
               {{ $t('transactions.details.gotoHistory') }}
             </CLink>
           </template>
 
           <template v-else-if="step.finished">
-            <img class="step-icon succeeded"
-                 src="@/assets/svg/status-succeeded.svg" />
-            <div v-if="index !== steps.length - 1"
-                 class="step-line" />
+            <img class="step-icon succeeded" src="@/assets/svg/status-succeeded.svg" />
+            <div v-if="index !== steps.length - 1" class="step-line" />
             <div class="finished-title">{{ $t('transactions.details.finishedTitle') }}</div>
-            <CLink v-if="confirmingData"
-                   class="link"
-                   :to="{ name: 'nfttransactions' }">
+            <CLink v-if="confirmingData" class="link" :to="{ name: 'nfttransactions' }">
               {{ $t('transactions.details.gotoHistory') }}
             </CLink>
           </template>
         </div>
       </div>
     </div>
-  </CDrawer>
+  </CDialog>
 </template>
 
 <script>
@@ -92,13 +88,13 @@ export default {
     confirmingData: Object,
   },
   computed: {
-    mergedHash () {
+    mergedHash() {
       return this.hash || (this.confirmingData && this.confirmingData.transactionHash);
     },
-    transaction () {
+    transaction() {
       return this.$store.getters.getNftTransaction(this.mergedHash);
     },
-    mergedTransaction () {
+    mergedTransaction() {
       return (
         this.transaction ||
         (this.confirmingData && {
@@ -117,7 +113,7 @@ export default {
         })
       );
     },
-    steps () {
+    steps() {
       if (!this.mergedTransaction) {
         return null;
       }
@@ -130,19 +126,19 @@ export default {
       }
       return steps;
     },
-    failed () {
+    failed() {
       return (
         !!this.confirmingData &&
         this.confirmingData.transactionStatus === SingleTransactionStatus.Failed
       );
     },
-    finished () {
+    finished() {
       return !!this.transaction && this.transaction.status === TransactionStatus.Finished;
     },
-    closeable () {
+    closeable() {
       return !this.confirmingData || this.failed || this.finished;
     },
-    statusIcons () {
+    statusIcons() {
       return {
         waiting: require('@/assets/svg/status-waiting.svg'),
         pending: require('@/assets/svg/status-pending.svg'),
@@ -152,23 +148,23 @@ export default {
     },
   },
   watch: {
-    mergedHash () {
+    mergedHash() {
       this.getNftTransaction();
     },
   },
-  created () {
+  created() {
     this.interval = setInterval(() => {
       this.getNftTransaction();
     }, 5000);
   },
-  beforeDestroy () {
+  beforeDestroy() {
     clearInterval(this.interval);
   },
   methods: {
-    getChain (chainId) {
+    getChain(chainId) {
       return this.$store.getters.getChain(chainId);
     },
-    getStepStatus (index) {
+    getStepStatus(index) {
       if (!this.steps) {
         return null;
       }
@@ -185,7 +181,7 @@ export default {
       }
       return 'waiting';
     },
-    async getNftTransaction () {
+    async getNftTransaction() {
       if (this.mergedHash && this.$attrs.visible) {
         try {
           await this.$store.dispatch('getNftTransaction', this.mergedHash);

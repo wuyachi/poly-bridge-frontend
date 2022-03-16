@@ -4,12 +4,11 @@
       <div class="title">{{ $t('home.selectChain.title') }}</div>
       <CDivider />
       <div class="scroll">
-        <div v-for="chain in chains" :key="chain.id" class="chain" @click="select(chain)">
+        <div v-for="asset in assets" :key="asset.Hash" class="chain" @click="select(asset)">
           <span class="chain-left">
-            <img class="chain-icon" :src="chain.icon" />
-            <span>{{ $formatEnum(chain.id, { type: 'chainName' }) }}</span>
+            <span>{{ $formatEnum(asset.Name, { type: 'chainName' }) }}</span>
           </span>
-          <img v-if="chainId === chain.id" src="@/assets/svg/check.svg" />
+          <img v-if="assetHash === asset.Hash" src="@/assets/svg/check.svg" />
         </div>
       </div>
     </div>
@@ -18,16 +17,16 @@
 
 <script>
 export default {
-  name: 'SelectChain',
+  name: 'SelectAsset',
   inheritAttrs: false,
   props: {
-    chainId: Number,
-    chains: Array,
+    assetHash: String,
+    assets: Array,
   },
   methods: {
-    select(chain) {
+    select(asset) {
       this.$emit('update:visible', false);
-      this.$emit('update:chainId', chain.id);
+      this.$emit('update:asset', asset);
     },
   },
 };

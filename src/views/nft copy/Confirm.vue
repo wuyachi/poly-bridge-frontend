@@ -1,5 +1,5 @@
 <template>
-  <CDialog
+  <CDrawer
     v-bind="$attrs"
     :closeOnClickModal="!confirming"
     :closeOnPressEscape="!confirming"
@@ -96,7 +96,7 @@
         </div>
       </div>
     </transition>
-  </CDialog>
+  </CDrawer>
 </template>
 
 <script>
@@ -166,8 +166,6 @@ export default {
   },
   methods: {
     async confirm() {
-      debugger;
-      console.log(this.confirmingData);
       await this.$store.dispatch('ensureChainWalletReady', this.confirmingData.fromChainId);
       try {
         this.confirming = true;

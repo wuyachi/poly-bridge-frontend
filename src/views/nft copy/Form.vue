@@ -1,171 +1,127 @@
 <template>
   <ValidationObserver ref="validation" tag="div" class="form">
     <div class="card">
-      <div class="fields">
-        <div class="fields-row">
-          <div class="field">
-            <div class="label">
-              <div class="label-left">
-                <div class="label-name">{{ $t('home.form.from') }}</div>
-                <div v-if="fromWallet" class="address">
-                  <span class="address-value">
-                    {{ $formatLongText(fromWallet.address, { headTailLength: 6 }) }}
-                  </span>
-                  <CButton @click="copy(fromWallet.address)">
-                    <img class="copy-icon" src="@/assets/svg/copy.svg" />
-                  </CButton>
-                </div>
-              </div>
-              <div class="label-right"></div>
-            </div>
-            <div class="field-wrapper">
-              <CButton class="select-chain" @click="selectFromChainVisible = true">
-                <div class="select-chain-content">
-                  <template v-if="fromChain">
-                    <img class="select-chain-icon" :src="fromChain.icon" />
-                    <span class="select-chain-name">
-                      {{
-                        $t('home.form.chainName', {
-                          chainName: $formatEnum(fromChainId, { type: 'chainName' }),
-                        })
-                      }}
-                    </span>
-                  </template>
-                  <template v-else>
-                    <img class="select-chain-icon" src="@/assets/svg/from.svg" />
-                    <span class="select-chain-name">
-                      {{ $t('home.form.chainName', { chainName: $t('home.form.from') }) }}
-                    </span>
-                  </template>
-                  <img class="chevron-right" src="@/assets/svg/down2.svg" />
-                </div>
-              </CButton>
-            </div>
-          </div>
-
-          <div class="field">
-            <div class="label">{{ $t('home.form.asset') }}</div>
-            <div class="field-wrapper">
-              <CButton class="select-token-basic" @click="selectAssetVisible = true">
-                <template v-if="assets">
-                  {{ assetName }}
-                </template>
-                <CFlexSpan />
-                <img src="@/assets/svg/down2.svg" />
-              </CButton>
-            </div>
-          </div>
-          <div class="field">
-            <div class="label">{{ $t('nft.form.item') }}</div>
-            <div class="field-wrapper">
-              <CButton
-                class="select-token-basic"
-                :disabled="items.length < 1"
-                @click="selectItemVisible = items.length > 0 ? true : false"
-              >
-                <template v-if="item">
-                  <img class="selected-img" :src="item.url ? item.url : unknowNFT" />
-                  {{ item.AssetName }}
-                  {{ item.TokenId }}
-                </template>
-                <CFlexSpan />
-                <img src="@/assets/svg/down2.svg" />
-              </CButton>
-            </div>
-          </div>
-
-          <CButton class="exchange" :disabled="!toChainId">
-            <img class="exchange-icon" src="@/assets/svg/exchange.svg" />
+      <div class="fields-row">
+        <div class="field-left">
+          <div class="label">{{ $t('nft.form.chain') }}</div>
+          <CButton class="select-token-basic" @click="selectFromChainVisible = true">
+            <template>
+              <img class="select-token-basic-icon" :src="fromChain.icon" />
+              <span class="select-token-basic-name">{{
+                $formatEnum(fromChain.id, { type: 'chainName' })
+              }}</span>
+            </template>
+            <CFlexSpan />
+            <img src="@/assets/svg/chevron-right.svg" />
           </CButton>
-
-          <div class="field">
-            <div class="label">
-              <div class="label-left">
-                <div class="label-name">{{ $t('home.form.to') }}</div>
-                <div v-if="toWallet" class="address">
-                  <span class="address-value">
-                    {{ $formatLongText(toWallet.address, { headTailLength: 6 }) }}
-                  </span>
-                  <CButton @click="copy(toWallet.address)">
-                    <img src="@/assets/svg/copy.svg" />
-                  </CButton>
-                </div>
-              </div>
-            </div>
-            <div class="field-wrapper">
-              <CButton
-                class="select-chain"
-                :disabled="!toChains"
-                @click="selectToChainVisible = true"
-              >
-                <div class="select-chain-content">
-                  <template v-if="toChain">
-                    <img class="select-chain-icon" :src="toChain.icon" />
-                    <span class="select-chain-name">
-                      {{
-                        $t('home.form.chainName', {
-                          chainName: $formatEnum(toChainId, { type: 'chainName' }),
-                        })
-                      }}
-                    </span>
-                  </template>
-                  <template v-else>
-                    <img class="select-chain-icon" src="@/assets/svg/to.svg" />
-                    <span class="select-chain-name">
-                      {{ $t('home.form.chainName', { chainName: $t('home.form.to') }) }}
-                    </span>
-                  </template>
-                  <img class="chevron-right" src="@/assets/svg/down2.svg" />
-                </div>
-              </CButton>
+          <div class="label margin-top-40">{{ $t('nft.form.items') }}</div>
+          <div class="input asset-input">
+            <img src="@/assets/png/search.png" />
+            <CInput class="input-inner" placeholder="Filter" v-model="assetsName" />
+          </div>
+          <div class="scroll">
+            <div
+              v-for="item in assets"
+              :key="item.Hash"
+              :class="itemHash === item.Hash ? 'asset asset-active ' : 'asset'"
+              @click="itemSelect(item)"
+            >
+              <span class="asset-left">
+                <span>{{ item.Name }}</span>
+              </span>
+              <img
+                v-if="itemHash === item.Hash"
+                style="color:#fff"
+                src="@/assets/svg/check-w.svg"
+              />
             </div>
           </div>
         </div>
-        <div
-          v-if="
-            fee &&
-              fee.Balance < 500 &&
-              fee.SwapTokenHash === 'deaddeaddeaddeaddeaddeaddeaddeaddead0000'
-          "
-          class="fee"
-        >
-          <span class="label" style="color: #f56c6c; opacity: 1">{{
-            $t('home.form.warningMsg')
-          }}</span>
-        </div>
-        <div
-          v-if="
-            fee &&
-              fee.Balance < 500 &&
-              fee.SwapTokenHash === 'e552fb52a4f19e44ef5a967632dbc320b0820639'
-          "
-          class="fee"
-        >
-          <span class="label" style="color: #f56c6c; opacity: 1">{{
-            $t('home.form.warningMsg')
-          }}</span>
+        <div class="field-right">
+          <div class="fields-row">
+            <div class="id-input input">
+              <img src="@/assets/png/search.png" />
+              <CInput
+                class="input-inner"
+                placeholder="NFT ID"
+                v-model="searchTokenID"
+                v-on:keyup.enter="getItems(itemHash, searchTokenID, 1)"
+              />
+            </div>
+            <!--             <div class="search-button"
+                 @click="getItems(itemHash,searchTokenID,1)">
+              {{$t('nft.form.search')}}
+            </div> -->
+          </div>
+          <div class="item-content" v-loading="itemLoading">
+            <div v-if="fromWallet" class="total">{{ itemsTotal }} {{ $t('nft.form.result') }}</div>
+            <div class="items-content">
+              <div
+                v-for="item in items"
+                class="nft-item"
+                :key="item.TokenId"
+                @click="tokenSelect(item)"
+              >
+                <div class="image">
+                  <div v-if="item.Image" class="img-wrapper">
+                    <img :id="'img' + item.TokenId" :src="item.Image" :onerror="defaultImg" />
+                    <video
+                      :id="'video' + item.TokenId"
+                      autoplay="autoplay"
+                      loop="loop"
+                      muted="muted"
+                      :src="item.Image"
+                    >
+                      您的浏览器不支持 video 标签。
+                    </video>
+                  </div>
+                  <div v-else class="img-wrapper-unknow">
+                    <img :src="unknowNFT" />
+                  </div>
+                </div>
+                <div class="nft-name">{{ item.Name }}</div>
+                <div class="nft-tokenid">#{{ item.TokenId }}</div>
+              </div>
+            </div>
+            <div class="pagination" v-if="fromWallet && itemsTotal > 10">
+              <el-pagination
+                layout="prev, pager, next"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-size="12"
+                :total="itemsTotal"
+              >
+              </el-pagination>
+            </div>
+            <div class="pagination" v-if="!fromWallet && itemsShow.length > 0">
+              <el-pagination
+                layout="prev, pager, next"
+                @current-change="handleCurrentShowChange"
+                :current-page="currentPage"
+                :page-size="12"
+                :total="itemsShowTotal"
+              >
+              </el-pagination>
+            </div>
+          </div>
         </div>
       </div>
-
-      <CSubmitButton
-        v-if="fromChain && toChain && !(fromWallet && toWallet)"
-        @click="connectWalletVisible = true"
-      >
-        {{ $t('home.form.connectWallet') }}
-      </CSubmitButton>
-      <div v-else-if="fromChain && toChain && item && needApproval" class="approve-wrapper">
-        <CSubmitButton :loading="approving" @click="approve">
+      <!--       <div style="display:none">
+        <CSubmitButton v-if="fromChain && toChain && !(fromWallet && toWallet)"
+                       @click="connectWalletVisible = true">
+          {{ $t('home.form.connectWallet') }}
+        </CSubmitButton>
+        <CSubmitButton v-else-if="!invalid && fromToken && toToken && needApproval"
+                       :loading="approving"
+                       @click="approve">
           {{ approving ? $t('buttons.approving') : $t('buttons.approve') }}
         </CSubmitButton>
-      </div>
-      <CSubmitButton
-        v-else
-        :disabled="!(item && toChain)"
-        @click="openConfirm"
-        class="button-submit"
-      >
-        {{ $t('buttons.next') }}
-      </CSubmitButton>
+        <CSubmitButton v-else
+                       :disabled="invalid || !(fromToken && toToken)"
+                       @click="next">
+          {{ $t('buttons.next') }}
+        </CSubmitButton>
+      </div> -->
     </div>
 
     <div class="history">
@@ -186,18 +142,6 @@
       :chainId="toChainId"
       @update:chainId="changeToChainId"
       :chains="toChains || []"
-    />
-    <SelectAsset
-      :visible.sync="selectAssetVisible"
-      :assetHash="assetHash"
-      @update:asset="changeAsset"
-      :assets="assets || []"
-    />
-    <SelectItem
-      :visible.sync="selectItemVisible"
-      :itemId="item ? item.TokenId : null"
-      @update:item="changeItem"
-      :items="items || []"
     />
     <ConnectWallet
       :visible.sync="connectWalletVisible"
@@ -236,8 +180,6 @@ import TransactionDetails from '@/views/nfttransactions/Details';
 import { getWalletApi } from '@/utils/walletApi';
 import SelectTokenBasic from './SelectTokenBasic';
 import SelectChain from './SelectChain';
-import SelectAsset from './SelectAsset';
-import SelectItem from './SelectItem';
 import ConnectWallet from './ConnectWallet';
 import Confirm from './Confirm';
 import Detail from './Detail';
@@ -246,8 +188,6 @@ export default {
   name: 'Form',
   components: {
     SelectTokenBasic,
-    SelectAsset,
-    SelectItem,
     SelectChain,
     ConnectWallet,
     Confirm,
@@ -262,29 +202,24 @@ export default {
       connectWalletVisible: false,
       confirmVisible: false,
       transactionDetailsVisible: false,
-      selectAssetVisible: false,
-      selectItemVisible: false,
       detailVisible: false,
       tokenBasicName: DEFAULT_CHAIN_NAME,
       chainBasicName: DEFAULT_CHAIN_NAME,
       fromChainId: 2,
       toChainId: null,
-      assetName: '',
       amount: '',
       approving: false,
       confirmingData: null,
       nftData: null,
       confirmUuid: uuidv4(),
-      assetHash: null,
-      item: null,
-      unknowNFT: require('../../assets/svg/unknown.svg'),
+      itemHash: null,
+      unknowNFT: require('../../assets/svg/back.svg'),
       currentPage: 1,
       currentShowPage: 1,
       itemsShowTotal: 20,
       assetsName: '',
       searchTokenID: '',
       itemLoading: false,
-      needApproval: true,
       defaultImg: 'this.src="'.concat(require('../../assets/svg/back.svg'), '"'),
     };
   },
@@ -316,12 +251,12 @@ export default {
       return itemsTotal;
     },
     items() {
-      // const AssetsShow = this.$store.getters.getItemsShow.Assets
-      //   ? this.$store.getters.getItemsShow.Assets
-      //   : [];
-      // const itemsShow = AssetsShow[0] ? AssetsShow[0].Items : [];
+      const AssetsShow = this.$store.getters.getItemsShow.Assets
+        ? this.$store.getters.getItemsShow.Assets
+        : [];
+      const itemsShow = AssetsShow[0] ? AssetsShow[0].Items : [];
       const items = this.$store.getters.getItems ? this.$store.getters.getItems.Items : [];
-      return this.fromWallet ? items : [];
+      return this.fromWallet ? items : itemsShow;
     },
     itemsShow() {
       return this.$store.getters.getItemsShow.Assets;
@@ -426,6 +361,9 @@ export default {
     allowance() {
       return this.getAllowanceParams && this.$store.getters.getAllowance(this.getAllowanceParams);
     },
+    needApproval() {
+      return !!this.amount && !!this.allowance && new BigNumber(this.amount).gt(this.allowance);
+    },
     fee() {
       return this.$store.getters.getNftFee;
     },
@@ -455,9 +393,9 @@ export default {
     },
     assets() {
       if (this.assets[0]) {
-        this.assetHash = this.assetHash ? this.assetHash : this.assets[0].Hash;
+        this.itemHash = this.itemHash ? this.itemHash : this.assets[0].Hash;
         if (this.fromWallet) {
-          this.getItems(this.assetHash, '', this.currentPage);
+          this.getItems(this.itemHash, '', this.currentPage);
           this.getAssetMap();
         }
       }
@@ -467,6 +405,19 @@ export default {
     },
     items() {
       console.log(this.items);
+    },
+    itemsShow() {
+      this.itemLoading = false;
+      if (this.itemsShowTotal < 191) {
+        if (this.itemsShow[0]) {
+          if (this.itemsShow[0].HasMore) {
+            this.itemsShowTotal = this.currentShowPage * 12 + 1;
+          }
+          if (!this.itemsShow[0].HasMore && this.itemsShow[0].Items.length > 0) {
+            this.itemsShowTotal = this.currentShowPage * 12 + this.itemsShow[0].Items.length - 12;
+          }
+        }
+      }
     },
     itemsTrue() {
       this.itemLoading = false;
@@ -508,44 +459,16 @@ export default {
     },
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.getItems(this.assetHash, '', this.currentPage);
+      this.getItems(this.itemHash, '', this.currentPage);
     },
     handleCurrentShowChange(val) {
       this.currentShowPage = val;
       this.getItemsShow();
     },
-    async changeItem(item) {
-      this.item = item;
-      const walletApi = await getWalletApi(this.fromWallet.name);
-      this.needApproval = await walletApi.getNFTApproved({
-        fromChainId: this.fromChainId,
-        tokenHash: this.assetHash,
-        id: item.TokenId,
-      });
-    },
-    async approve() {
-      try {
-        this.approving = true;
-        let nftspender = this.fromChain.nftLockContractHash;
-        if (this.fromChain.id === 2 && this.toChain.id === 8) {
-          nftspender = this.fromChain.pltNftLockContractHash;
-        }
-        const walletApi = await getWalletApi(this.fromWallet.name);
-        await walletApi.nftApprove({
-          address: this.fromWallet.address,
-          tokenHash: this.assetHash,
-          spender: nftspender,
-          id: this.item.TokenId,
-        });
-        this.needApproval = await walletApi.getNFTApproved({
-          fromChainId: this.fromChainId,
-          toChainId: this.toChainId,
-          tokenHash: this.assetHash,
-          id: this.item.TokenId,
-        });
-      } finally {
-        this.approving = false;
-      }
+    itemSelect(item) {
+      this.itemHash = item.Hash;
+      console.log(this.itemHash);
+      this.getItems(this.itemHash, '', this.currentPage);
     },
     async tokenSelect(item) {
       if (!this.fromWallet) {
@@ -556,7 +479,7 @@ export default {
       const walletApi = await getWalletApi(this.fromWallet.name);
       const Approval = await walletApi.getNFTApproved({
         fromChainId: this.fromChainId,
-        tokenHash: this.assetHash,
+        tokenHash: this.itemHash,
         id: item.TokenId,
       });
       this.toChainId = null;
@@ -565,7 +488,7 @@ export default {
         toChains: this.toChains,
         toChainId: this.toChainId,
         nft: item,
-        assetHash: this.assetHash,
+        assetHash: this.itemHash,
         fromWallet: this.fromWallet,
         toWallet: null,
         needApproval: Approval,
@@ -574,9 +497,7 @@ export default {
     },
     async init() {
       this.currentPage = 1;
-      // this.getItemsShow();
-      this.assetHash = null;
-      this.assetName = '';
+      this.getItemsShow();
       this.getAssets();
     },
     getItemsShow() {
@@ -594,7 +515,7 @@ export default {
     getAssetMap() {
       const params = {
         ChainId: this.fromChain.id,
-        Hash: this.assetHash,
+        Hash: this.itemHash,
       };
       this.$store.dispatch('getAssetMap', params);
     },
@@ -626,8 +547,8 @@ export default {
         toAddress: this.toWallet.address,
         fromChainId: this.fromChainId,
         toChainId: this.toChainId,
-        fromTokenHash: this.assetHash,
-        nft: this.item,
+        fromTokenHash: this.itemHash,
+        nft: this.nftData.nft,
         amount: 0,
         fee: this.fee,
       };
@@ -645,8 +566,8 @@ export default {
       this.init();
     },
     changeToChainId(chainId) {
-      debugger;
       this.toChainId = chainId;
+      this.nftData.toChainId = chainId;
       const params = {
         SrcChainId: this.fromChainId,
         Hash: this.fromChain.nftFeeContractHash,
@@ -654,25 +575,56 @@ export default {
       };
       this.$store.dispatch('getNftFee', params);
     },
-    changeAsset(asset) {
-      this.item = null;
-      this.assetHash = asset.Hash;
-      this.assetName = asset.Name;
-      this.getItems(this.assetHash, '', this.currentPage);
-      this.getAssetMap();
+    async exchangeFromTo() {
+      await this.$store.dispatch('getTokenMaps', {
+        fromChainId: this.toChainId,
+        fromTokenHash: this.toToken.hash,
+      });
+      const { fromChainId } = this;
+      this.fromChainId = this.toChainId;
+      if (this.toChains && this.toChains.find(chain => chain.id === fromChainId)) {
+        this.toChainId = fromChainId;
+      } else {
+        this.toChainId = null;
+      }
+      this.clearAmount();
     },
     copy(text) {
       copy(text);
       this.$message.success(this.$t('messages.copied', { text }));
     },
-    async getApproved() {
-      const walletApi = await getWalletApi(this.nftData.fromWallet.name);
-      this.nftData.needApproval = await walletApi.getNFTApproved({
-        fromChainId: this.nftData.fromChainId,
-        tokenHash: this.nftData.assetHash,
-        id: this.nftData.nft.TokenId,
-      });
-      console.log(this.needApproval);
+    transferAll() {
+      this.amount = this.balance;
+      this.$nextTick(() => this.$refs.amountValidation.validate());
+    },
+    async approve() {
+      await this.$store.dispatch('ensureChainWalletReady', this.fromChainId);
+      try {
+        this.approving = true;
+        const walletApi = await getWalletApi(this.fromWallet.name);
+
+        if (!new BigNumber(this.allowance).isZero()) {
+          await walletApi.approve({
+            chainId: this.fromChainId,
+            address: this.fromWallet.address,
+            tokenHash: this.fromToken.hash,
+            spender: this.fromChain.lockContractHash,
+            amount: 0,
+          });
+        }
+
+        await walletApi.approve({
+          chainId: this.fromChainId,
+          address: this.fromWallet.address,
+          tokenHash: this.fromToken.hash,
+          spender: this.fromChain.lockContractHash,
+          amount: this.amount,
+        });
+
+        await this.$store.dispatch('getAllowance', this.getAllowanceParams);
+      } finally {
+        this.approving = false;
+      }
     },
     next() {
       this.confirmingData = {
@@ -748,28 +700,12 @@ export default {
 
 .card {
   box-sizing: border-box;
-  width: 640px;
-  //padding: 40px 50px 54px;
-  //background: #171f31;
-  //box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
-  border-radius: 10px;
-  position: relative;
-}
-.card-hidden {
-  box-sizing: border-box;
-  width: 452px;
-  height: 100%;
-  padding: 40px 50px 54px;
-  background: rgba(23, 31, 49, 0.9);
+  width: 1280px;
+  min-height: 1055px;
+  padding: 20px;
+  background: #171f31;
   box-shadow: 0px 2px 18px 7px rgba(#000000, 0.1);
   border-radius: 10px;
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .title {
@@ -779,50 +715,42 @@ export default {
   @include next-margin-v(30px);
 }
 
+.field-left {
+  flex: inherit;
+  width: 300px;
+  background-color: rgba(0, 0, 0, 0.25);
+  padding: 30px 20px;
+  box-sizing: border-box;
+  @include child-margin-v(10px);
+}
+
+.field-right {
+  flex: inherit;
+  width: 920px;
+  margin-left: 20px !important;
+  @include child-margin-v(10px);
+}
 .fields {
   @include child-margin-v(20px);
   @include next-margin-v(40px);
 }
-.field-wrapper {
-  display: flex;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 24px;
-  margin-top: 15px;
-  height: 100px;
-}
 
 .fields-row {
   display: flex;
-  flex-direction: column;
-  @include child-margin-v(20px);
+  @include child-margin-h(18px);
 }
 
 .field {
   flex: 1;
-  @include child-margin-v(15px);
+  @include child-margin-v(10px);
 }
 
 .label {
+  opacity: 0.6;
   font-weight: 500;
-  font-size: 16px;
-  line-height: 21px;
-  display: flex;
+  font-size: 12px;
 }
-.label-left {
-  display: flex;
-  width: 33%;
-}
-.label-left {
-  flex: 1;
-  display: flex;
-}
-.label-name {
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 21px;
-}
-.copy-icon {
-}
+
 .value {
   font-size: 10px;
 }
@@ -831,127 +759,83 @@ export default {
   display: flex;
   align-items: center;
   width: stretch;
-  height: 100px;
-  padding: 30px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 24px;
+  height: 48px;
+  padding: 0 14px;
+  background: rgba(#000000, 0.26);
+  border-radius: 4px;
   @include child-margin-h(8px);
 }
-.selected-img {
-  margin-right: 10px;
-}
+
 .select-token-basic-icon {
-  width: 30px;
-  border-radius: 15px;
+  width: 20px;
+  border-radius: 10px;
 }
 
 .select-token-basic-name {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 .select-chain {
   width: 100%;
-  padding: 35px 0 35px 30px;
 }
 
 .select-chain-content {
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   width: stretch;
-  // padding: 15px;
-  // border: 1px solid rgba(#ffffff, 0.1);
-  // border-radius: 4px;
-  // background: rgba(#ffffff, 0.04);
+  padding: 15px;
+  border: 1px solid rgba(#ffffff, 0.1);
+  border-radius: 4px;
+  background: rgba(#ffffff, 0.04);
 }
 
 .select-chain-icon {
-  width: 30px;
-  @include next-margin-v(0px);
+  width: 40px;
+  @include next-margin-v(8px);
 }
 
 .select-chain-name {
-  font-size: 18px;
-  line-height: 27px;
+  font-size: 14px;
+  white-space: pre-line;
   text-align: left;
-  margin-left: 10px;
 }
 
 .address {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 10px;
 }
-.address > .c-button {
-  display: flex;
-}
+
 .address-value {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-  margin-right: 10px;
+  font-size: 12px;
 }
 
 .chevron-down {
   align-self: flex-end;
 }
-.chevron-right {
-  margin-left: 10px;
-}
 
 .input {
   display: flex;
-  align-items: center;
-  padding: 18px 14px;
-  background: rgba(#000000, 0);
+  padding: 9px 14px;
+  background: rgba(#000000, 0.26);
   border-radius: 4px;
-  text-align: end !important;
-  width: 66%;
 }
-.input-inner {
-  text-align: end !important;
-}
-.input-show {
-  opacity: 0.6;
-}
+
 .input-error {
   color: $--color-danger;
   font-size: 12px;
-  text-align: right;
 }
 
 .use-max {
-  margin-left: 10px;
   padding: 5px;
   border-radius: 4px;
   color: rgba(#ffffff, 0.6);
   background: rgba(#ffffff, 0.05);
   font-weight: 600;
   font-size: 12px;
-  height: 20px;
 }
 
-.exchange {
-  margin-top: 15px;
-}
-.exchange-icon {
-  transform: rotate(90deg);
-  height: 15px;
-}
-
-.balance > .label,
-.balance > .value {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.6);
-}
-.fee > .label {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.3);
-}
-.fee > .value {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 1);
-}
 .balance,
 .fee {
   display: flex;
@@ -960,7 +844,7 @@ export default {
 }
 
 .tooltip-icon {
-  vertical-align: middle;
+  vertical-align: baseline;
 }
 
 .fee-value {
@@ -980,23 +864,212 @@ export default {
   color: #2fd8ca;
   text-decoration: underline;
 }
-.approve-wrapper {
-  label {
-    margin-bottom: 10px;
+.scroll {
+  margin-top: 20px !important;
+  flex: 1;
+  overflow-y: auto;
+  @include scroll-bar(rgba(#fff, 0.2), transparent);
+}
+
+.asset {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 48px;
+  padding: 0 20px;
+  transition: all 0.3s;
+  @include child-margin-h(16px);
+
+  &:hover {
+    opacity: 0.8;
+    color: #3ec7eb;
+    background: rgba(#000000, 0.3);
   }
 }
-</style>
-<style lang="scss" scoped>
-@media screen and (max-width: 900px) {
-  .card {
-    max-width: 90vw;
-    padding: 20px 30px;
+.asset-active {
+  opacity: 0.8;
+  color: #3ec7eb;
+  background: rgba(#000000, 0);
+}
+
+.asset-left {
+  display: flex;
+  align-items: center;
+  @include child-margin-h(8px);
+}
+.search-button {
+  cursor: pointer;
+  text-align: center;
+  width: 160px;
+  height: 60px;
+  background: linear-gradient(225deg, #3ec7eb 0%, #282bdb 100%);
+  border-radius: 4px;
+  font-size: 18px;
+  font-family: Avenir-Medium, Avenir;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 60px;
+  transition: all ease 0.3s;
+}
+.search-button:hover {
+  opacity: 0.8;
+  transition: all ease 0.3s;
+}
+.search-input {
+  flex: 1;
+}
+.field-right > .fields-row > .input {
+  flex: 1;
+}
+.item-content {
+  width: 920px;
+  min-height: 985px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  margin-top: 20px !important;
+  .items-content {
+    margin-top: 20px;
+    height: 855px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    .nft-item:nth-child(4n) {
+      margin-right: 0px;
+    }
+    .nft-item:hover {
+      border: 1px solid;
+      border-image: linear-gradient(225deg, rgba(62, 199, 235, 1), rgba(40, 43, 219, 1)) 1 1;
+    }
+    .nft-item {
+      cursor: pointer;
+      margin-right: 20px;
+      margin-bottom: 20px;
+      width: 205px;
+      height: 265px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      padding: 10px;
+      display: flex;
+      flex-flow: column;
+      box-sizing: border-box;
+      .image {
+        width: 185px;
+        min-height: 185px;
+        background-image: url('../../assets/svg/back.svg');
+        background: rgba(0, 0, 0, 0.3);
+        background-repeat: no-repeat;
+        background-position: center;
+        .img-wrapper {
+          width: 100%;
+          height: 100%;
+          background-color: #000000;
+          text-align: center;
+          position: relative;
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
+            z-index: 10;
+          }
+          video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
+          }
+        }
+        .img-wrapper-unknow {
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.3);
+          text-align: center;
+          img {
+            height: 100%;
+            object-position: 50% 50%;
+            object-fit: contain;
+          }
+        }
+      }
+      .nft-name {
+        margin-top: 15px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 183px;
+        height: 33px;
+      }
+      .nft-tokenid {
+        margin-top: 5px;
+        font-size: 14px;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 20px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 183px;
+        height: 33px;
+      }
+    }
   }
-  .button-submit {
-    margin: 20px 0 30px 0 !important;
+}
+.input {
+  position: relative;
+  padding-left: 60px;
+  box-sizing: border-box;
+  img {
+    width: 18px;
+    position: absolute;
+    left: 20px;
+    top: 9px;
   }
-  .chevron-down {
-    margin-top: -12px;
+}
+.id-input {
+  position: relative;
+  padding-left: 60px;
+  padding-top: 19px;
+  padding-bottom: 19px;
+  box-sizing: border-box;
+  border: 2px solid rgba(255, 255, 255, 0);
+  transition: all ease 0.3s;
+  img {
+    width: 18px;
+    position: absolute;
+    left: 20px;
+    top: 20px;
   }
+}
+.id-input:focus-within {
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: all ease 0.3s;
+}
+.asset-input {
+  box-sizing: border-box;
+  border: 2px solid rgba(255, 255, 255, 0);
+  transition: all ease 0.3s;
+}
+.asset-input:focus-within {
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: all ease 0.3s;
+}
+.pagination {
+  text-align: right;
+}
+.margin-top-40 {
+  margin-top: 40px !important;
 }
 </style>

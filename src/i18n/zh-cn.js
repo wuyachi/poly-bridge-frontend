@@ -39,7 +39,7 @@ export default {
       asset: 'Asset',
       from: 'From',
       to: 'To',
-      chainName: '{chainName}\nNetwork',
+      chainName: '{chainName}',
       amount: 'Amount',
       max: 'MAX',
       balance: 'Balance',
@@ -70,6 +70,9 @@ export default {
     selectChain: {
       title: 'Select Network',
     },
+    selectItem: {
+      title: 'Select Token',
+    },
     connectWallet: {
       title: 'Connect Wallet',
       chainName: '{chainName} Network',
@@ -86,6 +89,15 @@ export default {
       receiving: 'You will receive',
       packing: 'Transaction is packing on {chainName}. Please be patient...',
       hash: 'Hash: {hash}',
+    },
+  },
+  nft: {
+    form: {
+      chain: 'Chain',
+      items: 'Items',
+      item: 'Item',
+      search: 'Search',
+      result: 'results',
     },
   },
   transactions: {

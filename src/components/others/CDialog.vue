@@ -34,6 +34,14 @@ export default {
     word-break: unset;
     color: unset;
     font-size: unset;
+    .content {
+      max-height: 840px;
+      background: #171f31;
+      border-radius: 24px;
+      .header {
+        padding: 40px;
+      }
+    }
   }
 
   @include element(wrapper) {
