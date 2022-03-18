@@ -183,7 +183,7 @@ async function lock({
     const feeInt = decimalToInteger(fee, feeDecimals);
     const id = 1;
 
-    const functionId = '0x18351d311d32201149a4df2a9fc2db8a::CrossChainScript::lock_with_stc_fee';
+    const functionId = '0x416b32009fe49fcab1d5f2ba0153838f::CrossChainScript::lock_with_stc_fee';
     const tyArgs = [];
 
     const fromTokenHashHex = (function() {
